@@ -1,11 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
 import LoginPage from './components/LoginPage';
+import { Component } from "react";
 
-function AppComponent() {
-    return (
-        <LoginPage />
-    );
-}
+class AppComponent() extends Component {
+    render() {
+	return (
+	    <LoginPage />
+	);
+    }
+}	
 
 export default AppComponent;
