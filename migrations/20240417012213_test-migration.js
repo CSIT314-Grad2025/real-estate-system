@@ -4,8 +4,8 @@ const Sequelize = require("sequelize");
  * Actions summary:
  *
  * createTable() => "Users", deps: []
- * createTable() => "Agents", deps: [Users]
  * createTable() => "Buyers", deps: [Users]
+ * createTable() => "RealEstateAgents", deps: [Users]
  * createTable() => "Sellers", deps: [Users]
  * createTable() => "SystemAdmins", deps: [Users]
  *
@@ -14,7 +14,7 @@ const Sequelize = require("sequelize");
 const info = {
   revision: 1,
   name: "test-migration",
-  created: "2024-04-15T23:33:21.481Z",
+  created: "2024-04-17T01:22:13.196Z",
   comment: "",
 };
 
@@ -53,7 +53,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "Agents",
+      "Buyers",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -87,7 +87,7 @@ const migrationCommands = (transaction) => [
   {
     fn: "createTable",
     params: [
-      "Buyers",
+      "RealEstateAgents",
       {
         id: {
           type: Sequelize.INTEGER,
@@ -192,11 +192,11 @@ const migrationCommands = (transaction) => [
 const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
-    params: ["Agents", { transaction }],
+    params: ["Buyers", { transaction }],
   },
   {
     fn: "dropTable",
-    params: ["Buyers", { transaction }],
+    params: ["RealEstateAgents", { transaction }],
   },
   {
     fn: "dropTable",

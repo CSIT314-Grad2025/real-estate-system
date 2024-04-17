@@ -3,7 +3,7 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Agent extends Model {
+    class RealEstateAgent extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -11,16 +11,16 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            Agent.belongsTo(models.User, {
+            RealEstateAgent.belongsTo(models.User, {
                 foreignKey: 'userId',
                 onDelete: 'CASCADE' // Optional: Specify the behavior on user deletion
             });
         }
     }
-    Agent.init({
+    RealEstateAgent.init({
     }, {
         sequelize,
-        modelName: 'Agent',
+        modelName: 'RealEstateAgent',
     });
-    return Agent;
+    return RealEstateAgent;
 };

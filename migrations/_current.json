@@ -1,7 +1,7 @@
 {
     "tables": {
-        "Agents": {
-            "tableName": "Agents",
+        "Buyers": {
+            "tableName": "Buyers",
             "schema": {
                 "id": {
                     "allowNull": false,
@@ -34,8 +34,8 @@
             },
             "indexes": []
         },
-        "Buyers": {
-            "tableName": "Buyers",
+        "RealEstateAgents": {
+            "tableName": "RealEstateAgents",
             "schema": {
                 "id": {
                     "allowNull": false,
