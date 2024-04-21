@@ -1,19 +1,10 @@
 const DBConnection = require("../../config/dbConfig");
+const UserAccount = require("./UserAccount");
 
-class SellerAccount {
-    userId;
-    firstName;
-    lastName;
-    email;
-    password;
-    isLoggedIn;
+class SellerAccount extends UserAccount {
 
     constructor() {
-        this.userId = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.email = null;
-        this.password = null;
+        super();
     }
 
     async getAccount(email) {

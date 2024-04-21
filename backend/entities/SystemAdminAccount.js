@@ -1,20 +1,11 @@
 const DBConnection = require("../../config/dbConfig");
+const UserAccount = require("./UserAccount");
 
-class SystemAdminAccount {
-    userId;
-    firstName;
-    lastName;
-    email;
-    password;
+class SystemAdminAccount extends UserAccount{
     contactNumber;
-    isLoggedIn;
 
     constructor() {
-        this.userId = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.email = null;
-        this.password = null;
+        super()
         this.contactNumber = null;
     }
 
