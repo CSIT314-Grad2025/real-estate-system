@@ -1,15 +1,23 @@
 const BuyerAccount = require("../entities/BuyerAccount");
+const RealEstateAgentAccount = require("../entities/RealEstateAgentAccount");
+const SellerAccount = require("../entities/SellerAccount");
 
 class SystemAdminCreateAccountController {
     handleCreateAccount = async (req, res, next) => {
         try {
             const { firstName, lastName, email, password, accountType } = req.body;
 
-            if (!firstName || !lastName || !email || !accountType) {
-                let err = new Error('Invalid Form Data');
+            const requiredFields = ['firstName', 'lastName', 'email', 'password', 'accountType'];
+            const missingFields = requiredFields.filter(field => !req.body[field]);
+
+            if (missingFields.length > 0) {
+                const missingFieldNames = missingFields.join(', ');
+                const errorMessage = `Missing Field(s): ${missingFieldNames}`;
+                let err = new Error(errorMessage);
                 err.status = 400;
                 throw err;
             }
+
 
             // Check if valid account type
             switch (accountType) {
@@ -17,6 +25,22 @@ class SystemAdminCreateAccountController {
                 case 'Buyer':
                     {
                         await new BuyerAccount().createAccount(firstName, lastName, email, password);
+                        res.status(201).json({
+                            message: "User created successfully"
+                        });
+                        break;
+                    }
+                case 'Seller':
+                    {
+                        await new SellerAccount().createAccount(firstName, lastName, email, password);
+                        res.status(201).json({
+                            message: "User created successfully"
+                        });
+                        break;
+                    }
+                case 'RealEstateAgent':
+                    {
+                        await new RealEstateAgentAccount().createAccount(firstName, lastName, email, password);
                         res.status(201).json({
                             message: "User created successfully"
                         });

@@ -1,4 +1,6 @@
 const BuyerAccount = require("../entities/BuyerAccount");
+const RealEstateAgentAccount = require("../entities/RealEstateAgentAccount");
+const SellerAccount = require("../entities/SellerAccount");
 
 class SystemAdminSearchAccountsController {
     handleSearch = async (req, res, next) => {
@@ -15,6 +17,22 @@ class SystemAdminSearchAccountsController {
                 case 'Buyer':
                     {
                         let accounts = await new BuyerAccount().getAllAccounts();
+                        res.status(200).json({
+                            accounts
+                        })
+                        break;
+                    }
+                case 'Seller':
+                    {
+                        let accounts = await new SellerAccount().getAllAccounts();
+                        res.status(200).json({
+                            accounts
+                        })
+                        break;
+                    }
+                case 'RealEstateAgent':
+                    {
+                        let accounts = await new RealEstateAgentAccount().getAllAccounts();
                         res.status(200).json({
                             accounts
                         })

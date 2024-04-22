@@ -5,6 +5,7 @@ const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentL
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
 const SystemAdminCreateAccountController = require('../controllers/SystemAdminCreateAccountController');
+const SystemAdminDeleteAccountController = require('../controllers/SystemAdminDeleteAccountController()');
 const SystemAdminLoginController = require('../controllers/SystemAdminLoginController');
 const SystemAdminLogoutController = require('../controllers/SystemAdminLogoutController');
 const SystemAdminSearchAccountsController = require('../controllers/SystemAdminSearchAccountsController');
@@ -38,6 +39,9 @@ class AppRouter {
 
         // Search User Accounts
         this.router.post('/systemadmin/search', new SystemAdminSearchAccountsController().handleSearch);
+
+        // Delete User Account
+        this.router.delete('/systemadmin/delete', new SystemAdminDeleteAccountController().handleDeleteAccount)
 
 
         // Real Estate Agent Routes

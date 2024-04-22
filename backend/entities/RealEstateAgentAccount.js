@@ -77,6 +77,38 @@ class RealEstateAgentAccount extends UserAccount{
         return newRealEstateAgentAccount;
     }
 
+    async createAccount(firstName, lastName, email, password) {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `WITH rows AS(
+            INSERT INTO "Users" ("firstName", "lastName", "email", "password", "createdAt", "updatedAt")
+            VALUES('${firstName}', '${lastName}', '${email}', '${password}', NOW(), NOW())
+            RETURNING id
+            )
+
+            INSERT INTO "RealEstateAgents" ("userId", "createdAt", "updatedAt")
+            SELECT id, NOW(), NOW()
+            FROM rows`
+        );
+    }
+
+    async getAllAccounts() {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `SELECT u.*, r.* FROM "RealEstateAgents" r
+            LEFT JOIN "Users" u
+            ON r."userId" = u.id`
+        );
+
+        return dbResponse.rows;
+    }
+
     async setLoggedIn() {
         // Database Connection worker
         const pool = DBConnection.pool;

@@ -82,6 +82,24 @@ class UserAccount {
         }
     }
 
+    async deleteAccount(email) {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        let dbResponse = await pool.query(
+            `DELETE FROM "Users"
+            WHERE email = '${email}'`
+        )
+
+        if(dbResponse.rowCount < 1) {
+            let err = new Error('User not found');
+            err.status = 400;
+            throw err;
+        }
+
+    }
+
 }
 
 module.exports = UserAccount;
