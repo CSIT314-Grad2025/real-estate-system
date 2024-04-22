@@ -1,4 +1,6 @@
 import { Component } from "react";
+import { Navigate } from "react-router-dom";
+import { withRouter } from "../withRouter";
 
 class LoginPage extends Component {
 
@@ -8,7 +10,24 @@ class LoginPage extends Component {
         super(props)
         this.state = {
             username: '',
-            password: ''
+            password: '',
+        }
+    }
+
+    componentDidMount = () => {
+        const user = localStorage.getItem("user");
+        if (user) {
+            const loadedUser = JSON.parse(user);
+            if (loadedUser.type) {
+                switch (loadedUser.type) {
+                    case 'Seller':
+                        {
+                            return <Navigate to="/Seller" />
+                        }
+                    case 'Buyer': return <Navigate to="/Buyer" />
+                    default: { }
+                }
+            }
         }
     }
 
@@ -26,6 +45,8 @@ class LoginPage extends Component {
         if (username && password) {
             this.setState({ loggedIn: true });
         }
+
+        console.log(this.state);
     };
 
     render() {
@@ -60,4 +81,4 @@ class LoginPage extends Component {
     }
 }
 
-export default LoginPage;
+export default withRouter(LoginPage);
