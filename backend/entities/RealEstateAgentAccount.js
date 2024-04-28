@@ -1,19 +1,10 @@
 const DBConnection = require("../../config/dbConfig");
+const UserAccount = require("./UserAccount");
 
-class RealEstateAgentAccount {
-    userId;
-    firstName;
-    lastName;
-    email;
-    password;
-    isLoggedIn;
+class RealEstateAgentAccount extends UserAccount{
 
     constructor() {
-        this.userId = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.email = null;
-        this.password = null;
+        super()
     }
 
     async getAccount(email) {
@@ -84,6 +75,38 @@ class RealEstateAgentAccount {
 
         // Return RealEstateAgentCredentials object
         return newRealEstateAgentAccount;
+    }
+
+    async createAccount(firstName, lastName, email, password) {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `WITH rows AS(
+            INSERT INTO "Users" ("firstName", "lastName", "email", "password", "createdAt", "updatedAt")
+            VALUES('${firstName}', '${lastName}', '${email}', '${password}', NOW(), NOW())
+            RETURNING id
+            )
+
+            INSERT INTO "RealEstateAgents" ("userId", "createdAt", "updatedAt")
+            SELECT id, NOW(), NOW()
+            FROM rows`
+        );
+    }
+
+    async getAllAccounts() {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `SELECT u.*, r.* FROM "RealEstateAgents" r
+            LEFT JOIN "Users" u
+            ON r."userId" = u.id`
+        );
+
+        return dbResponse.rows;
     }
 
     async setLoggedIn() {

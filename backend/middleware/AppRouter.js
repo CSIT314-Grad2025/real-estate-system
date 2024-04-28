@@ -4,8 +4,13 @@ const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLo
 const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentLogoutController');
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
+const SystemAdminCreateAccountController = require('../controllers/SystemAdminCreateAccountController');
+const SystemAdminDeleteAccountController = require('../controllers/SystemAdminDeleteAccountController()');
 const SystemAdminLoginController = require('../controllers/SystemAdminLoginController');
 const SystemAdminLogoutController = require('../controllers/SystemAdminLogoutController');
+const SystemAdminSearchAccountsController = require('../controllers/SystemAdminSearchAccountsController');
+const SystemAdminUpdateAccountController = require('../controllers/SystemAdminUpdateAccountController');
+const SystemAdminViewAccountController = require('../controllers/SystemAdminViewAccountController');
 const AuthMiddleware = require('./AuthMiddleware');
 
 class AppRouter {
@@ -18,8 +23,26 @@ class AppRouter {
 
 
         // System Admin Routes
+
+        // Login / Logout
         this.router.post('/systemadmin/login', new SystemAdminLoginController().login);
         this.router.put('/systemadmin/logout', new AuthMiddleware().protect, new SystemAdminLogoutController().logout,)
+
+        // Create User Account
+        this.router.post('/systemadmin/create', new SystemAdminCreateAccountController().handleCreateAccount);
+
+        // Read User Account
+        this.router.post('/systemadmin/view', new SystemAdminViewAccountController().handleViewAccount);
+
+        // Update User Accounts
+        this.router.post('/systemadmin/update', new SystemAdminUpdateAccountController().handleUpdateAccount);
+
+        // Search User Accounts
+        this.router.post('/systemadmin/search', new SystemAdminSearchAccountsController().handleSearch);
+
+        // Delete User Account
+        this.router.delete('/systemadmin/delete', new SystemAdminDeleteAccountController().handleDeleteAccount)
+
 
         // Real Estate Agent Routes
         this.router.post('/rea/login', new RealEstateAgentLoginController().login);

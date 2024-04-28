@@ -1,19 +1,10 @@
 const DBConnection = require("../../config/dbConfig");
+const UserAccount = require("./UserAccount");
 
-class BuyerAccount {
-    userId;
-    firstName;
-    lastName;
-    email;
-    password;
-    isLoggedIn;
+class BuyerAccount extends UserAccount {
 
     constructor() {
-        this.userId = null;
-        this.firstName = null;
-        this.lastName = null;
-        this.email = null;
-        this.password = null;
+        super()
     }
 
     async getAccount(email) {
@@ -80,13 +71,46 @@ class BuyerAccount {
         newBuyerAccount.lastName = user.lastName;
         newBuyerAccount.email = user.email;
         newBuyerAccount.password = user.password;
-        newBuyerAccount.contactNumber = user.contactNumber;
         newBuyerAccount.isLoggedIn = user.isLoggedIn;
 
         // Return BuyerCredentials object
         return newBuyerAccount;
     }
 
+    async createAccount(firstName, lastName, email, password) {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `WITH rows AS(
+            INSERT INTO "Users" ("firstName", "lastName", "email", "password", "createdAt", "updatedAt")
+            VALUES('${firstName}', '${lastName}', '${email}', '${password}', NOW(), NOW())
+            RETURNING id
+            )
+
+            INSERT INTO "Buyers" ("userId", "createdAt", "updatedAt")
+            SELECT id, NOW(), NOW()
+            FROM rows`
+        );
+    }
+
+    async getAllAccounts() {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `SELECT u.*, b.* FROM "Buyers" b
+            LEFT JOIN "Users" u
+            ON b."userId" = u.id`
+        );
+
+        return dbResponse.rows;
+    }
+
+    // INSERT INTO "Buyers" ("userId")
+    // SELECT id FROM inserted_user)`
     async setLoggedIn() {
         // Database Connection worker
         const pool = DBConnection.pool;
@@ -104,11 +128,12 @@ class BuyerAccount {
 
         await pool.query(
             `UPDATE "Users"
-            SET "isLoggedIn" = false
+            SET 
+            "isLoggedIn" = ${this.isLoggedIn},
+            ""
             WHERE "id" = '${this.userId}'`
-        )
+        );
     }
-
 }
 
 module.exports = BuyerAccount;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from '../withRouter';
 
 class SellerHomePage extends Component {
     state;
@@ -6,20 +7,21 @@ class SellerHomePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loginToken: props.loginToken
+            user: this.props
         }
     }
 
     handleLogout = (_e) => {
         this.loginToken = null
     }
+
     render() {
         return (
             <div>
-                <h2>Welcome</h2>
+                <h2>Welcome Seller</h2>
             </div>
         );
     }
 }
 
-export default SellerHomePage;
+export default withRouter(SellerHomePage);
