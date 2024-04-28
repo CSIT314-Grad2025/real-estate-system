@@ -2,6 +2,7 @@ const DBConnection = require("../../config/dbConfig");
 const UserAccount = require("./UserAccount");
 
 class RealEstateAgentAccount extends UserAccount{
+    ratingAverage;
 
     constructor() {
         super()
@@ -131,6 +132,9 @@ class RealEstateAgentAccount extends UserAccount{
         )
     }
 
+    async updateRating() {
+        
+    }
 }
 
 module.exports = RealEstateAgentAccount;
