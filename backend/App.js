@@ -12,6 +12,7 @@ class App {
         // Initialize server dependencies
         this.express = require('express');
         this.dotenv = require('dotenv').config();
+        this.cors = require('cors');
         this.port = process.env.PORT || 5000;
         this.errorMiddleware = new ErrorMiddleware();
         this.app = this.express();
@@ -19,6 +20,10 @@ class App {
 
     // Configure and run server
     run = () => {
+        this.app.use(this.cors({
+            origin: 'http://localhost:3000',
+            credentials: true,
+        }));
         this.app.use(this.express.json());
 
         // Default route for server health check

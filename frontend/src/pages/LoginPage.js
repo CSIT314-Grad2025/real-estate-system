@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
+import axios from "../api/axios";
 import { withRouter } from "../withRouter";
 
 class LoginPage extends Component {
@@ -9,26 +10,18 @@ class LoginPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
+            email: '',
             password: '',
+            errorMessage: '',
+            setAuth: props.auth,
+            navigage: props.navigate,
+            location: props.location,
+            from: props.location.state?.from?.pathname || "/"
         }
     }
 
     componentDidMount = () => {
-        const user = localStorage.getItem("user");
-        if (user) {
-            const loadedUser = JSON.parse(user);
-            if (loadedUser.type) {
-                switch (loadedUser.type) {
-                    case 'Seller':
-                        {
-                            return <Navigate to="/Seller" />
-                        }
-                    case 'Buyer': return <Navigate to="/Buyer" />
-                    default: { }
-                }
-            }
-        }
+        console.log({ state: this.state });
     }
 
     handleChange = (e) => {
@@ -37,20 +30,36 @@ class LoginPage extends Component {
         });
     };
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        const { username, password } = this.state;
-        // Add authentication logic here
-        // For simplicity, let's just check if both fields are non-empty
-        if (username && password) {
-            this.setState({ loggedIn: true });
-        }
+        const { email, password } = this.state;
+        try {
+            const response = await axios.post('/systemadmin/login',
+                JSON.stringify({ email, password }), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+            );
 
-        console.log(this.state);
+            console.log(this.state);
+            console.log("API Response: ", response?.data);
+        } catch (err) {
+            console.log(err?.response);
+            if (err?.response) {
+                this.setState({
+                    errorMessage: err.response.data.message
+                });
+            } else {
+                this.setState({
+                    errorMessage: "No response from server"
+                });
+            }
+            console.log(this.state);
+        }
     };
 
     render() {
-        const { username, password, loggedIn } = this.state;
+        const { email, password, loggedIn } = this.state;
         if (loggedIn) {
             // Redirect to Home
         }
@@ -60,10 +69,10 @@ class LoginPage extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <input
                         type="text"
-                        name="username"
-                        value={username}
+                        name="email"
+                        value={email}
                         onChange={this.handleChange}
-                        placeholder="Username"
+                        placeholder="Email"
                     />
                     <br />
                     <input
@@ -76,6 +85,7 @@ class LoginPage extends Component {
                     <br />
                     <button type="submit">Login</button>
                 </form>
+                <div>{this.state.errorMessage}</div>
             </div>
         );
     }
