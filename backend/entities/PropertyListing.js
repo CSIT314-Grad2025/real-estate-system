@@ -79,6 +79,26 @@ class PropertyListing {
 
     }
 
+    getAllPropertyListings = async () => {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `SELECT * FROM "PropertyListings"`
+        );
+
+        if (dbResponse.rows.length == 0) {
+            let err = new Error("User not found");
+            err.status = 404;
+            throw err;
+        }
+
+        const propertyListing = dbResponse.rows;
+        console.log(propertyListing);
+        return propertyListing;
+    }
+
     createPropertyListing = async (title, listingAgentID, sellerID, description, propertyType, livingArea, numberOfBedrooms, numberOfBathrooms, listPrice) => {
         // Database Connection worker
         const pool = DBConnection.pool;

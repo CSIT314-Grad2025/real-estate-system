@@ -2,7 +2,8 @@ const DBConnection = require("../../config/dbConfig");
 const UserAccount = require("./UserAccount");
 
 class RealEstateAgentAccount extends UserAccount{
-    ratingAverage;
+    numberOfRatings;
+    ratingSum;
 
     constructor() {
         super()
@@ -132,8 +133,19 @@ class RealEstateAgentAccount extends UserAccount{
         )
     }
 
+    // Increment the numberOfRatings by one and add the rating to ratingSum
     async updateRating() {
-        
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `SELECT u.*, r.* FROM "RealEstateAgents" r
+            LEFT JOIN "Users" u
+            ON r."userId" = u.id`
+        );
+
+        return dbResponse.rows;
     }
 }
 

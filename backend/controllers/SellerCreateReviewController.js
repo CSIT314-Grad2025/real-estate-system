@@ -1,6 +1,11 @@
 const Review = require("../entities/Review.js");
 
+// @UserStory
+// As a seller I want to be able to review my property agents,
+// so that I can let other people know my experience with the property agents. 
+
 class SellerCreateReviewController {
+    // Controller Method
     handleCreateReview = async (req, res, next) => {
         try {
             const { reviewTitle, reviewBody, reviewerID, rating, agentID } = req.body;
@@ -16,8 +21,14 @@ class SellerCreateReviewController {
                 throw err;
             }
 
-            let response = new Review().createReview(reviewTitle, reviewBody, reviewerID, rating, agentID);
-            console.log(response);
+            // Entity Method Call
+            new Review().createReview(reviewTitle, reviewBody, reviewerID, rating, agentID);
+
+            // Response sent to Boundary
+            res.status(201).json({
+                message: "Review submitted successfully"
+            });
+
         } catch (err) {
             err.status = 400;
             next(err);
@@ -25,3 +36,4 @@ class SellerCreateReviewController {
     }
 }
 
+module.exports = SellerCreateReviewController;

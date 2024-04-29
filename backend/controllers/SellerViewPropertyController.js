@@ -1,6 +1,7 @@
-const Review = require("../entities/Review");
+const PropertyListing = require("../entities/PropertyListing");
 
 class SellerViewPropertyController {
+    // Controller Method
     handleViewPropertyListing = async (req, res, next) => {
         const { id } = req.body;
         try {
@@ -10,9 +11,12 @@ class SellerViewPropertyController {
                 throw err;
             }
 
-            let review = await new Review().getReviewByID(id);
+            // Entity Method Call
+            let propertyListing = await new PropertyListing().getPropertyListingByID(id);
+
+            // Property listing object sent to the boundary
             res.status(200).json({
-                review
+                propertyListing
             })
 
         } catch (err) {
