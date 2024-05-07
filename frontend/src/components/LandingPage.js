@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class SystemAdminHomePage extends Component {
+class LandingPage extends Component {
     state;
 
     constructor(props) {
@@ -13,14 +13,13 @@ class SystemAdminHomePage extends Component {
     handleLogout = (_e) => {
         this.loginToken = null
     }
-
     render() {
         return (
             <div>
-                <h2>Welcome SystemAdmin</h2>
+                <h2>Welcome</h2>
             </div>
         );
     }
 }
 
-export default SystemAdminHomePage;
+export default LandingPage;

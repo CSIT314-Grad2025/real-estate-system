@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import axios from "../api/axios";
 import { withRouter } from "../withRouter";
 
-class LoginPage extends Component {
+class CreateReviewForm extends Component {
 
     state;
 
@@ -18,8 +18,6 @@ class LoginPage extends Component {
             location: props.location,
             from: props.location.state?.from?.pathname || "/"
         }
-        console.log("login.props : ", props)
-        console.log("login.state.from : ", this.state.from)
     }
 
     componentDidMount = () => {
@@ -32,12 +30,21 @@ class LoginPage extends Component {
         });
     };
 
+    // @UserStory
+    // As a seller I want to be able to review my property agents,
+    // so that I can let other people know my experience with the property agents. 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, password } = this.state;
+        const { reviewTitle, reviewBody, reviewerID, rating, agentID, } = this.state;
         try {
-            const response = await axios.post('/systemadmin/login',
-                JSON.stringify({ email, password }), {
+            const response = await axios.post('/rea/create-listing',
+                JSON.stringify({
+                    reviewTitle: "",
+                    reviewBody: "",
+                    reviewerID: "",
+                    rating: "",
+                    agentID: "",
+                }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
@@ -64,31 +71,52 @@ class LoginPage extends Component {
     };
 
     render() {
-        const { email, password, loggedIn } = this.state;
-        if (loggedIn) {
-            // Redirect to Home
-        }
+        const { reviewTitle, reviewBody, reviewerID, rating, agentID, } = this.state;
         return (
             <div>
-                <h2>Login</h2>
+                <h2>Create Review</h2>
                 <form onSubmit={this.handleSubmit}>
                     <input
                         type="text"
-                        name="email"
-                        value={email}
+                        name="reviewTitle"
+                        value={reviewTitle}
                         onChange={this.handleChange}
-                        placeholder="Email"
+                        placeholder="Title"
                     />
                     <br />
                     <input
-                        type="password"
-                        name="password"
-                        value={password}
+                        type="text"
+                        name="reviewBody"
+                        value={reviewBody}
                         onChange={this.handleChange}
-                        placeholder="Password"
+                        placeholder="Seller email"
                     />
                     <br />
-                    <button type="submit">Login</button>
+                    <input
+                        type="text"
+                        name="reviewerID"
+                        value={reviewerID}
+                        onChange={this.handleChange}
+                        placeholder="Description"
+                    />
+                    <br />
+                    <input
+                        type="text"
+                        name="rating"
+                        value={rating}
+                        onChange={this.handleChange}
+                        placeholder="PropertyType"
+                    />
+                    <br />
+                    <input
+                        type="text"
+                        name="agentID"
+                        value={agentID}
+                        onChange={this.handleChange}
+                        placeholder="Living Area"
+                    />
+                    <br />
+                    <button type="submit">Submit Review</button>
                 </form>
                 <div>{this.state.errorMessage}</div>
             </div>
@@ -96,4 +124,4 @@ class LoginPage extends Component {
     }
 }
 
-export default withRouter(LoginPage);
+export default withRouter(CreateReviewForm);

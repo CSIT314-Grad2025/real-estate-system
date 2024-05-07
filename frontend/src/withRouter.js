@@ -10,12 +10,13 @@ export const withRouter = (Component) => {
             return useContext(AuthContext);
         }
         const auth = useAuth();
-
+        console.log("Auth from router:", auth);
         return (
             <Component
                 navigate={navigate}
                 location={location}
                 auth={auth}
+                potato={"potato"}
                 {...props}
             />
         );

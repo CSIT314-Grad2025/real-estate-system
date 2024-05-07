@@ -14,7 +14,7 @@ class PropertyListing {
     listPrice;
 
     // Methods
-    getPropertyListingByID = async (propertyID) => {
+    getPropertyListingByID = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
