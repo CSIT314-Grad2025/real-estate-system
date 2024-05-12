@@ -26,8 +26,8 @@ class AppComponent extends Component {
             <Routes>
                 <Route path="/" element={<Layout />}>
                     {/* public routes*/}
-                    <Route path="/" element={<LinkPage />} />
-                    <Route path="login" element={<LoginPage />} />
+                    {/* <Route path="/" element={<LinkPage />} /> */}
+                    <Route path="/" element={<LoginPage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
 
                     {/* protected routes*/}

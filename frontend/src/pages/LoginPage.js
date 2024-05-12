@@ -6,17 +6,16 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { InputLabel } from "@mui/material";
-import { FormControl, MenuItem, Select } from "@mui/base";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import { Navigate } from "react-router-dom";
 
 class LoginPage extends Component {
 
@@ -30,22 +29,29 @@ class LoginPage extends Component {
             password: '',
             accountType: '',
             errorMessage: '',
+            auth: props.auth,
+            isLoggedIn: false,
             setAuth: props.auth.setAuth,
+            useEffect: props.useEffect,
             navigate: props.navigate,
             location: props.location,
-            from: props.location.state?.from?.pathname || "/"
+            from: props.location.state?.from?.pathname
         }
         this.defaultTheme = createTheme();
-        console.log("login.props : ", props)
-        console.log("login.state.from : ", this.state.from)
     }
 
     componentDidMount = () => {
-        // console.log({ state: this.state });
+        if (window.sessionStorage.getItem("firstName") && window.sessionStorage.getItem("accountType") && window.sessionStorage.getItem("token")) {
+            this.state.setAuth({
+                firstName: window.sessionStorage.getItem("firstName"),
+                accountType: window.sessionStorage.getItem("accountType"),
+                token: window.sessionStorage.getItem("token"),
+            })
+            this.state.isLoggedIn = true;
+        }
     }
 
     handleChange = (e) => {
-        console.log("HandleChange: ", e);
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -67,7 +73,16 @@ class LoginPage extends Component {
                 accountType: response?.data?.accountType,
                 token: response?.data?.token,
             })
-            this.state.navigate(this.state.from, { replace: true });
+            window.sessionStorage.setItem("firstName", response?.data?.firstName);
+            window.sessionStorage.setItem("accountType", response?.data?.accountType)
+            window.sessionStorage.setItem("token", response?.data?.token)
+
+            if (!this.state.from) {
+                this.state.navigate(`/${window.sessionStorage.getItem("accountType")}`, { replace: true })
+            } else {
+                this.state.navigate(this.state.from, { replace: true });
+            }
+
         } catch (err) {
             console.log("ERROR: ", err?.response);
             if (err?.response) {
@@ -80,13 +95,14 @@ class LoginPage extends Component {
                 });
             }
         }
-    };
+    }
 
 
     render() {
         const { email, password, accountType } = this.state;
         return (
             <ThemeProvider theme={this.defaultTheme}>
+                {this.state.isLoggedIn && <Navigate to={`/${window.sessionStorage.getItem("accountType")}`} />}
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box
@@ -108,6 +124,8 @@ class LoginPage extends Component {
                                 margin="normal"
                                 required
                                 fullWidth
+                                value={this.state.email}
+                                onChange={this.handleChange}
                                 id="email"
                                 label="Email Address"
                                 name="email"
@@ -118,39 +136,28 @@ class LoginPage extends Component {
                                 margin="normal"
                                 required
                                 fullWidth
+                                value={this.state.password}
+                                onChange={this.handleChange}
                                 name="password"
                                 label="Password"
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
                             />
-                            <InputLabel >Account Type</InputLabel>
-                            <select name="accountType" value={accountType} onChange={this.handleChange}>
-                                <option value="">Select...</option>
-                                <option value="rea">Real Estate Agent</option>
-                                <option value="buyer">Buyer</option>
-                                <option value="seller">Seller</option>
-                                <option value="systemadmin">System Administrator</option>
-                            </select>
-                            <br />
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <FormControl fullWidth >
+                                <InputLabel >Account Type</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
+                                    name="accountType"
                                     value={accountType}
-                                    label="Age"
+                                    label="Account Type"
                                     onChange={this.handleChange}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value="rea">Real Estate Agent</MenuItem>
+                                    <MenuItem value="buyer">Buyer</MenuItem>
+                                    <MenuItem value="seller">Seller</MenuItem>
+                                    <MenuItem value="systemadmin">System Administrator</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
-                                label="Remember me"
-                            />
                             <Button
                                 type="submit"
                                 fullWidth
@@ -159,18 +166,6 @@ class LoginPage extends Component {
                             >
                                 Sign In
                             </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                     <Copyright sx={{ mt: 8, mb: 4 }} />
@@ -179,7 +174,6 @@ class LoginPage extends Component {
         );
     }
 }
-
 const Copyright = (props) => {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>

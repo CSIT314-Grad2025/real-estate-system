@@ -17,7 +17,7 @@ class RequireAuth extends Component {
         return (
             this.state.allowedRoles?.includes(this.state.auth?.accountType)
                 ? <Outlet />
-                : <Navigate to="login" state={{ from: this.state.location }} replace />
+                : <Navigate to="/" state={{ from: this.state.location }} replace />
         )
     }
 }
