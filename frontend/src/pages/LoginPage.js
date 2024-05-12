@@ -47,7 +47,7 @@ class LoginPage extends Component {
                 accountType: window.sessionStorage.getItem("accountType"),
                 token: window.sessionStorage.getItem("token"),
             })
-            this.state.isLoggedIn = true;
+            this.setState({ isLoggedIn: true })
         }
     }
 
