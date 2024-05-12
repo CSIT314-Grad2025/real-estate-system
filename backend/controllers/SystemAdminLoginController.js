@@ -27,6 +27,7 @@ class SystemAdminLoginController {
                 email: account.email,
                 userId: account.userId,
                 firstName: account.firstName,
+                accountType: "systemadmin",
             })
         } catch (err) {
             err.status && res.status(err.status);

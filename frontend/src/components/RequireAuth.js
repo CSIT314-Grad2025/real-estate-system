@@ -1,23 +1,25 @@
 import { Component } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { withRouter } from "../withRouter";
 
 class RequireAuth extends Component {
     state;
     constructor(props) {
         super(props);
         this.state = {
-            auth: props.auth,
-            location: props.location
+            auth: props.auth.auth,
+            location: props.location,
+            allowedRoles: props.allowedRoles,
         }
     }
 
     render() {
         return (
-            this.auth?.user
+            this.state.allowedRoles?.includes(this.state.auth?.accountType)
                 ? <Outlet />
-                : <Navigate to="login" state={{ from: this.location }} replace />
+                : <Navigate to="/" state={{ from: this.state.location }} replace />
         )
     }
 }
 
-export default RequireAuth;
+export default withRouter(RequireAuth);
