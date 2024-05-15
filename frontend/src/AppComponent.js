@@ -12,6 +12,7 @@ import Layout from './components/Layout';
 import MissingPage from './pages/MissingPage';
 import RequireAuth from './components/RequireAuth';
 import LinkPage from './pages/LinkPage';
+import CreateUserAccountPage from './pages/CreateUserAccountPage';
 
 class AppComponent extends Component {
     roles = {
@@ -45,6 +46,7 @@ class AppComponent extends Component {
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
                         <Route path="systemadmin" element={<SystemAdminHomePage />} />
+                        <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
                     </Route>
 
                     {/* catch all*/}

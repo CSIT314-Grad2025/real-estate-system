@@ -5,10 +5,10 @@ class LoginToken {
         this.tokenString = null;
     }
 
-    generateToken(userId) {
+    generateToken(id) {
         let token = new LoginToken();
         token.tokenString = jwt.sign({
-            userId,
+            id,
         }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
         return token;

@@ -14,6 +14,7 @@ class RequireAuth extends Component {
     }
 
     render() {
+        console.log("FROM REQUIRE AUTH: ", this.state)
         return (
             this.state.allowedRoles?.includes(this.state.auth?.accountType)
                 ? <Outlet />

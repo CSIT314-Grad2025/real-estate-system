@@ -17,7 +17,7 @@ class AuthMiddleware {
                 const decoded = jwt.verify(token, process.env.JWT_SECRET);
                 const dbResponse = await pool.query(`
                     SELECT * FROM "Users"
-                    WHERE id = '${decoded.userId}'
+                    WHERE id = ${decoded.id}
                     `)
 
                 if (dbResponse.rows.length == 0) {
@@ -26,7 +26,7 @@ class AuthMiddleware {
                 }
 
                 const user = dbResponse.rows[0];
-                req.userId = user.id;
+                req.id = user.id;
 
 
                 next();

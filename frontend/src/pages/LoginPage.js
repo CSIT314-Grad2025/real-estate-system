@@ -41,9 +41,8 @@ class LoginPage extends Component {
     }
 
     componentDidMount = () => {
-        if (window.sessionStorage.getItem("firstName") && window.sessionStorage.getItem("accountType") && window.sessionStorage.getItem("token")) {
+        if (window.sessionStorage.getItem("accountType") && window.sessionStorage.getItem("token")) {
             this.state.setAuth({
-                firstName: window.sessionStorage.getItem("firstName"),
                 accountType: window.sessionStorage.getItem("accountType"),
                 token: window.sessionStorage.getItem("token"),
             })
@@ -59,21 +58,19 @@ class LoginPage extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, password } = this.state;
+        const { email, password, accountType } = this.state;
         try {
-            const response = await axios.post(`/${this.state.accountType}/login`,
-                JSON.stringify({ email, password }), {
+            const response = await axios.post(`/${accountType}/login`,
+                JSON.stringify({ email, password, accountType }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
             );
             console.log("API Response: ", response?.data);
             this.state.setAuth({
-                firstName: response?.data?.firstName,
                 accountType: response?.data?.accountType,
                 token: response?.data?.token,
             })
-            window.sessionStorage.setItem("firstName", response?.data?.firstName);
             window.sessionStorage.setItem("accountType", response?.data?.accountType)
             window.sessionStorage.setItem("token", response?.data?.token)
 
