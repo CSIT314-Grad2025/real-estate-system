@@ -20,6 +20,20 @@ Create a new database in PostgreSQL using PGAdmin called `database_development`
 $ git clone git@github.com:CSIT314-Grad2025/real-estate-system.git
 $ cd real-estate-system
 ```
+Pull the latest version
+
+```bash
+$ git fetch
+$ git pull
+```
+Switch to the latest branch
+```
+$ git checkout {branch-name}
+```
+Example
+```
+$ git checkout feature/buyer-cruds
+```
 
 ### Migrate Tables
 
