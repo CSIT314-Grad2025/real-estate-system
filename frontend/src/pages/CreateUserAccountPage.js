@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Card, CardActions, CardContent, Container, CssBaseline, Grid, Grow, InputLabel, Link, Paper, Select, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Container, CssBaseline, Grid, Select, Typography } from '@mui/material';
 import React, { Component } from 'react';
 import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormLabel from '@mui/material/FormLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/system';
+import AppHeader from '../components/AppHeader';
 
 class CreateUserAccountPage extends Component {
     state;
@@ -35,34 +36,6 @@ class CreateUserAccountPage extends Component {
         });
     };
 
-
-    handleLogout = async (_e) => {
-        console.log(this.state.auth)
-        try {
-            const response = await axios.put(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
-            );
-            console.log("API Response: ", response?.data);
-        } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
-        }
-        window.sessionStorage.clear();
-        this.state.navigate("/", { replace: true });
-    }
 
     handleSubmit = async () => {
         const { email, password, accountType } = this.state;
@@ -108,14 +81,7 @@ class CreateUserAccountPage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                Create User Account
-                            </Typography>
-                            <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
-                        </Toolbar>
-                    </AppBar>
+                    <AppHeader title="Create User Account" />
                     <Container maxWidth="sm" sx={{ marginY: 10 }}>
                         <Grid component="form" onSubmit={this.handleSubmit} container spacing={3}>
                             {this.state.errorMessage && <Typography color="red" sx={{ mx: "auto" }}>{this.state.errorMessage}</Typography>}

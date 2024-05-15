@@ -32,7 +32,6 @@ class LoginPage extends Component {
             auth: props.auth,
             isLoggedIn: false,
             setAuth: props.auth.setAuth,
-            useEffect: props.useEffect,
             navigate: props.navigate,
             location: props.location,
             from: props.location.state?.from?.pathname
@@ -75,7 +74,7 @@ class LoginPage extends Component {
             window.sessionStorage.setItem("token", response?.data?.token)
 
             if (!this.state.from) {
-                this.state.navigate(`/${window.sessionStorage.getItem("accountType")}`, { replace: true })
+                this.state.navigate(`/${window.sessionStorage.getItem("accountType")}/home`, { replace: true })
             } else {
                 this.state.navigate(this.state.from, { replace: true });
             }
@@ -99,7 +98,7 @@ class LoginPage extends Component {
         const { email, password, accountType } = this.state;
         return (
             <ThemeProvider theme={this.defaultTheme}>
-                {this.state.isLoggedIn && <Navigate to={`/${window.sessionStorage.getItem("accountType")}`} />}
+                {this.state.isLoggedIn && <Navigate to={`/${window.sessionStorage.getItem("accountType")}/home`} />}
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box

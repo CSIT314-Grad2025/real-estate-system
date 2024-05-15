@@ -13,13 +13,19 @@ import MissingPage from './pages/MissingPage';
 import RequireAuth from './components/RequireAuth';
 import LinkPage from './pages/LinkPage';
 import CreateUserAccountPage from './pages/CreateUserAccountPage';
+import { withRouter } from './withRouter';
 
 class AppComponent extends Component {
+    state;
+
     roles = {
         BUYER: "buyer",
         SELLER: "seller",
         REALESTATEAGENT: "agent",
         SYSTEMADMIN: "systemadmin",
+    }
+
+    componentDidMount() {
     }
 
     render() {
@@ -45,8 +51,8 @@ class AppComponent extends Component {
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
-                        <Route path="systemadmin" element={<SystemAdminHomePage />} />
                         <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
+                        <Route path="systemadmin/home" element={<SystemAdminHomePage />} />
                     </Route>
 
                     {/* catch all*/}
