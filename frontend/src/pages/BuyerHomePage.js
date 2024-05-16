@@ -4,6 +4,7 @@ import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
 import axios from '../api/axios';
 import CardWithButton from '../material_components/CardWithButton';
+import AppHeader from '../components/AppHeader';
 
 class BuyerHomePage extends Component {
     state;
@@ -20,7 +21,7 @@ class BuyerHomePage extends Component {
 
     async componentDidMount() {
         // Fetch User
-        await this.fetchUserProfile();
+        // await this.fetchUserProfile();
     }
 
     fetchUserProfile = async () => {
@@ -52,34 +53,6 @@ class BuyerHomePage extends Component {
         this.state.navigate("/systemadmin/create", { replace: true });
     }
 
-    handleLogout = async (_e) => {
-        console.log(this.state.auth)
-        try {
-            const response = await axios.put(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
-            );
-            console.log("API Response: ", response?.data);
-        } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
-        }
-        window.sessionStorage.clear();
-        this.state.navigate("/", { replace: true });
-    }
-
     render() {
         return (
             <Box
@@ -92,14 +65,7 @@ class BuyerHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                System Admin Home
-                            </Typography>
-                            <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
-                        </Toolbar>
-                    </AppBar>
+                    <AppHeader title="Buyer Home" />
                     <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
@@ -139,7 +105,7 @@ class BuyerHomePage extends Component {
                                                 Welcome Buyer
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Explore and shortlist available properties on the marketplace!
+                                                Discover the best properties in your area with our user-friendly platform. Start your journey towards owning your perfect home now!
                                             </Typography>
                                         </Box>
                                     </Grid>
@@ -148,14 +114,14 @@ class BuyerHomePage extends Component {
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
                                     onClick={() => { console.log("CLICKED") }}
-                                    title="View Favorites"
-                                    description="View properties that you have liked"
-                                    buttonLabel="View" />
+                                    title="MarketPlace"
+                                    description="Explore the MarketPlace and find properties that suit your needs."
+                                    buttonLabel="MarketPlace" />
                                 <CardWithButton
-                                    onClick={() => { console.log("CLICKED") }}
-                                    title="Marketplace"
-                                    description="Search for new real estate listings and find properties you like!"
-                                    buttonLabel="Search" />
+                                    onClick={this.handleCreateAccountClick}
+                                    title="View Favorites"
+                                    description="Browse through properties you have liked."
+                                    buttonLabel="View" />
                             </Box>
                         </main>
                     </Container>

@@ -30,11 +30,15 @@ class AppHeader extends Component {
         this.state.navigate("/", { replace: true });
     }
 
+    handleClickHome = async (_e) => {
+        this.state.navigate("/", { replace: true });
+    }
 
     render() {
         return (
             <AppBar position="static">
                 <Toolbar>
+                    <Button color="inherit" onClick={this.handleClickHome}>Home</Button>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         {this.state.title}
                     </Typography>

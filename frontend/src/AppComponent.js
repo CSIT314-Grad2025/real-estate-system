@@ -14,6 +14,7 @@ import RequireAuth from './components/RequireAuth';
 import LinkPage from './pages/LinkPage';
 import CreateUserAccountPage from './pages/CreateUserAccountPage';
 import { withRouter } from './withRouter';
+import ConfirmationPage from './pages/ConfirmationPage';
 
 class AppComponent extends Component {
     state;
@@ -36,10 +37,11 @@ class AppComponent extends Component {
                     {/* <Route path="/" element={<LinkPage />} /> */}
                     <Route path="/" element={<LoginPage />} />
                     <Route path="unauthorized" element={<Unauthorized />} />
+                    <Route path="confirmation" element={<ConfirmationPage />} />
 
                     {/* protected routes*/}
                     <Route element={<RequireAuth allowedRoles={[this.roles.BUYER]} />} >
-                        <Route path="buyer" element={<BuyerHomePage />} />
+                        <Route path="buyer/home" element={<BuyerHomePage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >

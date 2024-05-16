@@ -148,12 +148,21 @@ class UserAccount {
         }
 
         // Query
-        await pool.query(
-            `
+        try {
+            await pool.query(
+                `
             INSERT INTO "Users" ("email", "password", "accountType", "isLoggedIn", "createdAt", "updatedAt")
             VALUES('${email}', '${password}', '${accountType}', false, NOW(), NOW())
             `
-        );
+            );
+        } catch (e) {
+            console.log(e.code);
+            if (e.code == 23505) {
+                let err = new Error("User already exists.");
+                err.status = 400;
+                throw err;
+            }
+        }
     }
 
 

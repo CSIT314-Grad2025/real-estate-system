@@ -4,6 +4,7 @@ import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
 import axios from '../api/axios';
 import CardWithButton from '../material_components/CardWithButton';
+import AppHeader from '../components/AppHeader';
 
 class SystemAdminHomePage extends Component {
     state;
@@ -20,7 +21,7 @@ class SystemAdminHomePage extends Component {
 
     async componentDidMount() {
         // Fetch User
-        await this.fetchUserProfile();
+        // await this.fetchUserProfile();
     }
 
     fetchUserProfile = async () => {
@@ -52,34 +53,6 @@ class SystemAdminHomePage extends Component {
         this.state.navigate("/systemadmin/create", { replace: true });
     }
 
-    handleLogout = async (_e) => {
-        console.log(this.state.auth)
-        try {
-            const response = await axios.put(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
-            );
-            console.log("API Response: ", response?.data);
-        } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
-        }
-        window.sessionStorage.clear();
-        this.state.navigate("/", { replace: true });
-    }
-
     render() {
         return (
             <Box
@@ -92,14 +65,7 @@ class SystemAdminHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                System Admin Home
-                            </Typography>
-                            <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
-                        </Toolbar>
-                    </AppBar>
+                    <AppHeader title="System Admin Home" />
                     <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper

@@ -1,5 +1,4 @@
-import { Box, Button, Container, CssBaseline, Grid, Select, Typography } from '@mui/material';
-import React, { Component } from 'react';
+import { Box, Button, Container, CssBaseline, Grid, Paper, Select, Typography } from '@mui/material'; import React, { Component } from 'react';
 import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
 import axios from '../api/axios';
@@ -14,7 +13,6 @@ class CreateUserAccountPage extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
@@ -23,7 +21,7 @@ class CreateUserAccountPage extends Component {
             password: "",
             confirmPassword: "",
             accountType: "",
-            errorMessage: "Error fetching user"
+            errorMessage: ""
         }
     }
 
@@ -37,7 +35,8 @@ class CreateUserAccountPage extends Component {
     };
 
 
-    handleSubmit = async () => {
+    handleSubmit = async (e) => {
+        e.preventDefault();
         const { email, password, accountType } = this.state;
         try {
             const payload = {
@@ -45,8 +44,7 @@ class CreateUserAccountPage extends Component {
                 password,
                 accountType
             }
-            console.log("Payload", payload)
-            const response = await axios.put(`/systemadmin/create`, payload, {
+            const response = await axios.post(`/systemadmin/create`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.state.auth.token}`
@@ -55,6 +53,7 @@ class CreateUserAccountPage extends Component {
             }
             );
             console.log("API Response: ", response?.data);
+            this.state.navigate("/confirmation", { state: { title: "Success!", description: "User Account created successfully.", } }, { replace: true });
         } catch (err) {
             console.log("ERROR: ", err?.response);
             if (err?.response) {
@@ -84,7 +83,7 @@ class CreateUserAccountPage extends Component {
                     <AppHeader title="Create User Account" />
                     <Container maxWidth="sm" sx={{ marginY: 10 }}>
                         <Grid component="form" onSubmit={this.handleSubmit} container spacing={3}>
-                            {this.state.errorMessage && <Typography color="red" sx={{ mx: "auto" }}>{this.state.errorMessage}</Typography>}
+                            {this.state.errorMessage && <Paper sx={{ ml: 2.75, p: 1.5, borderColor: 'red' }} variant='outlined'><Typography variant='subtitle2' color="red" >{this.state.errorMessage}</Typography></Paper>}
                             <FormGrid item xs={12}>
                                 <FormLabel required sx={{ textAlign: 'left' }}>
                                     Email

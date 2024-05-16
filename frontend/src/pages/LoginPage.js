@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Navigate } from "react-router-dom";
+import { Paper } from "@mui/material";
 
 class LoginPage extends Component {
 
@@ -115,7 +116,8 @@ class LoginPage extends Component {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <Box component="form" onSubmit={this.handleSubmit} sx={{ mt: 1 }}>
+                            {this.state.errorMessage && <Paper sx={{ p: 1.5, borderColor: 'red' }} variant='outlined'><Typography variant='subtitle2' color="red" >{this.state.errorMessage}</Typography></Paper>}
                             <TextField
                                 margin="normal"
                                 required
@@ -145,6 +147,7 @@ class LoginPage extends Component {
                                 <Select
                                     name="accountType"
                                     value={accountType}
+                                    required
                                     label="Account Type"
                                     onChange={this.handleChange}
                                 >

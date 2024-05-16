@@ -44,17 +44,17 @@ class AppRouter {
         // this.router.delete('/systemadmin/delete', new SystemAdminDeleteAccountController().handleDeleteAccount)
         //
         //
-        // // Real Estate Agent Routes
-        // this.router.post('/rea/login', new RealEstateAgentLoginController().login);
-        // this.router.put('/rea/logout', new AuthMiddleware().protect, new RealEstateAgentLogoutController().logout,)
-        //
-        // // Buyer Routes
-        // this.router.post('/buyer/login', new BuyerLoginController().login);
-        // this.router.put('/buyer/logout', new AuthMiddleware().protect, new BuyerLogoutController().logout,)
-        //
-        // // Seller Routes
-        // this.router.post('/seller/login', new SellerLoginController().login);
-        // this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
+        // Real Estate Agent Routes
+        this.router.post('/rea/login', new RealEstateAgentLoginController().login);
+        this.router.put('/rea/logout', new AuthMiddleware().protect, new RealEstateAgentLogoutController().logout,)
+
+        // Buyer Routes
+        this.router.post('/buyer/login', new BuyerLoginController().handleLogin);
+        this.router.put('/buyer/logout', new AuthMiddleware().protect, new BuyerLogoutController().logout,)
+
+        // Seller Routes
+        this.router.post('/seller/login', new SellerLoginController().login);
+        this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
     }
 }
 

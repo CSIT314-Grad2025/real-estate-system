@@ -16,6 +16,7 @@ class SystemAdminCreateAccountController {
                 throw err;
             }
 
+            console.log(res.statusCode)
             // Entity method call
             await new UserAccount().createAccount(email, password, accountType)
 
