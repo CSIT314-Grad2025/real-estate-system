@@ -40,6 +40,61 @@
                 }
             },
             "indexes": []
+        },
+        "UserProfiles": {
+            "tableName": "UserProfiles",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "firstName": {
+                    "field": "firstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastName": {
+                    "field": "lastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "bio": {
+                    "field": "bio",
+                    "seqType": "Sequelize.STRING"
+                },
+                "contactNumber": {
+                    "field": "contactNumber",
+                    "seqType": "Sequelize.STRING"
+                },
+                "avatar": {
+                    "field": "avatar",
+                    "seqType": "Sequelize.STRING"
+                },
+                "accountId": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "accountId",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
         }
     },
     "path": "/home/atharva/UOW/CSCI314-SoftwareDevelopmentMethodologies/real-estate-system/migrations/_current.json",

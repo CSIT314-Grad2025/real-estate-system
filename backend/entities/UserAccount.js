@@ -64,38 +64,6 @@ class UserAccount {
         return userAccount;
     }
 
-
-    async getAccount(email) {
-        // Database Connection worker
-        const pool = DBConnection.pool;
-
-        // Query
-        const dbResponse = await pool.query(
-            `SELECT * FROM "Users"
-            WHERE email = '${email}'`
-        );
-
-        if (dbResponse.rows.length == 0) {
-            let err = new Error("User not found");
-            err.status = 404;
-            throw err;
-        }
-
-        const user = dbResponse.rows[0];
-
-        // Instantiate new UserAccount object (Object creation step)
-        let userAccount = new UserAccount();
-        userAccount.userId = user.id;
-        userAccount.firstName = user.firstName;
-        userAccount.lastName = user.lastName;
-        userAccount.email = user.email;
-        userAccount.password = user.password;
-        userAccount.isLoggedIn = user.isLoggedIn;
-
-        // Return UserAccount object
-        return userAccount;
-    }
-
     async getAccountById(id) {
         // Database Connection worker
         const pool = DBConnection.pool;
@@ -128,6 +96,37 @@ class UserAccount {
         // Return UserAccount object
         return userAccount;
     }
+
+    async getAllAccounts() {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+        const dbResponse = await pool.query(
+            `SELECT * FROM "Users"`
+        );
+
+        const users = dbResponse.rows;
+
+        let userAccounts = [];
+
+        // Instantiate new UserAccount object (Object creation step)
+        users.map((user, idx) => {
+            let userAccount = new UserAccount();
+            userAccount.id = user.id;
+            userAccount.firstName = user.firstName;
+            userAccount.lastName = user.lastName;
+            userAccount.email = user.email;
+            userAccount.password = user.password;
+            userAccount.contactNumber = user.contactNumber;
+            userAccount.isLoggedIn = user.isLoggedIn;
+            userAccount.accountType = user.accountType;
+
+            userAccounts.push(userAccount);
+        })
+
+        // Return UserAccount object
+        return userAccounts;
+    }
+
 
     async createAccount(email, password, accountType) {
         // Database Connection worker
@@ -197,8 +196,7 @@ class UserAccount {
 
         let comma = "";
 
-        this.firstName && (setClause += `${comma}"firstName" = '${this.firstName}'`) && (comma = ",");
-        this.lastName && (setClause += `${comma}"lastName" = '${this.lastName}'`) && (comma = ",");
+        this.email && (setClause += `${comma}"email" = '${this.email}'`) && (comma = ",");
         this.password && (setClause += `${comma}"password" = '${this.password}'`) && (comma = ",");
 
         if (setClause.length == 0) {
@@ -210,7 +208,7 @@ class UserAccount {
         let dbResponse = await pool.query(
             `UPDATE "Users"
             SET ${setClause}
-            WHERE email = '${this.email}'`
+            WHERE id = '${this.id}'`
         )
 
         if (dbResponse.rowCount < 1) {
@@ -220,14 +218,14 @@ class UserAccount {
         }
     }
 
-    async deleteAccount(email) {
+    async deleteAccount(id) {
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         let dbResponse = await pool.query(
             `DELETE FROM "Users"
-            WHERE email = '${email}'`
+            WHERE id = '${id}'`
         )
 
         if (dbResponse.rowCount < 1) {
@@ -235,9 +233,7 @@ class UserAccount {
             err.status = 400;
             throw err;
         }
-
     }
-
 }
 
 module.exports = UserAccount;

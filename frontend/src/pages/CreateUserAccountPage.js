@@ -44,7 +44,7 @@ class CreateUserAccountPage extends Component {
                 password,
                 accountType
             }
-            const response = await axios.post(`/systemadmin/create`, payload, {
+            const response = await axios.post(`/systemadmin/create/account`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.state.auth.token}`

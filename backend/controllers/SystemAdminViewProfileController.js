@@ -1,7 +1,7 @@
-const UserAccount = require("../entities/UserAccount");
+const UserProfile = require("../entities/UserProfile");
 
-class SystemAdminViewAccountController {
-    handleViewAccount = async (req, res, next) => {
+class SystemAdminViewProfileController {
+    handleViewProfile = async (req, res, next) => {
         try {
             if (req.requestingUser.accountType != "systemadmin") {
                 let err = new Error('Unauthorized');
@@ -25,7 +25,7 @@ class SystemAdminViewAccountController {
                 throw err;
             }
 
-            let account = await new UserAccount().getAccountById(id);
+            let account = await new UserProfile().getProfileById(id);
             res.status(200).json({
                 account
             })
@@ -37,4 +37,4 @@ class SystemAdminViewAccountController {
     }
 }
 
-module.exports = SystemAdminViewAccountController;
+module.exports = SystemAdminViewProfileController;

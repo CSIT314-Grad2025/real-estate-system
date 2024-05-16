@@ -3,6 +3,12 @@ const UserAccount = require("../entities/UserAccount");
 class SystemAdminCreateAccountController {
     handleCreateAccount = async (req, res, next) => {
         try {
+            if (req.requestingUser.accountType != "systemadmin") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
             const { email, password, accountType } = req.body;
 
             const requiredFields = ['email', 'password', 'accountType'];

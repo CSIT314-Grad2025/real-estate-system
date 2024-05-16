@@ -14,7 +14,17 @@ class AuthMiddleware {
                 token = req.headers.authorization.split(' ')[1];
 
                 // Verify token
-                const decoded = jwt.verify(token, process.env.JWT_SECRET);
+                let decoded;
+
+                // Custom Error Handling
+                try {
+                    decoded = jwt.verify(token, process.env.JWT_SECRET);
+                } catch (err) {
+                    res.status(401);
+                    throw new Error("Not authorized");
+                }
+
+                // Validate user from DB
                 const dbResponse = await pool.query(`
                     SELECT * FROM "Users"
                     WHERE id = ${decoded.id}
@@ -25,8 +35,10 @@ class AuthMiddleware {
                     throw new Error("Not authorized");
                 }
 
+                // Attach user context to the request
                 const user = dbResponse.rows[0];
                 req.id = user.id;
+                req.requestingUser = user;
 
 
                 next();
