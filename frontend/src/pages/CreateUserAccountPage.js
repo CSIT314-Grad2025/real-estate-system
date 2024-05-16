@@ -17,6 +17,7 @@ class CreateUserAccountPage extends Component {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
             navigate: props.navigate,
+            location: props.location,
             email: "",
             password: "",
             confirmPassword: "",
@@ -53,7 +54,14 @@ class CreateUserAccountPage extends Component {
             }
             );
             console.log("API Response: ", response?.data);
-            this.state.navigate("/confirmation", { state: { title: "Success!", description: "User Account created successfully.", } }, { replace: true });
+            this.state.navigate(
+                "/confirmation", {
+                state: {
+                    title: "Success!",
+                    description: "User Account created successfully.",
+                    from: this.state.location
+                }
+            }, { replace: true });
         } catch (err) {
             console.log("ERROR: ", err?.response);
             if (err?.response) {

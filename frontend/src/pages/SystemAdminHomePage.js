@@ -52,6 +52,9 @@ class SystemAdminHomePage extends Component {
     handleCreateAccountClick = () => {
         this.state.navigate("/systemadmin/create", { replace: true });
     }
+    handleSearchClick = () => {
+        this.state.navigate("/systemadmin/search", { replace: true });
+    }
 
     render() {
         return (
@@ -118,7 +121,7 @@ class SystemAdminHomePage extends Component {
                                     description="Create a new user account. A user account enables a user to be authenticated into the system. An account is required to setup a profile."
                                     buttonLabel="Create Account" />
                                 <CardWithButton
-                                    onClick={() => { console.log("CLICKED") }}
+                                    onClick={this.handleSearchClick}
                                     title="Search Users"
                                     description="Search for existing user accounts to perform adminsitrative tasks"
                                     buttonLabel="Search" />

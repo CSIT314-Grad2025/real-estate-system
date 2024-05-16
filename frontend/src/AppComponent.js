@@ -15,6 +15,7 @@ import LinkPage from './pages/LinkPage';
 import CreateUserAccountPage from './pages/CreateUserAccountPage';
 import { withRouter } from './withRouter';
 import ConfirmationPage from './pages/ConfirmationPage';
+import SearchUserAccountsPage from './pages/SearchUserAccountsPage';
 
 class AppComponent extends Component {
     state;
@@ -55,6 +56,7 @@ class AppComponent extends Component {
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
                         <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
                         <Route path="systemadmin/home" element={<SystemAdminHomePage />} />
+                        <Route path="systemadmin/search" element={<SearchUserAccountsPage />} />
                     </Route>
 
                     {/* catch all*/}

@@ -10,7 +10,7 @@ class AppHeader extends Component {
         super(props);
         this.state = {
             title: props.title || 'Real Estate Management System',
-            auth: props.auth.auth,
+            auth: props.auth?.auth,
             navigate: props.navigate,
         }
     }
