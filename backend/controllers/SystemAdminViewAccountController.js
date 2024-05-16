@@ -9,18 +9,11 @@ class SystemAdminViewAccountController {
                 throw err;
             }
 
-            let { id } = req.params;
-            id = parseInt(id);
-
-            if (typeof id !== 'number') {
-                let err = new Error('Invalid ID');
-                err.status = 400;
-                throw err;
-            }
-
+            let id = parseInt(req.params.id);
 
             if (!id) {
-                let err = new Error('Missing field(s): id');
+                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
                 err.status = 400;
                 throw err;
             }

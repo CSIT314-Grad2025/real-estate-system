@@ -9,17 +9,11 @@ class SystemAdminDeleteAccountController {
                 throw err;
             }
 
-            // Parsing account id from query params
-            let { id } = req.params
+            // Parsing id from query params
+            let id = parseInt(req.params.id);
             if (!id) {
-                let err = new Error('Missing field(s): id');
-                err.status = 400;
-                throw err;
-            }
-            try {
-                id = parseInt(id);
-            } catch (e) {
-                let err = new Error('Invalid ID: ID must be an Integer');
+                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
                 err.status = 400;
                 throw err;
             }

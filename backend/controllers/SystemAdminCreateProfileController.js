@@ -10,21 +10,16 @@ class SystemAdminCreateProfileController {
                 throw err;
             }
 
-            // Parsing account id from query params
-            let { accountId } = req.params
+            // Parsing id from params
+            let accountId = parseInt(req.params.accountId);
+
             if (!accountId) {
-                let err = new Error('Missing field(s): id');
+                let err = isNaN(accountId) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
                 err.status = 400;
                 throw err;
             }
 
-            try {
-                accountId = parseInt(accountId);
-            } catch (e) {
-                let err = new Error('Invalid ID: ID must be an Integer');
-                err.status = 400;
-                throw err;
-            }
             const { firstName, lastName, bio, contactNumber, avatar } = req.body;
 
             const requiredFields = ['firstName', 'lastName', 'bio', 'contactNumber', 'avatar'];

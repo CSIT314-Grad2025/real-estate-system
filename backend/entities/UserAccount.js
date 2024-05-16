@@ -52,7 +52,6 @@ class UserAccount {
         let userAccount = new UserAccount();
         userAccount.id = user.id;
         userAccount.email = user.email;
-        userAccount.password = user.password;
         userAccount.isLoggedIn = user.isLoggedIn;
         userAccount.accountType = user.accountType;
 
@@ -63,6 +62,15 @@ class UserAccount {
         // Return UserAccount object
         return userAccount;
     }
+
+    async logout(id) {
+        let userAccount = new UserAccount();
+        userAccount.id = id;
+
+        // Persist logout
+        await userAccount.setLoggedOut();
+    }
+
 
     async getAccountById(id) {
         // Database Connection worker
@@ -85,11 +93,7 @@ class UserAccount {
         // Instantiate new UserAccount object (Object creation step)
         let userAccount = new UserAccount();
         userAccount.id = user.id;
-        userAccount.firstName = user.firstName;
-        userAccount.lastName = user.lastName;
         userAccount.email = user.email;
-        userAccount.password = user.password;
-        userAccount.contactNumber = user.contactNumber;
         userAccount.isLoggedIn = user.isLoggedIn;
         userAccount.accountType = user.accountType;
 
@@ -109,21 +113,17 @@ class UserAccount {
         let userAccounts = [];
 
         // Instantiate new UserAccount object (Object creation step)
-        users.map((user, idx) => {
+        users.map((user, _idx) => {
             let userAccount = new UserAccount();
             userAccount.id = user.id;
-            userAccount.firstName = user.firstName;
-            userAccount.lastName = user.lastName;
             userAccount.email = user.email;
-            userAccount.password = user.password;
-            userAccount.contactNumber = user.contactNumber;
             userAccount.isLoggedIn = user.isLoggedIn;
             userAccount.accountType = user.accountType;
 
             userAccounts.push(userAccount);
         })
 
-        // Return UserAccount object
+        // Return Array of UserAccount objects
         return userAccounts;
     }
 

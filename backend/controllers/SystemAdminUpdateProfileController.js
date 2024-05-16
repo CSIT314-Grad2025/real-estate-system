@@ -1,7 +1,7 @@
-const UserAccount = require("../entities/UserAccount");
+const UserProfile = require("../entities/UserProfile");
 
-class SystemAdminUpdateAccountController {
-    handleUpdateAccount = async (req, res, next) => {
+class SystemAdminUpdateProfileController {
+    handleUpdateProfile = async (req, res, next) => {
         try {
             if (req.requestingUser.accountType != "systemadmin") {
                 let err = new Error('Unauthorized');
@@ -18,16 +18,27 @@ class SystemAdminUpdateAccountController {
                 throw err;
             }
 
-            // Destrucutre field data from request body
-            const { email, password } = req.body;
-            let account = new UserAccount();
-            account.id = id;
-            account.email = email;
-            account.password = password;
 
-            await account.updateAccount();
+            // Destrucutre field data from request body
+            const {
+                firstName,
+                lastName,
+                bio,
+                contactNumber,
+                avatar,
+            } = req.body;
+
+            let account = new UserProfile();
+            account.id = id;
+            account.firstName = firstName;
+            account.lastName = lastName;
+            account.bio = bio;
+            account.contactNumber = contactNumber;
+            account.avatar = avatar;
+
+            await account.updateProfile();
             res.status(200).json({
-                message: "User Account updated successfully"
+                message: "User Profile updated successfully"
             });
 
         } catch (err) {
@@ -37,4 +48,4 @@ class SystemAdminUpdateAccountController {
     }
 }
 
-module.exports = SystemAdminUpdateAccountController;
+module.exports = SystemAdminUpdateProfileController;

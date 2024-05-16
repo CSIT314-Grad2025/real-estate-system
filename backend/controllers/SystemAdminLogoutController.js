@@ -13,11 +13,8 @@ class SystemAdminLogoutController {
             // Get user id from request
             const id = req.id;
 
-            // Get Account from Entity
-            const account = await new UserAccount().getAccountById(id);
-
-            // Persist Logout
-            await account.setLoggedOut();
+            // Entity method call
+            await new UserAccount().logout(id);
 
             // Respond with OK 200 to the boundary
             res.status(200).json({

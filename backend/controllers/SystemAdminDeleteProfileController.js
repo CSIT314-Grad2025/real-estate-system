@@ -1,7 +1,7 @@
 const UserProfile = require("../entities/UserProfile");
 
-class SystemAdminViewProfileController {
-    handleViewProfile = async (req, res, next) => {
+class SystemAdminDeleteProfileController {
+    handleDeleteProfile = async (req, res, next) => {
         try {
             if (req.requestingUser.accountType != "systemadmin") {
                 let err = new Error('Unauthorized');
@@ -9,8 +9,9 @@ class SystemAdminViewProfileController {
                 throw err;
             }
 
-            // Parsing id from query params
+            // Parsing id from params
             let id = parseInt(req.params.id);
+
             if (!id) {
                 let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
                     : new Error('Missing field(s): id');
@@ -18,17 +19,11 @@ class SystemAdminViewProfileController {
                 throw err;
             }
 
-
-            if (!id) {
-                let err = new Error('Missing field(s): id');
-                err.status = 400;
-                throw err;
-            }
-
-            let profile = await new UserProfile().getUserProfile(id);
+            // Entity method call
+            await new UserProfile().deleteProfile(id);
             res.status(200).json({
-                profile
-            })
+                message: "User Profile deleted successfully"
+            });
 
         } catch (err) {
             err.status = 400;
@@ -37,4 +32,4 @@ class SystemAdminViewProfileController {
     }
 }
 
-module.exports = SystemAdminViewProfileController;
+module.exports = SystemAdminDeleteProfileController;
