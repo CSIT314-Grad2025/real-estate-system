@@ -9,8 +9,8 @@ function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="https://github.com/CSIT314-Grad2025/real-estate-system">
+                Grad2025 Group - Real Estate System
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -22,7 +22,18 @@ function Footer(props) {
     const { description, title } = props;
 
     return (
-        <Box component="footer" sx={{ bgcolor: 'background.paper', py: 6 }}>
+        <Box
+            component="footer"
+            sx={{
+                py: 3,
+                px: 2,
+                mt: 'auto',
+                backgroundColor: (theme) =>
+                    theme.palette.mode === 'light'
+                        ? theme.palette.grey[200]
+                        : theme.palette.grey[800],
+            }}
+        >
             <Container maxWidth="lg">
                 <Typography variant="h6" align="center" gutterBottom>
                     {title}

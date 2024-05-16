@@ -1,25 +1,20 @@
-import { Component } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { withRouter } from "../withRouter";
+import AuthContext from "../context/AuthProvider.js";
 
-class RequireAuth extends Component {
-    state;
-    constructor(props) {
-        super(props);
-        this.state = {
-            auth: props.auth.auth,
-            location: props.location,
-            allowedRoles: props.allowedRoles,
-        }
+const RequireAuth = ({ allowedRoles }) => {
+    const { auth, loading } = useContext(AuthContext);
+
+    if (loading) {
+        return <Box sx={{ width: '50%', mt: 50, mx: 'auto' }}> <CircularProgress /> </Box>
     }
 
-    render() {
-        return (
-            this.state.allowedRoles?.includes(this.state.auth?.accountType)
-                ? <Outlet />
-                : <Navigate to="/" state={{ from: this.state.location }} replace />
-        )
-    }
-}
+    return (
+        allowedRoles?.includes(auth?.accountType)
+            ? <Outlet />
+            : <Navigate to="/" replace />
+    );
+};
 
-export default withRouter(RequireAuth);
+export default RequireAuth;

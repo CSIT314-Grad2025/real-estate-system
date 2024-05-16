@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Navigate } from "react-router-dom";
+import { Paper } from "@mui/material";
 
 class LoginPage extends Component {
 
@@ -32,7 +33,6 @@ class LoginPage extends Component {
             auth: props.auth,
             isLoggedIn: false,
             setAuth: props.auth.setAuth,
-            useEffect: props.useEffect,
             navigate: props.navigate,
             location: props.location,
             from: props.location.state?.from?.pathname
@@ -41,13 +41,12 @@ class LoginPage extends Component {
     }
 
     componentDidMount = () => {
-        if (window.sessionStorage.getItem("firstName") && window.sessionStorage.getItem("accountType") && window.sessionStorage.getItem("token")) {
+        if (window.sessionStorage.getItem("accountType") && window.sessionStorage.getItem("token")) {
             this.state.setAuth({
-                firstName: window.sessionStorage.getItem("firstName"),
                 accountType: window.sessionStorage.getItem("accountType"),
                 token: window.sessionStorage.getItem("token"),
             })
-            this.state.isLoggedIn = true;
+            this.setState({ isLoggedIn: true })
         }
     }
 
@@ -59,26 +58,24 @@ class LoginPage extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, password } = this.state;
+        const { email, password, accountType } = this.state;
         try {
-            const response = await axios.post(`/${this.state.accountType}/login`,
-                JSON.stringify({ email, password }), {
+            const response = await axios.post(`/${accountType}/login`,
+                JSON.stringify({ email, password, accountType }), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             }
             );
             console.log("API Response: ", response?.data);
             this.state.setAuth({
-                firstName: response?.data?.firstName,
                 accountType: response?.data?.accountType,
                 token: response?.data?.token,
             })
-            window.sessionStorage.setItem("firstName", response?.data?.firstName);
             window.sessionStorage.setItem("accountType", response?.data?.accountType)
             window.sessionStorage.setItem("token", response?.data?.token)
 
             if (!this.state.from) {
-                this.state.navigate(`/${window.sessionStorage.getItem("accountType")}`, { replace: true })
+                this.state.navigate(`/${window.sessionStorage.getItem("accountType")}/home`, { replace: true })
             } else {
                 this.state.navigate(this.state.from, { replace: true });
             }
@@ -102,7 +99,7 @@ class LoginPage extends Component {
         const { email, password, accountType } = this.state;
         return (
             <ThemeProvider theme={this.defaultTheme}>
-                {this.state.isLoggedIn && <Navigate to={`/${window.sessionStorage.getItem("accountType")}`} />}
+                {this.state.isLoggedIn && <Navigate to={`/${window.sessionStorage.getItem("accountType")}/home`} />}
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box
@@ -119,7 +116,8 @@ class LoginPage extends Component {
                         <Typography component="h1" variant="h5">
                             Sign in
                         </Typography>
-                        <Box component="form" onSubmit={this.handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <Box component="form" onSubmit={this.handleSubmit} sx={{ mt: 1 }}>
+                            {this.state.errorMessage && <Paper sx={{ p: 1.5, borderColor: 'red' }} variant='outlined'><Typography variant='subtitle2' color="red" >{this.state.errorMessage}</Typography></Paper>}
                             <TextField
                                 margin="normal"
                                 required
@@ -149,6 +147,7 @@ class LoginPage extends Component {
                                 <Select
                                     name="accountType"
                                     value={accountType}
+                                    required
                                     label="Account Type"
                                     onChange={this.handleChange}
                                 >

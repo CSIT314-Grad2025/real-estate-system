@@ -1,7 +1,7 @@
 const DBConnection = require("../../config/dbConfig");
 const UserAccount = require("./UserAccount");
 
-class SystemAdminAccount extends UserAccount{
+class SystemAdminAccount extends UserAccount {
     contactNumber;
 
     constructor() {
@@ -45,18 +45,16 @@ class SystemAdminAccount extends UserAccount{
         return newSystemAdminAccount;
     }
 
-    async getAccountById(userId) {
+    async getAccountById(id) {
 
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT sa.*, u.* FROM "SystemAdmins" sa
-            INNER JOIN
-            "Users" u ON sa."userId" = u.id
-            WHERE 
-            u.id = '${userId}'`);
+            `SELECT * FROM "Users"
+            WHERE id = ${id}
+            `);
 
         if (dbResponse.rows.length == 0) {
             let err = new Error("User not found");

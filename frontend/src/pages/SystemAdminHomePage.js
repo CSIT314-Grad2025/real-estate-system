@@ -2,6 +2,9 @@ import { AppBar, Box, Button, Card, CardActions, CardContent, Container, CssBase
 import React, { Component } from 'react';
 import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
+import axios from '../api/axios';
+import CardWithButton from '../material_components/CardWithButton';
+import AppHeader from '../components/AppHeader';
 
 class SystemAdminHomePage extends Component {
     state;
@@ -16,33 +19,53 @@ class SystemAdminHomePage extends Component {
         }
     }
 
-    handleLogout = (_e) => {
-        window.sessionStorage.clear();
-        this.state.navigate("/", { replace: true });
+    async componentDidMount() {
+        // Fetch User
+        // await this.fetchUserProfile();
+    }
+
+    fetchUserProfile = async () => {
+        try {
+            const response = await axios.get(`/${this.state.auth.accountType}/logout`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.state.auth.token}`
+                },
+                withCredentials: true
+            }
+            );
+            console.log("API Response: ", response?.data);
+        } catch (err) {
+            console.log("ERROR: ", err?.response);
+            if (err?.response) {
+                this.setState({
+                    errorMessage: err.response.data.message
+                });
+            } else {
+                this.setState({
+                    errorMessage: "No response from server"
+                });
+            }
+        }
+    }
+
+    handleCreateAccountClick = () => {
+        this.state.navigate("/systemadmin/create", { replace: true });
     }
 
     render() {
-        const post = {
-            title: 'Title of a longer featured blog post',
-            description:
-                "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-            image: 'https://source.unsplash.com/random?wallpapers',
-            imageText: 'main image description',
-            linkText: 'Continue reading…',
-        };
-
         return (
-            <div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: '100vh',
+                }}
+            >
+
                 <CssBaseline />
                 <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                System Admin Home
-                            </Typography>
-                            <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
-                        </Toolbar>
-                    </AppBar>
+                    <AppHeader title="System Admin Home" />
                     <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
@@ -78,26 +101,36 @@ class SystemAdminHomePage extends Component {
                                                 pr: { md: 0 },
                                             }}
                                         >
-                                            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-                                                Welcome {this.state.auth.firstName}
+                                            <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
+                                                Welcome Admin
                                             </Typography>
-                                            <Typography variant="h5" color="inherit" paragraph>
-                                                Access System Administration tasks and manage user accounts and profiles
+                                            <Typography align='left' variant="h5" color="inherit" paragraph>
+                                                Get started with setting up and managing User Accounts / User Profiles
                                             </Typography>
                                         </Box>
                                     </Grid>
                                 </Grid>
                             </Paper>
-                            <Grid container spacing={4}>
-                            </Grid>
+                            <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
+                                <CardWithButton
+                                    onClick={this.handleCreateAccountClick}
+                                    title="Create User Account"
+                                    description="Create a new user account. A user account enables a user to be authenticated into the system. An account is required to setup a profile."
+                                    buttonLabel="Create Account" />
+                                <CardWithButton
+                                    onClick={() => { console.log("CLICKED") }}
+                                    title="Search Users"
+                                    description="Search for existing user accounts to perform adminsitrative tasks"
+                                    buttonLabel="Search" />
+                            </Box>
                         </main>
                     </Container>
-                    <Footer
-                        title="Footer"
-                        description="Something here to give the footer a purpose!"
-                    />
                 </div>
-            </div >
+                <Footer
+                    title="Real Estate Management System"
+                    description=""
+                />
+            </Box >
         );
     }
 }

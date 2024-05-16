@@ -1,12 +1,12 @@
-const SystemAdminAccount = require("../entities/SystemAdminAccount");
+const UserAccount = require("../entities/UserAccount");
 
 class SystemAdminLogoutController {
     logout = async (req, res, next) => {
-        const userId = req.userId;
+        const id = req.id;
 
         try {
             // Get Account from Entity
-            const account = await new SystemAdminAccount().getAccountById(userId);
+            const account = await new UserAccount().getAccountById(id);
 
             // Persist Logout
             await account.setLoggedOut();
