@@ -153,6 +153,7 @@ class CreateUserAccountPage extends Component {
                                 type="submit"
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2, mx: 'auto' }}
+                                disabled={this.state.password !== this.state.confirmPassword}
                             >
                                 Create User
                             </Button>

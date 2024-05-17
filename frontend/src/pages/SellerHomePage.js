@@ -5,7 +5,7 @@ import { withRouter } from '../withRouter';
 import axios from '../api/axios';
 import CardWithButton from '../material_components/CardWithButton';
 
-class SystemAdminHomePage extends Component {
+class SellerHomePage extends Component {
     state;
 
     constructor(props) {
@@ -169,4 +169,4 @@ class SystemAdminHomePage extends Component {
     }
 }
 
-export default withRouter(SystemAdminHomePage);
+export default withRouter(SellerHomePage);

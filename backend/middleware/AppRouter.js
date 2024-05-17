@@ -16,6 +16,7 @@ const SystemAdminUpdateAccountController = require('../controllers/SystemAdminUp
 const SystemAdminUpdateProfileController = require('../controllers/SystemAdminUpdateProfileController');
 const SystemAdminViewAccountController = require('../controllers/SystemAdminViewAccountController');
 const SystemAdminViewProfileController = require('../controllers/SystemAdminViewProfileController');
+const ViewProfileController = require('../controllers/common/ViewProfileController');
 const AuthMiddleware = require('./AuthMiddleware');
 
 class AppRouter {
@@ -67,6 +68,12 @@ class AppRouter {
         // Seller Routes
         this.router.post('/seller/login', new SellerLoginController().handleLogin);
         this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
+
+
+        // Common Routes
+        // View User Profile
+        this.router.get('/common/view/profile/:id', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
+        this.router.get('/common/view/profile/byaccount/:accountId', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
     }
 }
 

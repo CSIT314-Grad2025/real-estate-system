@@ -17,6 +17,8 @@ import { withRouter } from './withRouter';
 import ConfirmationPage from './pages/ConfirmationPage';
 import SearchUserAccountsPage from './pages/SearchUserAccountsPage';
 import ViewUserAccountPage from './pages/ViewUserAccountPage';
+import UpdateUserAccountPage from './pages/UpdateUserAccountPage';
+import CreateUserProfilePage from './pages/CreateUserProfilePage';
 
 class AppComponent extends Component {
     state;
@@ -56,10 +58,11 @@ class AppComponent extends Component {
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
                         <Route path="systemadmin/view/account/:id" element={<ViewUserAccountPage />} />
+                        <Route path="systemadmin/update/account/:id" element={<UpdateUserAccountPage />} />
+                        <Route path="systemadmin/create/profile/:id" element={<CreateUserProfilePage />} />
                         <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
                         <Route path="systemadmin/home" element={<SystemAdminHomePage />} />
                         <Route path="systemadmin/search" element={<SearchUserAccountsPage />} />
-                        <Route path="systemadmin/potato" element={<SearchUserAccountsPage />} />
                     </Route>
 
                     {/* catch all*/}

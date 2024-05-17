@@ -9,11 +9,19 @@ class SystemAdminDeleteAccountController {
                 throw err;
             }
 
+
             // Parsing id from query params
             let id = parseInt(req.params.id);
             if (!id) {
                 let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
                     : new Error('Missing field(s): id');
+                err.status = 400;
+                throw err;
+            }
+
+            // Requesting user attempting to delete self
+            if (req.id == id) {
+                let err = new Error('Cannot delete your own account.');
                 err.status = 400;
                 throw err;
             }

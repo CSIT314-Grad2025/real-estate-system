@@ -25,28 +25,6 @@ class SystemAdminHomePage extends Component {
     }
 
     fetchUserProfile = async () => {
-        try {
-            const response = await axios.get(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
-            );
-            console.log("API Response: ", response?.data);
-        } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
-        }
     }
 
     handleCreateAccountClick = () => {
