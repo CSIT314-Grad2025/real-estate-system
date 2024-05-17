@@ -83,8 +83,6 @@ class SystemAdminHomePage extends Component {
                                     backgroundImage: `url(https://source.unsplash.com/random/?house)`,
                                 }}
                             >
-                                {/* Increase the priority of the hero background image */}
-                                {<img style={{ display: 'none' }} src={"url(https://source.unsplash.com/random/900×700/?fruit)"} alt={""} />}
                                 <Box
                                     sx={{
                                         position: 'absolute',

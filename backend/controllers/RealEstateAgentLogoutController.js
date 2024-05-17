@@ -21,7 +21,7 @@ class RealEstateAgentLogoutController {
                 message: "Logged out successfully"
             });
         } catch (err) {
-            err.status && res.status(err.status)
+            err.status = err.status || 400;
             next(err);
         }
     }

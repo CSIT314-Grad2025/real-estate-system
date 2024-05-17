@@ -13,7 +13,7 @@ class SystemAdminSearchProfilesController {
             console.log({ message: "From Controller", data: userProfiles })
             res.status(200).json(userProfiles);
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

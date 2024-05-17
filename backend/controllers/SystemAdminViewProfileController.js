@@ -11,6 +11,10 @@ class SystemAdminViewProfileController {
 
             // Parsing id from query params
             let id = parseInt(req.params.id);
+            let accountId = parseInt(req.params.accountId);
+
+            id = accountId ? accountId : id;
+
             if (!id) {
                 let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
                     : new Error('Missing field(s): id');
@@ -25,13 +29,21 @@ class SystemAdminViewProfileController {
                 throw err;
             }
 
-            let profile = await new UserProfile().getUserProfile(id);
+            let profile;
+
+            // Profile requested by accountId or profile id?
+            if (accountId) {
+                profile = await new UserProfile().getUserProfileByAccount(id);
+            } else {
+                profile = await new UserProfile().getUserProfile(id);
+            }
+
             res.status(200).json({
                 profile
             })
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

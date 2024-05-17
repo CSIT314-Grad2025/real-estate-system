@@ -94,6 +94,7 @@ class UserAccount {
         let userAccount = new UserAccount();
         userAccount.id = user.id;
         userAccount.email = user.email;
+        userAccount.password = user.password;
         userAccount.isLoggedIn = user.isLoggedIn;
         userAccount.accountType = user.accountType;
 

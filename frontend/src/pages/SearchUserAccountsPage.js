@@ -14,6 +14,7 @@ class SearchUserAccountsPage extends Component {
         this.state = {
             users: [],
             auth: props.auth?.auth,
+            navigate: props.navigate,
             searchTerm: '',
             filteredUsers: [],
         }
@@ -26,6 +27,12 @@ class SearchUserAccountsPage extends Component {
 
     handleClick = (user) => {
         console.log(user);
+        this.state.navigate(
+            `/systemadmin/view/account/${user.id}`, {
+            state: {
+                from: this.state.location
+            }
+        }, { replace: true });
     }
 
     handleChange = (e) => {

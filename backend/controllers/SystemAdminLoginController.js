@@ -35,7 +35,7 @@ class SystemAdminLoginController {
                 accountType: account.accountType,
             })
         } catch (err) {
-            err.status && res.status(err.status);
+            err.status = err.status || 400;
             next(err);
         }
     }

@@ -46,13 +46,14 @@ class AppRouter {
 
         // Create User Profile
         this.router.post('/systemadmin/create/profile/:accountId', new AuthMiddleware().protect, new SystemAdminCreateProfileController().handleCreateProfile);
-        // Search User Accounts
+        // Search User Profiles
         this.router.get('/systemadmin/search/profile', new AuthMiddleware().protect, new SystemAdminSearchProfilesController().handleSearch);
-        // View User Account
+        // View User Profile
         this.router.get('/systemadmin/view/profile/:id', new AuthMiddleware().protect, new SystemAdminViewProfileController().handleViewProfile);
-        // Update User Accounts
+        this.router.get('/systemadmin/view/profile/byaccount/:accountId', new AuthMiddleware().protect, new SystemAdminViewProfileController().handleViewProfile);
+        // Update User Profile
         this.router.put('/systemadmin/update/profile/:id', new AuthMiddleware().protect, new SystemAdminUpdateProfileController().handleUpdateProfile);
-        // Delete User Account
+        // Delete User Profile
         this.router.delete('/systemadmin/delete/profile/:id', new AuthMiddleware().protect, new SystemAdminDeleteProfileController().handleDeleteProfile)
 
         // Real Estate Agent Routes

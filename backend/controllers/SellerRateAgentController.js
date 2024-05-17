@@ -31,6 +31,7 @@ class SellerRateAgentController {
             });
 
         } catch (err) {
+            err.status = err.status || 400;
             err.status = 400;
             next(err);
         }

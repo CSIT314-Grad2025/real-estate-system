@@ -37,7 +37,7 @@ class BuyerSaveListingController {
             });
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

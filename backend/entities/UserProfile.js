@@ -44,14 +44,14 @@ class UserProfile {
         return userProfile;
     }
 
-    async getUserProfileByAccount(accounId) {
+    async getUserProfileByAccount(accountId) {
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         const dbResponse = await pool.query(
             `SELECT * FROM "UserProfiles"
-            WHERE accounId = '${accounId}'`
+            WHERE "accountId" = '${accountId}'`
         );
 
         if (dbResponse.rows.length == 0) {
