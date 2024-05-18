@@ -7,7 +7,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/system';
 import AppHeader from '../components/AppHeader';
 
-class CreateUserProfilePage extends Component {
+class UpdateUserProfilePage extends Component {
     state;
 
     constructor(props) {
@@ -27,7 +27,9 @@ class CreateUserProfilePage extends Component {
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+        // Fetch User Profile
+        this.fetchProfile();
     }
 
     handleChange = (e) => {
@@ -35,6 +37,31 @@ class CreateUserProfilePage extends Component {
             [e.target.name]: e.target.value
         });
     };
+
+    fetchProfile = async () => {
+        try {
+            const response = await axios.get(`/systemadmin/view/profile/byaccount/${this.state.params.id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
+            );
+            console.log("API Response: ", response?.data);
+            this.setState({
+                userProfile: response?.data?.profile,
+                firstName: response?.data?.profile?.firstName,
+                lastName: response?.data?.profile?.lastName,
+                bio: response?.data?.profile?.bio,
+                contactNumber: response?.data?.profile?.contactNumber,
+                avatar: response?.data?.profile?.avatar,
+            })
+        } catch (err) {
+            console.log("ERROR: ", err);
+        }
+    }
 
 
     handleSubmit = async (e) => {
@@ -55,7 +82,7 @@ class CreateUserProfilePage extends Component {
                 contactNumber,
                 avatar,
             }
-            const response = await axios.post(`/systemadmin/create/profile/${this.state.params.id}`, payload, {
+            const response = await axios.put(`/systemadmin/update/profile/${this.state?.userProfile?.id}`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.state.auth.token}`
@@ -68,7 +95,7 @@ class CreateUserProfilePage extends Component {
                 "/confirmation", {
                 state: {
                     title: "Success!",
-                    description: "User Profile created successfully.",
+                    description: "User Profile updated successfully.",
                     from: { pathname: `/systemadmin/view/account/${this.state.params.id}` }
                 }
             }, { replace: true });
@@ -98,7 +125,7 @@ class CreateUserProfilePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppHeader title="Create User Profile" />
+                    <AppHeader title="Update User Profile" />
                     <Container maxWidth="sm" sx={{ marginY: 10 }}>
                         <Grid component="form" onSubmit={this.handleSubmit} container spacing={3}>
                             {this.state.errorMessage && <Paper sx={{ ml: 2.75, p: 1.5, borderColor: 'red' }} variant='outlined'><Typography variant='subtitle2' color="red" >{this.state.errorMessage}</Typography></Paper>}
@@ -173,7 +200,7 @@ class CreateUserProfilePage extends Component {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2, mx: 'auto' }}
                             >
-                                Create Profile
+                                Update Profile
                             </Button>
                         </Grid>
                     </Container>
@@ -191,4 +218,4 @@ const FormGrid = styled(Grid)(() => ({
     flexDirection: 'column',
 }));
 
-export default withRouter(CreateUserProfilePage);
+export default withRouter(UpdateUserProfilePage);

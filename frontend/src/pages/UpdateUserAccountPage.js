@@ -83,7 +83,9 @@ class UpdateUserAccountPage extends Component {
                 state: {
                     title: "Success!",
                     description: "User Account updated successfully.",
-                    from: this.state.location
+                    from: {
+                        pathname: `/systemadmin/view/account/${this.state.params.id}`
+                    }
                 }
             }, { replace: true });
         } catch (err) {

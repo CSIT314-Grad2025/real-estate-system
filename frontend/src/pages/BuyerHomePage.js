@@ -15,42 +15,41 @@ class BuyerHomePage extends Component {
         this.state = {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
-            navigate: props.navigate
+            navigate: props.navigate,
+            userProfile: props.userProfile,
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // Fetch User
-        // await this.fetchUserProfile();
+        this.fetchUserProfile();
     }
 
     fetchUserProfile = async () => {
         try {
-            const response = await axios.get(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
+            const response = await axios.get(`/common/view/myprofile`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
             );
             console.log("API Response: ", response?.data);
+            this.setState({
+                userProfile: response?.data?.profile,
+            })
         } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
+            console.log("ERROR: ", err);
         }
     }
 
     handleCreateAccountClick = () => {
         this.state.navigate("/systemadmin/create", { replace: true });
+    }
+    handleSearchClick = () => {
+        this.state.navigate("/systemadmin/search", { replace: true });
     }
 
     render() {
@@ -65,8 +64,8 @@ class BuyerHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppHeader title="Buyer Home" />
-                    <Container maxWidth="lg" sx={{ marginY: 10 }}>
+                    <AppHeader title="System Admin Home" />
+                    {this.state.userProfile && <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
                                 sx={{
@@ -80,8 +79,6 @@ class BuyerHomePage extends Component {
                                     backgroundImage: `url(https://source.unsplash.com/random/?house)`,
                                 }}
                             >
-                                {/* Increase the priority of the hero background image */}
-                                {<img style={{ display: 'none' }} src={"url(https://source.unsplash.com/random/900×700/?fruit)"} alt={""} />}
                                 <Box
                                     sx={{
                                         position: 'absolute',
@@ -102,10 +99,10 @@ class BuyerHomePage extends Component {
                                             }}
                                         >
                                             <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
-                                                Welcome Buyer
+                                                Welcome {this.state?.userProfile?.firstName}
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Discover the best properties in your area with our user-friendly platform. Start your journey towards owning your perfect home now!
+                                                Get started with setting up and managing User Accounts / User Profiles
                                             </Typography>
                                         </Box>
                                     </Grid>
@@ -113,18 +110,35 @@ class BuyerHomePage extends Component {
                             </Paper>
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
-                                    onClick={() => { console.log("CLICKED") }}
-                                    title="MarketPlace"
-                                    description="Explore the MarketPlace and find properties that suit your needs."
-                                    buttonLabel="MarketPlace" />
-                                <CardWithButton
                                     onClick={this.handleCreateAccountClick}
-                                    title="View Favorites"
-                                    description="Browse through properties you have liked."
-                                    buttonLabel="View" />
+                                    title="Create User Account"
+                                    description="Create a new user account. A user account enables a user to be authenticated into the system. An account is required to setup a profile."
+                                    buttonLabel="Create Account" />
+                                <CardWithButton
+                                    onClick={this.handleSearchClick}
+                                    title="Search Users"
+                                    description="Search for existing user accounts to perform adminsitrative tasks"
+                                    buttonLabel="Search" />
                             </Box>
                         </main>
-                    </Container>
+                    </Container>}
+                    {!this.state.userProfile &&
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                p: { xs: 3, md: 6 },
+                                pr: { md: 0 },
+                            }}
+                        >
+                            <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
+                                User Profile not set up!
+                            </Typography>
+                            <Typography align='left' variant="h5" color="inherit" paragraph>
+                                This User Account does not have a Profile set up for it.
+                                A valid User Profile is required to use the system.
+                            </Typography>
+                        </Box>
+                    }
                 </div>
                 <Footer
                     title="Real Estate Management System"

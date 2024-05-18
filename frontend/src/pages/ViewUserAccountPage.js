@@ -58,6 +58,16 @@ class ViewUserAccountPage extends Component {
         }, { replace: true });
     }
 
+    handleUpdateProfileClick = () => {
+        console.log();
+        this.state.navigate(
+            `/systemadmin/update/profile/${this.state?.userAccount?.id}`, {
+            state: {
+                from: this.state.location
+            }
+        }, { replace: true });
+    }
+
     handleDeleteAccountClick = async () => {
         try {
             const response = await axios.delete(`/systemadmin/delete/account/${this.state?.userAccount?.id}`,
@@ -296,7 +306,7 @@ class ViewUserAccountPage extends Component {
                                         </Typography>
                                     </Paper>
                                     <Paper sx={{ display: "flex", justifyContent: "right", gap: 5, py: 3, pr: 3, }} elevation={0}>
-                                        <Button variant='contained' onClick={() => { }} size="medium">Edit</Button>
+                                        <Button variant='contained' onClick={this.handleUpdateProfileClick} size="medium">Edit</Button>
                                         <ConfirmationDialog
                                             title="Confirmation"
                                             description="Are you sure you want to proceed?"

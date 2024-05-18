@@ -1,36 +1,12 @@
-const UserProfile = require("../entities/UserProfile");
+const UserProfile = require("../../entities/UserProfile");
 
 class ViewProfileController {
     handleViewProfile = async (req, res, next) => {
         try {
-            // Parsing id from query params
-            let id = parseInt(req.params.id);
-            let accountId = parseInt(req.params.accountId);
-
-            id = accountId ? accountId : id;
-
-            if (!id) {
-                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
-                    : new Error('Missing field(s): id');
-                err.status = 400;
-                throw err;
-            }
-
-
-            if (!id) {
-                let err = new Error('Missing field(s): id');
-                err.status = 400;
-                throw err;
-            }
-
-            let profile;
 
             // Profile requested by accountId or profile id?
-            if (accountId) {
-                profile = await new UserProfile().getUserProfileByAccount(id);
-            } else {
-                profile = await new UserProfile().getUserProfile(id);
-            }
+            let id = req.id;
+            const profile = await new UserProfile().getUserProfileByAccount(id);
 
             res.status(200).json({
                 profile

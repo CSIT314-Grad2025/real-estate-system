@@ -19,6 +19,8 @@ import SearchUserAccountsPage from './pages/SearchUserAccountsPage';
 import ViewUserAccountPage from './pages/ViewUserAccountPage';
 import UpdateUserAccountPage from './pages/UpdateUserAccountPage';
 import CreateUserProfilePage from './pages/CreateUserProfilePage';
+import UpdateUserProfilePage from './pages/UpdateUserProfilePage';
+import SearchUserProfilesPage from './pages/SearchUserProfilesPage';
 
 class AppComponent extends Component {
     state;
@@ -60,9 +62,11 @@ class AppComponent extends Component {
                         <Route path="systemadmin/view/account/:id" element={<ViewUserAccountPage />} />
                         <Route path="systemadmin/update/account/:id" element={<UpdateUserAccountPage />} />
                         <Route path="systemadmin/create/profile/:id" element={<CreateUserProfilePage />} />
+                        <Route path="systemadmin/update/profile/:id" element={<UpdateUserProfilePage />} />
                         <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
                         <Route path="systemadmin/home" element={<SystemAdminHomePage />} />
                         <Route path="systemadmin/search" element={<SearchUserAccountsPage />} />
+                        <Route path="systemadmin/search/profile" element={<SearchUserProfilesPage />} />
                     </Route>
 
                     {/* catch all*/}

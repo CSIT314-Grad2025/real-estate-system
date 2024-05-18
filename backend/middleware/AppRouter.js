@@ -73,7 +73,7 @@ class AppRouter {
         // Common Routes
         // View User Profile
         this.router.get('/common/view/profile/:id', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
-        this.router.get('/common/view/profile/byaccount/:accountId', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
+        this.router.get('/common/view/myprofile', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
     }
 }
 
