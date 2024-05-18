@@ -14,6 +14,7 @@ class PropertyListing {
     bedrooms;
     bathrooms;
     listPrice;
+    location;
     // Boolean to track if listing is sold
     isAvailable;
 
@@ -56,8 +57,8 @@ class PropertyListing {
             throw err;
         }
 
-        const propertyListing = dbResponse.rows[0];
-        return propertyListing;
+        const propertyListings = dbResponse.rows;
+        return propertyListings;
     }
 
     getPropertyListingsBySeller = async (sellerProfileId) => {
@@ -102,15 +103,15 @@ class PropertyListing {
 
     createPropertyListing = async (
         title, description, propertyType, livingArea, bedrooms, bathrooms,
-        listPrice, isAvailable, sellerProfileId, agentProfileId
+        listPrice, isAvailable, sellerEmail, agentProfileId, location,
     ) => {
         // Database Connection worker
         const pool = DBConnection.pool;
         try {
 
             // Validate seller and agent types
-            const sellerProfile = await new UserProfile().getUserProfile(sellerProfileId);
-            const sellerAccount = await new UserAccount().getAccountById(sellerProfile.accountId);
+            const sellerAccount = await new UserAccount().getAccountByEmail(sellerEmail);
+            const sellerProfile = await new UserProfile().getUserProfileByAccount(sellerAccount.id);
             if (sellerAccount.accountType != 'seller') {
                 let err = new Error("SellerId supplied is not a seller");
                 err.status = 400;
@@ -130,12 +131,12 @@ class PropertyListing {
                 `
             INSERT INTO "PropertyListings" (
                 "title", "description", "propertyType", "livingArea", "bedrooms",
-                "bathrooms", "listPrice", "isAvailable", "sellerProfileId", "agentProfileId",
+                "bathrooms", "listPrice", "isAvailable", "sellerProfileId", "agentProfileId", "location", "views",
                 "createdAt", "updatedAt"
             )
             VALUES(
                 '${title}', '${description}', '${propertyType}', '${livingArea}', '${bedrooms}',
-                '${bathrooms}', '${listPrice}', '${isAvailable}', '${sellerProfileId}', '${agentProfileId}',
+                '${bathrooms}', '${listPrice}', '${isAvailable}', '${sellerProfile.id}', '${agentProfileId}', '${location}', 0,
                 NOW(), NOW()
             )`
             );
@@ -166,6 +167,8 @@ class PropertyListing {
         this.bathrooms && (setClause += `${comma}"bathrooms" = '${this.bathrooms}'`) && (comma = ",");
         this.listPrice && (setClause += `${comma}"listPrice" = '${this.listPrice}'`) && (comma = ",");
         this.isAvailable && (setClause += `${comma}"isAvailable" = '${this.isAvailable}'`) && (comma = ",");
+        this.location && (setClause += `${comma}"location" = '${this.location}'`) && (comma = ",");
+        this.views && (setClause += `${comma}"views" = '${this.views}'`) && (comma = ",");
 
         if (setClause.length == 0) {
             let err = new Error('No valid field changes');

@@ -102,6 +102,36 @@ class UserAccount {
         return userAccount;
     }
 
+    async getAccountByEmail(email) {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+        const dbResponse = await pool.query(
+            `SELECT * FROM "Users"
+            WHERE email = '${email}'`
+        );
+
+        // Query
+        if (dbResponse.rows.length == 0) {
+            let err = new Error("User not found");
+            err.status = 404;
+            throw err;
+        }
+
+        const user = dbResponse.rows[0];
+
+
+        // Instantiate new UserAccount object (Object creation step)
+        let userAccount = new UserAccount();
+        userAccount.id = user.id;
+        userAccount.email = user.email;
+        userAccount.password = user.password;
+        userAccount.isLoggedIn = user.isLoggedIn;
+        userAccount.accountType = user.accountType;
+
+        // Return UserAccount object
+        return userAccount;
+    }
+
     async getAllAccounts() {
         // Database Connection worker
         const pool = DBConnection.pool;

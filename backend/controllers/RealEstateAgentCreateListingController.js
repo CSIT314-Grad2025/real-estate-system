@@ -30,8 +30,9 @@ class RealEstateAgentCreateListingController {
                 livingArea,
                 bedrooms,
                 bathrooms,
+                location,
                 listPrice,
-                sellerProfileId
+                sellerEmail,
             } = req.body;
 
             const requiredFields = [
@@ -41,8 +42,9 @@ class RealEstateAgentCreateListingController {
                 'livingArea',
                 'bedrooms',
                 'bathrooms',
+                'location',
                 'listPrice',
-                'sellerProfileId'
+                'sellerEmail',
             ];
 
             const missingFields = requiredFields.filter(field => !req.body[field]);
@@ -67,8 +69,9 @@ class RealEstateAgentCreateListingController {
                 bathrooms,
                 listPrice,
                 isAvailable,
-                sellerProfileId,
+                sellerEmail,
                 agentProfileId,
+                location,
             );
 
             // Response sent to the Boundary

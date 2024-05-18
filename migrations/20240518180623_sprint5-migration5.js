@@ -7,13 +7,14 @@ const Sequelize = require("sequelize");
  * createTable() => "UserProfiles", deps: [Users]
  * createTable() => "PropertyListings", deps: [UserProfiles, UserProfiles]
  * createTable() => "Reviews", deps: [UserProfiles, UserProfiles]
+ * createTable() => "SavedListings", deps: [PropertyListings, UserProfiles]
  *
  */
 
 const info = {
   revision: 1,
   name: "sprint5-migration5",
-  created: "2024-05-18T12:45:06.644Z",
+  created: "2024-05-18T18:06:23.316Z",
   comment: "",
 };
 
@@ -116,6 +117,12 @@ const migrationCommands = (transaction) => [
           field: "propertyType",
           allowNull: false,
         },
+        location: {
+          type: Sequelize.STRING,
+          field: "location",
+          allowNull: false,
+        },
+        views: { type: Sequelize.INTEGER, field: "views", allowNull: false },
         livingArea: {
           type: Sequelize.INTEGER,
           field: "livingArea",
@@ -219,6 +226,48 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
+  {
+    fn: "createTable",
+    params: [
+      "SavedListings",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        propertyListingId: {
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "CASCADE",
+          references: { model: "PropertyListings", key: "id" },
+          field: "propertyListingId",
+          allowNull: false,
+        },
+        buyerProfileId: {
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "NO ACTION",
+          references: { model: "UserProfiles", key: "id" },
+          field: "buyerProfileId",
+          allowNull: false,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+      },
+      { transaction },
+    ],
+  },
 ];
 
 const rollbackCommands = (transaction) => [
@@ -229,6 +278,10 @@ const rollbackCommands = (transaction) => [
   {
     fn: "dropTable",
     params: ["Reviews", { transaction }],
+  },
+  {
+    fn: "dropTable",
+    params: ["SavedListings", { transaction }],
   },
   {
     fn: "dropTable",

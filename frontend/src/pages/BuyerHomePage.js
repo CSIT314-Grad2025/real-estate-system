@@ -64,7 +64,7 @@ class BuyerHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppHeader title="Buyer Admin Home" />
+                    <AppHeader title="Buyer Home" />
                     {this.state.userProfile && <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
@@ -102,7 +102,7 @@ class BuyerHomePage extends Component {
                                                 Welcome {this.state?.userProfile?.firstName}
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Get started with setting up and managing User Accounts / User Profiles
+                                                Find your dream property effortlessly with our comprehensive listings and trusted real estate agents.
                                             </Typography>
                                         </Box>
                                     </Grid>

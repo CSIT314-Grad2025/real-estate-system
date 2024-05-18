@@ -3,6 +3,7 @@ const BuyerLogoutController = require('../controllers/BuyerLogoutController');
 const RealEstateAgentCreateListingController = require('../controllers/RealEstateAgentCreateListingController');
 const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
 const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentLogoutController');
+const RealEstateAgentViewMyListingsController = require('../controllers/RealEstateAgentViewMyListingsController');
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
 const SellerViewMyListingsController = require('../controllers/SellerViewMyListingsController');
@@ -65,6 +66,7 @@ class AppRouter {
         this.router.put('/realestateagent/logout', new AuthMiddleware().protect, new RealEstateAgentLogoutController().logout)
         //Create Property Listing
         this.router.post('/realestateagent/create/listing', new AuthMiddleware().protect, new RealEstateAgentCreateListingController().handleCreateListing);
+        this.router.get('/realestateagent/view/my/listing', new AuthMiddleware().protect, new RealEstateAgentViewMyListingsController().handleViewListings);
 
         // Buyer Routes
         this.router.post('/buyer/login', new BuyerLoginController().handleLogin);
@@ -74,7 +76,7 @@ class AppRouter {
         this.router.post('/seller/login', new SellerLoginController().handleLogin);
         this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
         this.router.get('/seller/view/listing/:id', new AuthMiddleware().protect, new SellerViewPropertyController().handleViewPropertyListing);
-        this.router.get('/seller/view/all/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
+        this.router.get('/seller/view/my/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
 
 
         // Common Routes

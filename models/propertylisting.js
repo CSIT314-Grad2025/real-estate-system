@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'agentProfileId',
                 as: 'agentProfile',
             });
+            // Foreign key association to SavedListing
+            PropertyListing.hasMany(models.SavedListing, {
+                foreignKey: 'propertyListingId',
+                onDelete: 'CASCADE'
+            });
         }
     }
 
@@ -30,6 +35,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         propertyType: {
             type: DataTypes.STRING,
+            allowNull: false,
+        },
+        location: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        views: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         livingArea: {
