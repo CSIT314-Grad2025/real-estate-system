@@ -20,6 +20,8 @@ Create a new database in PostgreSQL using PGAdmin called `database_development`
 $ git clone git@github.com:CSIT314-Grad2025/real-estate-system.git
 $ cd real-estate-system
 ```
+Or if you already have the repository, open GitBash inside the repository
+
 Pull the latest version
 
 ```bash
@@ -28,11 +30,7 @@ $ git pull
 ```
 Switch to the latest branch
 ```
-$ git checkout {branch-name}
-```
-Example
-```
-$ git checkout feature/buyer-cruds
+$ git checkout feature/user-profiles
 ```
 
 ### Migrate Tables
@@ -41,14 +39,10 @@ $ git checkout feature/buyer-cruds
 $ npx sequelize-cli db:migrate
 ```
 
-**Create a new System Admin User:**
-- Open PGAdmin
-- Right click on `database_development` > Query Tool
-- Copy and execute the following query:
+### Seed the first System Admin User into the database
 
-```sql
-INSERT INTO "Users" ("email", "password", "accountType", "isLoggedIn", "createdAt", "updatedAt")
-VALUES('jd@gmail.com', '1234', 'systemadmin', false, NOW(), NOW())
+```
+$ npx sequelize-cli db:seed:all
 ```
 
 ### Install and start back-end
@@ -76,19 +70,8 @@ Open your browser and navigate to
 http://localhost:3000
 ```
 
-### Login and seed first profile
-
 At the login page, enter the following:
 Email: jd@gmail.com
 Password: 1234
 AccountType: System Administrator
-
-Page will complain about missing profile
-Navigate to the following URL:
-```
-http://localhost:3000/systemadmin/view/account/1
-```
-Create a new profile, input random data
-
-Now you should be able to use the app
 

@@ -26,6 +26,15 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'CASCADE', // Optional: Define the deletion behavior
             });
 
+            UserProfile.hasMany(models.Review, {
+                foreignKey: 'agentProfileId',
+                onDelete: 'CASCADE', // Optional: Define the deletion behavior
+            });
+
+            UserProfile.hasMany(models.Review, {
+                foreignKey: 'reviewerProfileId',
+                onDelete: 'CASCADE', // Optional: Define the deletion behavior
+            });
         }
     }
     UserProfile.init({

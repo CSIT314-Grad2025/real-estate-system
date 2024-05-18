@@ -16,7 +16,7 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "description": {
-                    "allowNull": true,
+                    "allowNull": false,
                     "field": "description",
                     "seqType": "Sequelize.STRING"
                 },
@@ -64,13 +64,68 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "agentProfileId": {
-                    "allowNull": true,
+                    "allowNull": false,
                     "field": "agentProfileId",
                     "references": {
                         "model": "UserProfiles",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Reviews": {
+            "tableName": "Reviews",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rating": {
+                    "allowNull": false,
+                    "field": "rating",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "reviewBody": {
+                    "allowNull": false,
+                    "field": "reviewBody",
+                    "seqType": "Sequelize.STRING"
+                },
+                "reviewerProfileId": {
+                    "allowNull": false,
+                    "field": "reviewerProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "agentProfileId": {
+                    "allowNull": false,
+                    "field": "agentProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },

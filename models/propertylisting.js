@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         description: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
         propertyType: {
             type: DataTypes.STRING,
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         agentProfileId: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
         },
     }, {
         sequelize,
