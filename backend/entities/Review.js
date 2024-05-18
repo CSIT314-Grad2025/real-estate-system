@@ -1,19 +1,12 @@
+const UserAccount = require("./UserAccount");
+const UserProfile = require("./UserProfile");
+
 class Review {
     id;
-    reviewTitle;
+    reviewerProfileId;
+    agentProfileId;
     reviewBody;
-    reviewerID;
     rating;
-    agentID;
-
-    constructor() {
-        this.id = null;
-        this.reviewTitle = null;
-        this.reviewBody = null;
-        this.reviewerID = null;
-        this.rating = null;
-        this.agentID = null;
-    }
 
     getReviewByID = async (id) => {
         // Database Connection worker
@@ -32,72 +25,80 @@ class Review {
         }
 
         const review = dbResponse.rows[0];
-        console.log(review);
         return review;
     }
 
-    getReviewsByAgentID = async (id) => {
+    getReviewsByAgentProfileId = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         const dbResponse = await pool.query(
             `SELECT * FROM "Reviews"
-            WHERE id = '${id}'`
+            WHERE "agentProfileId" = '${id}'`
         );
 
-        if (dbResponse.rows.length == 0) {
-            let err = new Error("Review not found");
-            err.status = 404;
-            throw err;
-        }
-
-        const review = dbResponse.rows[0];
-        console.log(review);
-        return review;
+        const reviews = dbResponse.rows;
+        return reviews;
     }
 
-    getReviewsByReviewerID = async (id) => {
+    getReviewsByReviewerProfileId = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         const dbResponse = await pool.query(
             `SELECT * FROM "Reviews"
-            WHERE id = '${id}'`
+            WHERE "reviewerProfileId" = '${id}'`
         );
 
-        if (dbResponse.rows.length == 0) {
-            let err = new Error("Review not found");
-            err.status = 404;
-            throw err;
-        }
-
-        const review = dbResponse.rows[0];
-        console.log(review);
+        const review = dbResponse.rows;
         return review;
-
     }
 
-    createReview = async (reviewTitle, reviewBody, reviewerID, rating, agentID) => {
+    createReview = async (rating, reviewBody, reviewerProfileId, agentProfileId) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
-        // Query
-        const dbResponse = await pool.query(
-            `SELECT * FROM "Reviews"
-            WHERE id = '${id}'`
-        );
+        reviewBody = reviewBody || '';
 
-        if (dbResponse.rows.length == 0) {
-            let err = new Error("Review not found");
-            err.status = 404;
-            throw err;
+        try {
+            const reviewerProfile = await new UserProfile().getUserProfile(reviewerProfileId);
+            const reviewerAccount = await new UserAccount().getAccountById(reviewerProfile.accountId);
+            if (reviewerAccount.accountType != 'seller' || reviewerAccount.accountType != 'buyer') {
+                let err = new Error("Reivewer is not a Seller or a Buyer");
+                err.status = 400;
+                throw err;
+            }
+
+            const agentProfile = await new UserProfile().getUserProfile(agentProfileId);
+            const agentAccount = await new UserAccount().getAccountById(agentProfile.accountId);
+            if (agentAccount.accountType != 'realestateagent') {
+                let err = new Error("AgentId supplied is not an Agent");
+                err.status = 400;
+                throw err;
+            }
+
+            await pool.query(
+                `
+            INSERT INTO "Reviews" (
+                "rating", "reviewBody", "reviewerProfileId", "agentProfileId", 
+                "createdAt", "updatedAt"
+            )
+            VALUES(
+                '${rating}', '${reviewBody}', '${reviewerProfileId}', '${agentProfileId}',
+                NOW(), NOW()
+            )`
+            );
+        } catch (e) {
+            console.log(e.code);
+            if (e.code == 23503) {
+                let err = new Error("User Profile Not Found");
+                err.status = 400;
+                throw err;
+            }
+            throw (e);
         }
-
-        const review = dbResponse.rows[0];
-        console.log(review);
-        return review;
     }
 
     updateReview = async (id, review) => {

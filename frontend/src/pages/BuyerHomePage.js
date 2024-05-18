@@ -46,10 +46,10 @@ class BuyerHomePage extends Component {
     }
 
     handleCreateAccountClick = () => {
-        this.state.navigate("/systemadmin/create", { replace: true });
+        // this.state.navigate("/systemadmin/create", { replace: true });
     }
     handleSearchClick = () => {
-        this.state.navigate("/systemadmin/search", { replace: true });
+        // this.state.navigate("/systemadmin/search", { replace: true });
     }
 
     render() {
@@ -64,7 +64,7 @@ class BuyerHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppHeader title="System Admin Home" />
+                    <AppHeader title="Buyer Admin Home" />
                     {this.state.userProfile && <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
@@ -111,14 +111,19 @@ class BuyerHomePage extends Component {
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
                                     onClick={this.handleCreateAccountClick}
-                                    title="Create User Account"
-                                    description="Create a new user account. A user account enables a user to be authenticated into the system. An account is required to setup a profile."
-                                    buttonLabel="Create Account" />
+                                    title="Search Properties"
+                                    description="Access the marketplace and start searching for properties to your liking."
+                                    buttonLabel="Market Place" />
                                 <CardWithButton
                                     onClick={this.handleSearchClick}
-                                    title="Search Users"
-                                    description="Search for existing user accounts to perform adminsitrative tasks"
-                                    buttonLabel="Search" />
+                                    title="Search Real Estate Agents"
+                                    description="Look for Real Estate Agents to assist you on your acquisition journey"
+                                    buttonLabel="Real Estate Agents" />
+                                <CardWithButton
+                                    onClick={this.handleSearchClick}
+                                    title="My Profile"
+                                    description="View and manage your profile"
+                                    buttonLabel="My Profile" />
                             </Box>
                         </main>
                     </Container>}

@@ -12,7 +12,7 @@ module.exports = {
                 email: faker.internet.email(),
                 password: faker.internet.password(),
                 isLoggedIn: faker.datatype.boolean(),
-                accountType: faker.helpers.arrayElement(['systemadmin', 'user']),
+                accountType: faker.helpers.arrayElement(['systemadmin', 'buyer', 'seller', 'realestateagent']),
                 createdAt: new Date(),
                 updatedAt: new Date(),
             };

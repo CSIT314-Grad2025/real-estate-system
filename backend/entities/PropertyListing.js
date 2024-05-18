@@ -17,6 +17,8 @@ class PropertyListing {
     // Boolean to track if listing is sold
     isAvailable;
 
+    views;
+
     // Methods
     getPropertyListingByID = async (id) => {
         // Database Connection worker

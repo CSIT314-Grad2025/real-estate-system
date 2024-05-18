@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         reviewBody: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         reviewerProfileId: {
             type: DataTypes.INTEGER,

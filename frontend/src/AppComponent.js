@@ -51,7 +51,7 @@ class AppComponent extends Component {
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
-                        <Route path="seller" element={<SellerHomePage />} />
+                        <Route path="seller/home" element={<SellerHomePage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.REALESTATEAGENT]} />} >

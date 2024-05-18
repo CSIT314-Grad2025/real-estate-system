@@ -8,6 +8,28 @@ class SellerRateAgentController {
     // Controller method
     handleRateAgent = async (req, res, next) => {
         try {
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "seller") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
+            const sellerProfileId = req.profileId;
+            if (!sellerProfileId) {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
+            // Parsing id from query params
+            let agentProfileId = parseInt(req.params.agentProfileId);
+            if (!agentProfileId) {
+                let err = isNaN(agentProfileId) ? new Error('Invalid Agent ID: ID must be an integer')
+                    : new Error('Missing param(s): agentProfileId');
+                err.status = 400;
+                throw err;
+            }
             const { rating } = req.body;
 
             const requiredFields = ['rating',];
