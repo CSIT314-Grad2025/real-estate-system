@@ -38,13 +38,6 @@ $ git checkout feature/user-profiles
 ```bash
 $ npx sequelize-cli db:migrate
 ```
-
-### Seed the first System Admin User into the database
-
-```
-$ npx sequelize-cli db:seed:all
-```
-
 ### Install and start back-end
 
 ```bash
@@ -61,6 +54,12 @@ Open a new terminal window in the root directory
 $ cd frontend
 $ npm install
 $ npm start
+```
+
+### Seed the first System Admin User into the database
+
+```
+$ npx sequelize-cli db:seed:all
 ```
 
 ### Connect client
