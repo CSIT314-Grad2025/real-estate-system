@@ -1,9 +1,12 @@
 const BuyerLoginController = require('../controllers/BuyerLoginController');
 const BuyerLogoutController = require('../controllers/BuyerLogoutController');
+const RealEstateAgentCreateListingController = require('../controllers/RealEstateAgentCreateListingController');
 const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
 const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentLogoutController');
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
+const SellerViewMyListingsController = require('../controllers/SellerViewMyListingsController');
+const SellerViewPropertyController = require('../controllers/SellerViewPropertyController');
 const SystemAdminCreateAccountController = require('../controllers/SystemAdminCreateAccountController');
 const SystemAdminCreateProfileController = require('../controllers/SystemAdminCreateProfileController');
 const SystemAdminDeleteAccountController = require('../controllers/SystemAdminDeleteAccountController');
@@ -60,6 +63,8 @@ class AppRouter {
         // Real Estate Agent Routes
         this.router.post('/realestateagent/login', new RealEstateAgentLoginController().handleLogin);
         this.router.put('/realestateagent/logout', new AuthMiddleware().protect, new RealEstateAgentLogoutController().logout)
+        //Create Property Listing
+        this.router.post('/realestateagent/create/listing', new AuthMiddleware().protect, new RealEstateAgentCreateListingController().handleCreateListing);
 
         // Buyer Routes
         this.router.post('/buyer/login', new BuyerLoginController().handleLogin);
@@ -68,6 +73,8 @@ class AppRouter {
         // Seller Routes
         this.router.post('/seller/login', new SellerLoginController().handleLogin);
         this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
+        this.router.get('/seller/view/listing/:id', new AuthMiddleware().protect, new SellerViewPropertyController().handleViewPropertyListing);
+        this.router.get('/seller/view/all/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
 
 
         // Common Routes

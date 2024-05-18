@@ -1,5 +1,6 @@
 const DBConnection = require("../../config/dbConfig");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const UserProfile = require("../entities/UserProfile");
 
 class AuthMiddleware {
 
@@ -40,9 +41,13 @@ class AuthMiddleware {
                 req.id = user.id;
                 req.requestingUser = user;
 
+                try {
+                    let userProfile = await new UserProfile().getUserProfileByAccount(user.id);
+                    req.profileId = userProfile.id;
+                } catch (err) {
+                }
 
                 next();
-
             } catch (err) {
                 next(err);
             }

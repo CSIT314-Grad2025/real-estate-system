@@ -8,9 +8,43 @@ class RealEstateAgentCreateListingController {
     // Controller Method
     handleCreateListing = async (req, res, next) => {
         try {
-            const { title, listingAgentID, sellerID, description, propertyType, livingArea, numberOfBedrooms, numberOfBathrooms, listPrice } = req.body;
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "realestateagent") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
 
-            const requiredFields = ['title', 'listingAgentID', 'sellerID', 'description', 'propertyType', 'numberOfBedrooms', 'numberOfBathrooms', 'listPrice'];
+            const agentProfileId = req.profileId;
+
+            if (!agentProfileId) {
+                let err = new Error('Missing Field: agentProfileId');
+                err.status = 400;
+                throw err;
+            }
+
+            const {
+                title,
+                description,
+                propertyType,
+                livingArea,
+                bedrooms,
+                bathrooms,
+                listPrice,
+                sellerProfileId
+            } = req.body;
+
+            const requiredFields = [
+                'title',
+                'description',
+                'propertyType',
+                'livingArea',
+                'bedrooms',
+                'bathrooms',
+                'listPrice',
+                'sellerProfileId'
+            ];
+
             const missingFields = requiredFields.filter(field => !req.body[field]);
 
             if (missingFields.length > 0) {
@@ -21,10 +55,20 @@ class RealEstateAgentCreateListingController {
                 throw err;
             }
 
+            const isAvailable = true;
+
             // Entity Method Call
             await new PropertyListing().createPropertyListing(
-                title, listingAgentID, sellerID, description, propertyType, livingArea,
-                numberOfBedrooms, numberOfBathrooms, listPrice
+                title,
+                description,
+                propertyType,
+                livingArea,
+                bedrooms,
+                bathrooms,
+                listPrice,
+                isAvailable,
+                sellerProfileId,
+                agentProfileId,
             );
 
             // Response sent to the Boundary
@@ -34,7 +78,6 @@ class RealEstateAgentCreateListingController {
 
         } catch (err) {
             err.status = err.status || 400;
-            err.status = 400;
             next(err);
         }
     }
