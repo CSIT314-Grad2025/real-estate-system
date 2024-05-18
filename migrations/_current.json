@@ -1,5 +1,92 @@
 {
     "tables": {
+        "PropertyListings": {
+            "tableName": "PropertyListings",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "propertyType": {
+                    "allowNull": false,
+                    "field": "propertyType",
+                    "seqType": "Sequelize.STRING"
+                },
+                "livingArea": {
+                    "allowNull": false,
+                    "field": "livingArea",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "bedrooms": {
+                    "allowNull": false,
+                    "field": "bedrooms",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "bathrooms": {
+                    "allowNull": false,
+                    "field": "bathrooms",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "listPrice": {
+                    "allowNull": false,
+                    "field": "listPrice",
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "isAvailable": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "isAvailable",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "sellerProfileId": {
+                    "allowNull": false,
+                    "field": "sellerProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "agentProfileId": {
+                    "allowNull": true,
+                    "field": "agentProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Users": {
             "tableName": "Users",
             "schema": {

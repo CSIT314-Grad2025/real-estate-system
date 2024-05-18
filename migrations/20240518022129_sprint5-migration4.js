@@ -5,13 +5,14 @@ const Sequelize = require("sequelize");
  *
  * createTable() => "Users", deps: []
  * createTable() => "UserProfiles", deps: [Users]
+ * createTable() => "PropertyListings", deps: [UserProfiles, UserProfiles]
  *
  */
 
 const info = {
   revision: 1,
-  name: "sprint5-migration",
-  created: "2024-05-16T16:32:31.579Z",
+  name: "sprint5-migration4",
+  created: "2024-05-18T02:21:29.698Z",
   comment: "",
 };
 
@@ -91,9 +92,91 @@ const migrationCommands = (transaction) => [
       { transaction },
     ],
   },
+  {
+    fn: "createTable",
+    params: [
+      "PropertyListings",
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          field: "id",
+          autoIncrement: true,
+          primaryKey: true,
+          allowNull: false,
+        },
+        title: { type: Sequelize.STRING, field: "title", allowNull: false },
+        description: {
+          type: Sequelize.STRING,
+          field: "description",
+          allowNull: true,
+        },
+        propertyType: {
+          type: Sequelize.STRING,
+          field: "propertyType",
+          allowNull: false,
+        },
+        livingArea: {
+          type: Sequelize.INTEGER,
+          field: "livingArea",
+          allowNull: false,
+        },
+        bedrooms: {
+          type: Sequelize.INTEGER,
+          field: "bedrooms",
+          allowNull: false,
+        },
+        bathrooms: {
+          type: Sequelize.INTEGER,
+          field: "bathrooms",
+          allowNull: false,
+        },
+        listPrice: {
+          type: Sequelize.DECIMAL,
+          field: "listPrice",
+          allowNull: false,
+        },
+        isAvailable: {
+          type: Sequelize.BOOLEAN,
+          field: "isAvailable",
+          defaultValue: true,
+        },
+        sellerProfileId: {
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "NO ACTION",
+          references: { model: "UserProfiles", key: "id" },
+          field: "sellerProfileId",
+          allowNull: false,
+        },
+        agentProfileId: {
+          type: Sequelize.INTEGER,
+          onUpdate: "CASCADE",
+          onDelete: "SET NULL",
+          references: { model: "UserProfiles", key: "id" },
+          field: "agentProfileId",
+          allowNull: true,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          field: "createdAt",
+          allowNull: false,
+        },
+        updatedAt: {
+          type: Sequelize.DATE,
+          field: "updatedAt",
+          allowNull: false,
+        },
+      },
+      { transaction },
+    ],
+  },
 ];
 
 const rollbackCommands = (transaction) => [
+  {
+    fn: "dropTable",
+    params: ["PropertyListings", { transaction }],
+  },
   {
     fn: "dropTable",
     params: ["Users", { transaction }],
