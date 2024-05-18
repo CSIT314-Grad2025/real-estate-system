@@ -75,3 +75,20 @@ Open your browser and navigate to
 ```
 http://localhost:3000
 ```
+
+### Login and seed first profile
+
+At the login page, enter the following:
+Email: jd@gmail.com
+Password: 1234
+AccountType: System Administrator
+
+Page will complain about missing profile
+Navigate to the following URL:
+```
+http://localhost:3000/systemadmin/view/account/1
+```
+Create a new profile, input random data
+
+Now you should be able to use the app
+
