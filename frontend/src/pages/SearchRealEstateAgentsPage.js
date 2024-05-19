@@ -22,8 +22,8 @@ class SearchRealEstateAgentsPage extends Component {
             location: props.location,
             errorMessage: '',
             searchTerm: '',
-            listings: [],
-            filteredListings: [],
+            profiles: [],
+            filteredProfiles: [],
             userProfile: null,
         }
     }
@@ -33,10 +33,11 @@ class SearchRealEstateAgentsPage extends Component {
             [e.target.name]: e.target.value
         });
 
+        console.log(this.state)
         this.setState({
-            filteredListings: this.state.listings.filter((listing, idx) =>
-                listing?.title.toLowerCase().includes(e.target.value.toLowerCase()) ||
-                listing?.location.toLowerCase().includes(e.target.value.toLowerCase())
+            filteredProfiles: this.state.profiles.filter((profile, idx) =>
+                profile?.firstName.toLowerCase().includes(e.target.value.toLowerCase()) ||
+                profile?.lastName.toLowerCase().includes(e.target.value.toLowerCase())
             )
         })
     };
@@ -44,7 +45,7 @@ class SearchRealEstateAgentsPage extends Component {
     componentDidMount() {
         // Fetch User Profile from server
         this.fetchUserProfile();
-        this.fetchListings();
+        this.fetchRealEstateAgents();
     }
 
     fetchUserProfile = async () => {
@@ -69,7 +70,7 @@ class SearchRealEstateAgentsPage extends Component {
 
     fetchRealEstateAgents = async () => {
         try {
-            const response = await axios.get(`/${this.state?.auth?.accountType}/search/listing`,
+            const response = await axios.get(`/common/search/realestateagent`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -80,8 +81,8 @@ class SearchRealEstateAgentsPage extends Component {
             );
             console.log("API Response: ", response?.data);
             this.setState({
-                listings: response?.data?.listings,
-                filteredListings: response?.data?.listings,
+                profiles: response?.data?.realEstateAgentProfiles,
+                filteredProfiles: response?.data?.realEstateAgentProfiles,
             })
         } catch (err) {
             console.log("ERROR: ", err);
@@ -108,14 +109,14 @@ class SearchRealEstateAgentsPage extends Component {
                         name="searchTerm"
                         label="Search"
                     />
-                    <Container maxWidth="lg" sx={{ marginY: 10 }}>
+                    <Container maxWidth="md" sx={{ marginY: 10 }}>
                         <main>
-                            {this.state.filteredListings.map((listing, idx) => {
+                            {this.state.filteredProfiles.map((profile, idx) => {
                                 return (
-                                    <PropertyCard key={listing.id}
-                                        listing={listing}
-                                        onClickEdit={() => this.handleClickEdit(listing.id)}
-                                        onClickDelete={() => this.handleClickDelete(listing.id)}
+                                    <ProfileCard key={profile.id}
+                                        profile={profile}
+                                        onClickEdit={() => this.handleClickEdit(profile.id)}
+                                        onClickDelete={() => this.handleClickDelete(profile.id)}
                                         accountType={this.state.auth.accountType}
                                     />
                                 )
@@ -132,78 +133,24 @@ class SearchRealEstateAgentsPage extends Component {
     }
 }
 
-const PropertyCard = (props) => {
+const ProfileCard = (props) => {
     return (
-        <Paper elevation={0} sx={{
-            display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 2,
-            backgroundColor: 'grey.800',
-            color: '#fff',
-            mb: 4,
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-            backgroundImage: `url(https://loremflickr.com/800/600/bungalow?lock=${props.listing.id}&random=${props.listing.id})`,
-        }}>
-            <Paper variant="outlined" sx={{ p: 3, width: '65%', display: 'flex', flexDirection: 'column', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
-                {!props.listing.isAvailable && <Paper variant="outlined" sx={{ width: "20%", borderColor: 'red' }}>
-                    <Typography variant="button" align="left" color="red">
-                        Sold
-                    </Typography>
-                </Paper>}
-                <Box sx={{ my: 1 }}>
-                    <Typography variant="h5" align="left" >
-                        {props?.listing?.title}
-                    </Typography>
-                    <Typography variant="body1" align="left" gutterBottom>
-                        {props?.listing?.description}
-                    </Typography>
-                </Box>
-                <Box sx={{ my: 1 }}>
-                    <Typography variant="subtitle1" align="left" >
-                        Location
-                    </Typography>
-                    <Typography variant="h6" align="left" gutterBottom>
-                        {props?.listing?.location}
-                    </Typography>
-                </Box>
-                <Box sx={{ display: "flex", pr: 'auto' }}>
-                    <Paper elevation={0} sx={{ my: 2, mr: 10 }}>
-                        <Typography variant="button" align="left" gutterBottom>
-                            Living Area
-                        </Typography>
-                        <Typography variant="h6" align="center" gutterBottom>
-                            {props?.listing?.livingArea} SqFt.
-                        </Typography>
-                    </Paper>
-                    <Paper elevation={0} sx={{ my: 2, mr: 10 }}>
-                        <Typography variant="button" align="left" gutterBottom>
-                            Bedrooms
-                        </Typography>
-                        <Typography variant="h6" align="center" gutterBottom>
-                            {props?.listing?.bedrooms}
-                        </Typography>
-                    </Paper>
-                    <Paper elevation={0} sx={{ my: 2, mr: 10 }}>
-                        <Typography variant="button" align="left" gutterBottom>
-                            Bathrooms
-                        </Typography>
-                        <Typography variant="h6" align="center" gutterBottom>
-                            {props?.listing?.bathrooms}
-                        </Typography>
-                    </Paper>
-                </Box>
-                {props.accountType === "buyer" && <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
-                    <Button variant='contained' onClick={props.onClickEdit} size="medium">Edit</Button>
-                    <ConfirmationDialog
-                        title="Confirmation"
-                        description="Are you sure you want to proceed?"
-                        response={props.onClickDelete}
-                    >
-                        {(showDialog) => (
-                            <Button variant='outlined' onClick={showDialog} color='error' size="medium">Delete</Button>
-                        )}
-                    </ConfirmationDialog>
-                </Paper>}
+        <Paper variant="outlined" sx={{ mb: 2, py: 0, px: 8, width: '100%', display: 'flex', justifyContent: 'left', alignItems: 'center', pr: 'auto', columnGap: 10 }}>
+            <Avatar
+                alt={props.profile?.firstName}
+                src={props.profile?.avatar}
+                sx={{ width: 75, height: 75 }}
+            />
+            <Box sx={{ p: 3, pr: 'auto', }} >
+                <Typography variant="h6" align="left">
+                    {props.profile?.firstName} {props.profile?.lastName}
+                </Typography>
+                <Typography variant="body1" align="left">
+                    {props.profile?.bio}
+                </Typography>
+            </Box>
+            <Paper sx={{ ml: 'auto', mr: 3, display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
+                <Button variant='contained' onClick={props.onClickEdit} size="medium">View</Button>
             </Paper>
         </Paper >
     )

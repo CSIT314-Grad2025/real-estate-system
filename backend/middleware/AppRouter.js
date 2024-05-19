@@ -23,6 +23,7 @@ const SystemAdminUpdateAccountController = require('../controllers/SystemAdminUp
 const SystemAdminUpdateProfileController = require('../controllers/SystemAdminUpdateProfileController');
 const SystemAdminViewAccountController = require('../controllers/SystemAdminViewAccountController');
 const SystemAdminViewProfileController = require('../controllers/SystemAdminViewProfileController');
+const SearchRealEstateAgentsController = require('../controllers/common/SearchRealEstateAgentsController');
 const ViewListingController = require('../controllers/common/ViewListingController');
 const ViewProfileController = require('../controllers/common/ViewProfileController');
 const AuthMiddleware = require('./AuthMiddleware');
@@ -88,6 +89,7 @@ class AppRouter {
         this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
         this.router.get('/seller/view/listing/:id', new AuthMiddleware().protect, new SellerViewPropertyController().handleViewPropertyListing);
         this.router.get('/seller/view/my/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
+        this.router.get('/seller/create/review/:id', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
 
 
         // Common Routes
@@ -97,7 +99,7 @@ class AppRouter {
         // View Property Listing
         this.router.get('/common/view/listing/:id', new AuthMiddleware().protect, new ViewListingController().handleViewListing);
         // View Real Estate Agents
-        this.router.get('/common/search/realestateagent', new AuthMiddleware().protect, new ViewListingController().handleViewListing);
+        this.router.get('/common/search/realestateagent', new AuthMiddleware().protect, new SearchRealEstateAgentsController().handleSearchRealEstateAgents);
     }
 }
 

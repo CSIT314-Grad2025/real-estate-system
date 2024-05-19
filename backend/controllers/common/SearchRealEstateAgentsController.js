@@ -1,15 +1,14 @@
 const UserProfile = require("../../entities/UserProfile");
 
-class ViewProfileController {
-    handleViewProfile = async (req, res, next) => {
+class SearchRealEstateAgentsController {
+    handleSearchRealEstateAgents = async (req, res, next) => {
         try {
-
             // Profile requested by accountId or profile id?
             let id = req.id;
-            const profile = await new UserProfile().getUserProfileByAccount(id);
+            const realEstateAgentProfiles = await new UserProfile().getAllRealEstateAgentProfiles();
 
             res.status(200).json({
-                profile
+                realEstateAgentProfiles
             })
 
         } catch (err) {
@@ -19,4 +18,4 @@ class ViewProfileController {
     }
 }
 
-module.exports = ViewProfileController;
+module.exports = SearchRealEstateAgentsController;

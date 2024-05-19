@@ -51,8 +51,8 @@ class SellerHomePage extends Component {
     handleMyPropertiesClick = () => {
         this.state.navigate("/seller/view/my/listing",);
     }
-    handleSearchClick = () => {
-        // this.state.navigate("/systemadmin/search", { replace: true });
+    handleRealEstateAgentsClick = () => {
+        this.state.navigate("/seller/search/realestateagent", );
     }
 
     render() {
@@ -118,7 +118,7 @@ class SellerHomePage extends Component {
                                     description="View your property listings, see if buyers are interested."
                                     buttonLabel="My Properties" />
                                 <CardWithButton
-                                    onClick={this.handleSearchClick}
+                                    onClick={this.handleRealEstateAgentsClick}
                                     title="Search Real Estate Agents"
                                     description="Look for Real Estate Agents to assist you with your property sales."
                                     buttonLabel="Real Estate Agents" />

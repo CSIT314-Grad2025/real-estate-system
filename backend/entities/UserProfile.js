@@ -108,6 +108,43 @@ class UserProfile {
         return userProfiles;
     }
 
+    async getAllRealEstateAgentProfiles() {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `
+            SELECT up.*
+            FROM "UserProfiles" up
+            JOIN "Users" u ON up."accountId" = u.id
+            WHERE u."accountType" = 'realestateagent';
+            `
+        );
+
+        const profiles = dbResponse.rows;
+
+        let userProfiles = [];
+
+        // Instantiate new UserProfile object (Object creation step)
+        profiles.map((profile, _idx) => {
+            let userProfile = new UserProfile();
+            userProfile.id = profile.id;
+            userProfile.firstName = profile.firstName;
+            userProfile.lastName = profile.lastName;
+            userProfile.bio = profile.bio;
+            userProfile.contactNumber = profile.contactNumber;
+            userProfile.avatar = profile.avatar;
+            userProfile.accountId = profile.accountId;
+
+            userProfiles.push(userProfile);
+        })
+
+        // Return Array of UserProfiles objects
+        return userProfiles;
+    }
+
+
     async createUserProfile(firstName, lastName, bio, contactNumber, avatar, accountId) {
         // Database Connection worker
         const pool = DBConnection.pool;

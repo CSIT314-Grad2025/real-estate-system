@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginPage from './pages/LoginPage';
-import SellerHomePage from './pages/SellerHomePage';
+import LoginPage from './pages/LoginPage'; import SellerHomePage from './pages/SellerHomePage';
 import BuyerHomePage from './pages/BuyerHomePage';
 import SystemAdminHomePage from './pages/SystemAdminHomePage'
 import RealEstateAgentHomePage from './pages/RealEstateAgentHomePage'
@@ -26,6 +25,7 @@ import RealEstateAgentProfilePage from './pages/RealEstateAgentProfilePage';
 import ViewMyListingsPage from './pages/ViewMyListingsPage';
 import UpdatePropertyListingPage from './pages/UpdatePropertyListingPage';
 import SearchPropertyListingsPage from './pages/SearchPropertyListingsPage';
+import SearchRealEstateAgentsPage from './pages/SearchRealEstateAgentsPage';
 
 class AppComponent extends Component {
     state;
@@ -58,7 +58,7 @@ class AppComponent extends Component {
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
                         <Route path="seller/home" element={<SellerHomePage />} />
                         <Route path="seller/view/my/listing" element={<ViewMyListingsPage />} />
-                        <Route path="seller/search/realestateagent" element={<ViewMyListingsPage />} />
+                        <Route path="seller/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.REALESTATEAGENT]} />} >
