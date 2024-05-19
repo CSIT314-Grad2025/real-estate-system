@@ -29,6 +29,7 @@ import SearchRealEstateAgentsPage from './pages/SearchRealEstateAgentsPage';
 import ViewRealEstateAgentProfilePage from './pages/ViewRealEstateAgentProfilePage';
 import SellerProfilePage from './pages/SellerProfilePage';
 import BuyerSearchPropertyListingsPage from './pages/BuyerSearchPropertyListingsPage';
+import BuyerViewSavedListingsPage from './pages/BuyerViewSavedListingsPage';
 
 class AppComponent extends Component {
     state;
@@ -59,7 +60,7 @@ class AppComponent extends Component {
                         <Route path="buyer/search/listing" element={<BuyerSearchPropertyListingsPage />} />
                         <Route path="buyer/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
                         <Route path="buyer/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
-                        <Route path="buyer/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
+                        <Route path="buyer/view/my/listing" element={<BuyerViewSavedListingsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >

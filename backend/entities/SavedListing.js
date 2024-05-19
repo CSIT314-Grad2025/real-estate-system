@@ -39,9 +39,13 @@ class SavedListing {
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT * FROM "SavedListings"
-            WHERE "buyerProfileId" = '${id}'`
+            `SELECT pl.*, sl.*
+            FROM "SavedListings" sl
+            JOIN "PropertyListings" pl
+            ON sl."propertyListingId" = pl.id
+            WHERE sl."buyerProfileId" = '${id}'`
         );
+
 
         if (dbResponse.rows.length == 0) {
             let err = new Error("No saved listings found");

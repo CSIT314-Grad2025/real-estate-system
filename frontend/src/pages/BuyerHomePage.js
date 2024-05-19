@@ -52,6 +52,10 @@ class BuyerHomePage extends Component {
         this.state.navigate("/buyer/search/realestateagent",);
     }
 
+    handleViewSavedListings = () => {
+        this.state.navigate("/buyer/view/my/listing",);
+    }
+
     render() {
         return (
             <Box
@@ -120,10 +124,10 @@ class BuyerHomePage extends Component {
                                     description="Look for Real Estate Agents to assist you on your acquisition journey"
                                     buttonLabel="Real Estate Agents" />
                                 <CardWithButton
-                                    onClick={this.handleMyProfileClick}
-                                    title="My Profile"
-                                    description="View and manage your profile"
-                                    buttonLabel="My Profile" />
+                                    onClick={this.handleViewSavedListings}
+                                    title="View Your Saved Listings"
+                                    description="View and manage your Saved Properties"
+                                    buttonLabel="Saved Listings" />
                             </Box>
                         </main>
                     </Container>}
