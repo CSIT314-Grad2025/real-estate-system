@@ -46,10 +46,13 @@ class RealEstateAgentHomePage extends Component {
     }
 
     handleCreateNewListingClick = () => {
-        this.state.navigate("/realestateagent/create/listing", { replace: true });
+        this.state.navigate("/realestateagent/create/listing",);
     }
     handleMyProfileClick = () => {
-        this.state.navigate("/realestateagent/profile", { replace: true });
+        this.state.navigate("/realestateagent/profile",);
+    }
+    handleMarketPlaceClick = () => {
+        this.state.navigate("/realestateagent/search/listing",);
     }
 
     render() {
@@ -115,7 +118,7 @@ class RealEstateAgentHomePage extends Component {
                                     description="List a property on the market, get in touch with interested buyers"
                                     buttonLabel="New Listing" />
                                 <CardWithButton
-                                    onClick={this.handleCreateAccountClick}
+                                    onClick={this.handleMarketPlaceClick}
                                     title="Search Properties"
                                     description="Look at what others are listing and gain insight into the market"
                                     buttonLabel="Market Place" />

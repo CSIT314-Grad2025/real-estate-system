@@ -197,6 +197,24 @@ class PropertyListing {
         }
     }
 
+    incrementViews = async (id) => {
+        // Database Connection worker
+        const pool = DBConnection.pool;
+
+        // Query
+        const dbResponse = await pool.query(
+            `UPDATE "PropertyListings"
+            SET views = views + 1
+            WHERE id = '${id}'`
+        );
+
+        if (dbResponse.rowCount < 1) {
+            let err = new Error("Property Listing not found");
+            err.status = 404;
+            throw err;
+        }
+    }
+
     deletePropertyListing = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;

@@ -4,6 +4,7 @@ const RealEstateAgentCreateListingController = require('../controllers/RealEstat
 const RealEstateAgentDeleteListingController = require('../controllers/RealEstateAgentDeleteListingController');
 const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
 const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentLogoutController');
+const RealEstateAgentSearchListingsController = require('../controllers/RealEstateAgentSearchListingsController');
 const RealEstateAgentUpdateListingController = require('../controllers/RealEstateAgentUpdateListingController');
 const RealEstateAgentViewMyListingsController = require('../controllers/RealEstateAgentViewMyListingsController');
 const SellerLoginController = require('../controllers/SellerLoginController');
@@ -69,6 +70,8 @@ class AppRouter {
         this.router.put('/realestateagent/logout', new AuthMiddleware().protect, new RealEstateAgentLogoutController().logout)
         // Create Property Listing
         this.router.post('/realestateagent/create/listing', new AuthMiddleware().protect, new RealEstateAgentCreateListingController().handleCreateListing);
+        // Search Property Listing
+        this.router.get('/realestateagent/search/listing', new AuthMiddleware().protect, new RealEstateAgentSearchListingsController().handleSearchListings);
         // View my listings
         this.router.get('/realestateagent/view/my/listing', new AuthMiddleware().protect, new RealEstateAgentViewMyListingsController().handleViewListings);
         // Update listing
@@ -88,9 +91,13 @@ class AppRouter {
 
 
         // Common Routes
+        
         // View User Profile
         this.router.get('/common/view/myprofile', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
+        // View Property Listing
         this.router.get('/common/view/listing/:id', new AuthMiddleware().protect, new ViewListingController().handleViewListing);
+        // View Real Estate Agents
+        this.router.get('/common/search/realestateagent', new AuthMiddleware().protect, new ViewListingController().handleViewListing);
     }
 }
 

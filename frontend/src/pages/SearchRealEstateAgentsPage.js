@@ -7,7 +7,7 @@ import ConfirmationDialog from "../material_components/ConfirmationDialog";
 import Footer from "../material_components/Footer";
 import { withRouter } from "../withRouter";
 
-class SearchMyListingsPage extends Component {
+class SearchRealEstateAgentsPage extends Component {
 
     state;
 
@@ -67,7 +67,7 @@ class SearchMyListingsPage extends Component {
         }
     }
 
-    fetchListings = async () => {
+    fetchRealEstateAgents = async () => {
         try {
             const response = await axios.get(`/${this.state?.auth?.accountType}/search/listing`,
                 {
@@ -209,4 +209,4 @@ const PropertyCard = (props) => {
     )
 }
 
-export default withRouter(SearchMyListingsPage);
+export default withRouter(SearchRealEstateAgentsPage);

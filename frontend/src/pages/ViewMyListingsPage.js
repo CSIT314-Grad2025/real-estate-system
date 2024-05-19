@@ -49,7 +49,7 @@ class ViewMyListingsPage extends Component {
 
     handleClickEdit = (id) => {
         this.state.navigate(
-            `/realestateagent/update/listing/${id}`, {
+            `/${this.state?.auth?.accountType}/update/listing/${id}`, {
             state: {
                 from: this.state.location
             }
@@ -58,7 +58,7 @@ class ViewMyListingsPage extends Component {
 
     handleClickDelete = async (id) => {
         try {
-            const response = await axios.delete(`/realestateagent/delete/listing/${id}`,
+            const response = await axios.delete(`/${this.state?.auth?.accountType}/delete/listing/${id}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ class ViewMyListingsPage extends Component {
 
     fetchMyListings = async () => {
         try {
-            const response = await axios.get(`/realestateagent/view/my/listing`,
+            const response = await axios.get(`/${this.state?.auth?.accountType}/view/my/listing`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -150,6 +150,7 @@ class ViewMyListingsPage extends Component {
                                         listing={listing}
                                         onClickEdit={() => this.handleClickEdit(listing.id)}
                                         onClickDelete={() => this.handleClickDelete(listing.id)}
+                                        accountType={this.state?.auth?.accountType}
                                     />
                                 )
                             })}
@@ -181,6 +182,11 @@ const PropertyCard = (props) => {
                 {!props.listing.isAvailable && <Paper variant="outlined" sx={{ width: "20%", borderColor: 'red' }}>
                     <Typography variant="button" align="left" color="red">
                         Sold
+                    </Typography>
+                </Paper>}
+                {props.accountType === "seller" && <Paper variant="outlined" sx={{ width: "20%", borderColor: 'blue' }}>
+                    <Typography variant="button" align="left" color="blue">
+                        Views: {props?.listing?.views}
                     </Typography>
                 </Paper>}
                 <Box sx={{ my: 1 }}>
@@ -225,7 +231,7 @@ const PropertyCard = (props) => {
                         </Typography>
                     </Paper>
                 </Box>
-                <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
+                {props?.accountType === "realestateagent" && <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
                     <Button variant='contained' onClick={props.onClickEdit} size="medium">Edit</Button>
                     <ConfirmationDialog
                         title="Confirmation"
@@ -236,7 +242,7 @@ const PropertyCard = (props) => {
                             <Button variant='outlined' onClick={showDialog} color='error' size="medium">Delete</Button>
                         )}
                     </ConfirmationDialog>
-                </Paper>
+                </Paper>}
             </Paper>
         </Paper >
     )

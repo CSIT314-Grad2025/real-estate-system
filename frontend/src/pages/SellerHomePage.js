@@ -48,6 +48,9 @@ class SellerHomePage extends Component {
     handleCreateAccountClick = () => {
         // this.state.navigate("/systemadmin/create", { replace: true });
     }
+    handleMyPropertiesClick = () => {
+        this.state.navigate("/seller/view/my/listing",);
+    }
     handleSearchClick = () => {
         // this.state.navigate("/systemadmin/search", { replace: true });
     }
@@ -102,7 +105,7 @@ class SellerHomePage extends Component {
                                                 Welcome {this.state?.userProfile?.firstName}
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Get started with setting up and managing User Accounts / User Profiles
+                                                Streamline your property sale with our intuitive platform and dedicated real estate professionals.
                                             </Typography>
                                         </Box>
                                     </Grid>
@@ -110,7 +113,7 @@ class SellerHomePage extends Component {
                             </Paper>
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
-                                    onClick={this.handleCreateAccountClick}
+                                    onClick={this.handleMyPropertiesClick}
                                     title="Your Listings"
                                     description="View your property listings, see if buyers are interested."
                                     buttonLabel="My Properties" />

@@ -25,6 +25,7 @@ import CreatePropertyListingPage from './pages/CreatePropertyListingPage';
 import RealEstateAgentProfilePage from './pages/RealEstateAgentProfilePage';
 import ViewMyListingsPage from './pages/ViewMyListingsPage';
 import UpdatePropertyListingPage from './pages/UpdatePropertyListingPage';
+import SearchPropertyListingsPage from './pages/SearchPropertyListingsPage';
 
 class AppComponent extends Component {
     state;
@@ -56,6 +57,8 @@ class AppComponent extends Component {
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
                         <Route path="seller/home" element={<SellerHomePage />} />
+                        <Route path="seller/view/my/listing" element={<ViewMyListingsPage />} />
+                        <Route path="seller/search/realestateagent" element={<ViewMyListingsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.REALESTATEAGENT]} />} >
@@ -65,6 +68,7 @@ class AppComponent extends Component {
                         <Route path="realestateagent/profile" element={<RealEstateAgentProfilePage />} />
                         <Route path="realestateagent/view/my/listing" element={<ViewMyListingsPage />} />
                         <Route path="realestateagent/update/listing/:id" element={<UpdatePropertyListingPage />} />
+                        <Route path="realestateagent/search/listing" element={<SearchPropertyListingsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
@@ -79,7 +83,7 @@ class AppComponent extends Component {
                     </Route>
 
                     {/* catch all*/}
-                    <Route path="missing" element={<MissingPage />} />
+                    <Route path="*" element={<MissingPage />} />
                 </Route>
             </Routes>
         );
