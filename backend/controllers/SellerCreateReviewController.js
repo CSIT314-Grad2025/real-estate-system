@@ -8,29 +8,46 @@ class SellerCreateReviewController {
     // Controller Method
     handleCreateReview = async (req, res, next) => {
         try {
-            const { reviewTitle, reviewBody, reviewerID, rating, agentID } = req.body;
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "seller") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
 
-            const requiredFields = ['reviewTitle', 'reviewBody', 'reviewerID', 'rating', 'agentID'];
-            const missingFields = requiredFields.filter(field => !req.body[field]);
+            const reviewerProfileId = req.profileId;
+            if (!reviewerProfileId) {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
 
-            if (missingFields.length > 0) {
-                const missingFieldNames = missingFields.join(', ');
-                const errorMessage = `Missing Field(s): ${missingFieldNames}`;
-                let err = new Error(errorMessage);
+            // Parsing id from query params
+            const agentProfileId = parseInt(req.params.agentProfileId);
+            if (!agentProfileId) {
+                let err = isNaN(agentProfileId) ? new Error('Invalid Agent ID: ID must be an integer')
+                    : new Error('Missing param(s): agentProfileId');
+                err.status = 400;
+                throw err;
+            }
+
+            const { reviewBody } = req.body;
+            if (!reviewBody) {
+                let err = new Error('Missing field(s): reviewBody');
                 err.status = 400;
                 throw err;
             }
 
             // Entity Method Call
-            new Review().createReview(reviewTitle, reviewBody, reviewerID, rating, agentID);
+            await new Review().updateReview(reviewerProfileId, agentProfileId, reviewBody);
 
             // Response sent to Boundary
-            res.status(201).json({
+            res.status(200).json({
                 message: "Review submitted successfully"
             });
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

@@ -7,25 +7,17 @@ const PropertyListing = require("../entities/PropertyListing");
 class RealEstateAgentSearchListingsController {
     // Controller Method
     handleSearchListings = async (req, res, next) => {
-        const { listingID } = req.body;
         try {
-
-            if (!listingID) {
-                let err = new Error('Missing field(s): listingID');
+            if (req.requestingUser.accountType != "realestateagent") {
+                let err = new Error('Unauthorized');
                 err.status = 400;
                 throw err;
             }
+            const listings = await new PropertyListing().getAllPropertyListings();
 
-            // Entity Method Call
-            let listings = await new PropertyListing().getAllPropertyListings();
-
-            // Array of listings sent to boundary
-            res.status(200).json({
-                listings
-            })
-
+            res.status(200).json({ listings });
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

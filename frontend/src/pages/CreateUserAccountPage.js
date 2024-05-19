@@ -17,6 +17,7 @@ class CreateUserAccountPage extends Component {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
             navigate: props.navigate,
+            location: props.location,
             email: "",
             password: "",
             confirmPassword: "",
@@ -44,7 +45,7 @@ class CreateUserAccountPage extends Component {
                 password,
                 accountType
             }
-            const response = await axios.post(`/systemadmin/create`, payload, {
+            const response = await axios.post(`/systemadmin/create/account`, payload, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.state.auth.token}`
@@ -53,7 +54,14 @@ class CreateUserAccountPage extends Component {
             }
             );
             console.log("API Response: ", response?.data);
-            this.state.navigate("/confirmation", { state: { title: "Success!", description: "User Account created successfully.", } }, { replace: true });
+            this.state.navigate(
+                "/confirmation", {
+                state: {
+                    title: "Success!",
+                    description: "User Account created successfully.",
+                    from: this.state.location
+                }
+            }, { replace: true });
         } catch (err) {
             console.log("ERROR: ", err?.response);
             if (err?.response) {
@@ -135,7 +143,7 @@ class CreateUserAccountPage extends Component {
                                     required
                                     onChange={this.handleChange}
                                 >
-                                    <MenuItem value="rea">Real Estate Agent</MenuItem>
+                                    <MenuItem value="realestateagent">Real Estate Agent</MenuItem>
                                     <MenuItem value="buyer">Buyer</MenuItem>
                                     <MenuItem value="seller">Seller</MenuItem>
                                     <MenuItem value="systemadmin">System Administrator</MenuItem>
@@ -145,6 +153,7 @@ class CreateUserAccountPage extends Component {
                                 type="submit"
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2, mx: 'auto' }}
+                                disabled={this.state.password !== this.state.confirmPassword}
                             >
                                 Create User
                             </Button>

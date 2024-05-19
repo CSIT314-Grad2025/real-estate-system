@@ -151,7 +151,7 @@ class LoginPage extends Component {
                                     label="Account Type"
                                     onChange={this.handleChange}
                                 >
-                                    <MenuItem value="rea">Real Estate Agent</MenuItem>
+                                    <MenuItem value="realestateagent">Real Estate Agent</MenuItem>
                                     <MenuItem value="buyer">Buyer</MenuItem>
                                     <MenuItem value="seller">Seller</MenuItem>
                                     <MenuItem value="systemadmin">System Administrator</MenuItem>

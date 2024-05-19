@@ -1,5 +1,202 @@
 {
     "tables": {
+        "PropertyListings": {
+            "tableName": "PropertyListings",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": false,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "allowNull": false,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "propertyType": {
+                    "allowNull": false,
+                    "field": "propertyType",
+                    "seqType": "Sequelize.STRING"
+                },
+                "location": {
+                    "allowNull": false,
+                    "field": "location",
+                    "seqType": "Sequelize.STRING"
+                },
+                "views": {
+                    "allowNull": false,
+                    "field": "views",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "livingArea": {
+                    "allowNull": false,
+                    "field": "livingArea",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "bedrooms": {
+                    "allowNull": false,
+                    "field": "bedrooms",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "bathrooms": {
+                    "allowNull": false,
+                    "field": "bathrooms",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "listPrice": {
+                    "allowNull": false,
+                    "field": "listPrice",
+                    "seqType": "Sequelize.DECIMAL"
+                },
+                "isAvailable": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "isAvailable",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "sellerProfileId": {
+                    "allowNull": false,
+                    "field": "sellerProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "agentProfileId": {
+                    "allowNull": false,
+                    "field": "agentProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "Reviews": {
+            "tableName": "Reviews",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rating": {
+                    "allowNull": false,
+                    "field": "rating",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "reviewBody": {
+                    "allowNull": true,
+                    "field": "reviewBody",
+                    "seqType": "Sequelize.STRING"
+                },
+                "reviewerProfileId": {
+                    "allowNull": false,
+                    "field": "reviewerProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "agentProfileId": {
+                    "allowNull": false,
+                    "field": "agentProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "SavedListings": {
+            "tableName": "SavedListings",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "propertyListingId": {
+                    "allowNull": false,
+                    "field": "propertyListingId",
+                    "references": {
+                        "model": "PropertyListings",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "buyerProfileId": {
+                    "allowNull": false,
+                    "field": "buyerProfileId",
+                    "references": {
+                        "model": "UserProfiles",
+                        "key": "id"
+                    },
+                    "onDelete": "NO ACTION",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "Users": {
             "tableName": "Users",
             "schema": {
@@ -27,6 +224,61 @@
                 "accountType": {
                     "field": "accountType",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "UserProfiles": {
+            "tableName": "UserProfiles",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "firstName": {
+                    "field": "firstName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastName": {
+                    "field": "lastName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "bio": {
+                    "field": "bio",
+                    "seqType": "Sequelize.STRING"
+                },
+                "contactNumber": {
+                    "field": "contactNumber",
+                    "seqType": "Sequelize.STRING"
+                },
+                "avatar": {
+                    "field": "avatar",
+                    "seqType": "Sequelize.STRING"
+                },
+                "accountId": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "accountId",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {
                     "allowNull": false,

@@ -3,10 +3,18 @@ const PropertyListing = require("../entities/PropertyListing");
 class SellerViewPropertyController {
     // Controller Method
     handleViewPropertyListing = async (req, res, next) => {
-        const { id } = req.body;
         try {
+            if (req.requestingUser.accountType != "seller") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
+            let id = parseInt(req.params.id);
+
             if (!id) {
-                let err = new Error('Missing field(s): id');
+                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
                 err.status = 400;
                 throw err;
             }
@@ -20,7 +28,7 @@ class SellerViewPropertyController {
             })
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

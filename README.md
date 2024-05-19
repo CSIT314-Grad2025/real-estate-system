@@ -20,6 +20,8 @@ Create a new database in PostgreSQL using PGAdmin called `database_development`
 $ git clone git@github.com:CSIT314-Grad2025/real-estate-system.git
 $ cd real-estate-system
 ```
+Or if you already have the repository, open GitBash inside the repository
+
 Pull the latest version
 
 ```bash
@@ -28,11 +30,7 @@ $ git pull
 ```
 Switch to the latest branch
 ```
-$ git checkout {branch-name}
-```
-Example
-```
-$ git checkout feature/buyer-cruds
+$ git checkout feature/user-profiles
 ```
 
 ### Migrate Tables
@@ -40,17 +38,6 @@ $ git checkout feature/buyer-cruds
 ```bash
 $ npx sequelize-cli db:migrate
 ```
-
-**Create a new System Admin User:**
-- Open PGAdmin
-- Right click on `database_development` > Query Tool
-- Copy and execute the following query:
-
-```sql
-INSERT INTO "Users" ("email", "password", "accountType", "isLoggedIn", "createdAt", "updatedAt")
-VALUES('jd@gmail.com', '1234', 'systemadmin', false, NOW(), NOW())
-```
-
 ### Install and start back-end
 
 ```bash
@@ -69,9 +56,21 @@ $ npm install
 $ npm start
 ```
 
+### Seed the first System Admin User into the database
+
+```
+$ npx sequelize-cli db:seed:all
+```
+
 ### Connect client
 
 Open your browser and navigate to
 ```
 http://localhost:3000
 ```
+
+At the login page, enter the following:
+Email: jd@gmail.com
+Password: 1234
+AccountType: System Administrator
+

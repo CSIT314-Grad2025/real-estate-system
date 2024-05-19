@@ -1,4 +1,4 @@
-const RealEstateAgentAccount = require("../entities/RealEstateAgentAccount");
+const Review = require("../entities/Review");
 
 // @UserStory
 // As a seller, I want to be able to rate my property agents,
@@ -8,6 +8,28 @@ class SellerRateAgentController {
     // Controller method
     handleRateAgent = async (req, res, next) => {
         try {
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "seller") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
+            const reviewerProfileId = req.profileId;
+            if (!reviewerProfileId) {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
+            // Parsing id from query params
+            const agentProfileId = parseInt(req.params.agentProfileId);
+            if (!agentProfileId) {
+                let err = isNaN(agentProfileId) ? new Error('Invalid Agent ID: ID must be an integer')
+                    : new Error('Missing param(s): agentProfileId');
+                err.status = 400;
+                throw err;
+            }
             const { rating } = req.body;
 
             const requiredFields = ['rating',];
@@ -22,8 +44,7 @@ class SellerRateAgentController {
             }
 
             // Entity method call
-            let response = new RealEstateAgentAccount().updateRating(rating);
-            console.log(response);
+            await new Review().createReview(rating, '', reviewerProfileId, agentProfileId);
 
             // Response sent to Boundary
             res.status(200).json({
@@ -31,7 +52,7 @@ class SellerRateAgentController {
             });
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

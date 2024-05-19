@@ -1,53 +1,18 @@
-const BuyerAccount = require("../entities/BuyerAccount");
-const RealEstateAgentAccount = require("../entities/RealEstateAgentAccount");
-const SellerAccount = require("../entities/SellerAccount");
+const UserAccount = require("../entities/UserAccount");
 
 class SystemAdminSearchAccountsController {
     handleSearch = async (req, res, next) => {
-        const { accountType } = req.body;
         try {
-
-            if (!accountType) {
-                let err = new Error('Missing field(s): accountType');
+            if (req.requestingUser.accountType != "systemadmin") {
+                let err = new Error('Unauthorized');
                 err.status = 400;
                 throw err;
             }
+            const userAccounts = await new UserAccount().getAllAccounts();
 
-            switch (accountType) {
-                case 'Buyer':
-                    {
-                        let accounts = await new BuyerAccount().getAllAccounts();
-                        res.status(200).json({
-                            accounts
-                        })
-                        break;
-                    }
-                case 'Seller':
-                    {
-                        let accounts = await new SellerAccount().getAllAccounts();
-                        res.status(200).json({
-                            accounts
-                        })
-                        break;
-                    }
-                case 'RealEstateAgent':
-                    {
-                        let accounts = await new RealEstateAgentAccount().getAllAccounts();
-                        res.status(200).json({
-                            accounts
-                        })
-                        break;
-                    }
-
-                default:
-                    {
-                        let err = new Error('Invalid User Type');
-                        err.status = 400;
-                        throw err;
-                    }
-            }
+            res.status(200).json(userAccounts);
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import LoginPage from './pages/LoginPage';
-import SellerHomePage from './pages/SellerHomePage';
+import LoginPage from './pages/LoginPage'; import SellerHomePage from './pages/SellerHomePage';
 import BuyerHomePage from './pages/BuyerHomePage';
 import SystemAdminHomePage from './pages/SystemAdminHomePage'
 import RealEstateAgentHomePage from './pages/RealEstateAgentHomePage'
@@ -15,6 +14,22 @@ import LinkPage from './pages/LinkPage';
 import CreateUserAccountPage from './pages/CreateUserAccountPage';
 import { withRouter } from './withRouter';
 import ConfirmationPage from './pages/ConfirmationPage';
+import SearchUserAccountsPage from './pages/SearchUserAccountsPage';
+import ViewUserAccountPage from './pages/ViewUserAccountPage';
+import UpdateUserAccountPage from './pages/UpdateUserAccountPage';
+import CreateUserProfilePage from './pages/CreateUserProfilePage';
+import UpdateUserProfilePage from './pages/UpdateUserProfilePage';
+import SearchUserProfilesPage from './pages/SearchUserProfilesPage';
+import CreatePropertyListingPage from './pages/CreatePropertyListingPage';
+import RealEstateAgentProfilePage from './pages/RealEstateAgentProfilePage';
+import ViewMyListingsPage from './pages/ViewMyListingsPage';
+import UpdatePropertyListingPage from './pages/UpdatePropertyListingPage';
+import SearchPropertyListingsPage from './pages/SearchPropertyListingsPage';
+import SearchRealEstateAgentsPage from './pages/SearchRealEstateAgentsPage';
+import ViewRealEstateAgentProfilePage from './pages/ViewRealEstateAgentProfilePage';
+import SellerProfilePage from './pages/SellerProfilePage';
+import BuyerSearchPropertyListingsPage from './pages/BuyerSearchPropertyListingsPage';
+import BuyerViewSavedListingsPage from './pages/BuyerViewSavedListingsPage';
 
 class AppComponent extends Component {
     state;
@@ -22,7 +37,7 @@ class AppComponent extends Component {
     roles = {
         BUYER: "buyer",
         SELLER: "seller",
-        REALESTATEAGENT: "agent",
+        REALESTATEAGENT: "realestateagent",
         SYSTEMADMIN: "systemadmin",
     }
 
@@ -42,23 +57,43 @@ class AppComponent extends Component {
                     {/* protected routes*/}
                     <Route element={<RequireAuth allowedRoles={[this.roles.BUYER]} />} >
                         <Route path="buyer/home" element={<BuyerHomePage />} />
+                        <Route path="buyer/search/listing" element={<BuyerSearchPropertyListingsPage />} />
+                        <Route path="buyer/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
+                        <Route path="buyer/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
+                        <Route path="buyer/view/my/listing" element={<BuyerViewSavedListingsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
-                        <Route path="seller" element={<SellerHomePage />} />
+                        <Route path="seller/home" element={<SellerHomePage />} />
+                        <Route path="seller/view/my/listing" element={<ViewMyListingsPage />} />
+                        <Route path="seller/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
+                        <Route path="seller/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
+                        <Route path="seller/profile" element={<SellerProfilePage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.REALESTATEAGENT]} />} >
-                        <Route path="agent" element={<RealEstateAgentHomePage />} />
+                        <Route path="realestateagent/home" element={<RealEstateAgentHomePage />} />
+                        <Route path="realestateagent/create/listing" element={<CreatePropertyListingPage />} />
+                        <Route path="realestateagent/create/listing" element={<CreatePropertyListingPage />} />
+                        <Route path="realestateagent/profile" element={<RealEstateAgentProfilePage />} />
+                        <Route path="realestateagent/view/my/listing" element={<ViewMyListingsPage />} />
+                        <Route path="realestateagent/update/listing/:id" element={<UpdatePropertyListingPage />} />
+                        <Route path="realestateagent/search/listing" element={<SearchPropertyListingsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
+                        <Route path="systemadmin/view/account/:id" element={<ViewUserAccountPage />} />
+                        <Route path="systemadmin/update/account/:id" element={<UpdateUserAccountPage />} />
+                        <Route path="systemadmin/create/profile/:id" element={<CreateUserProfilePage />} />
+                        <Route path="systemadmin/update/profile/:id" element={<UpdateUserProfilePage />} />
                         <Route path="systemadmin/create" element={<CreateUserAccountPage />} />
                         <Route path="systemadmin/home" element={<SystemAdminHomePage />} />
+                        <Route path="systemadmin/search" element={<SearchUserAccountsPage />} />
+                        <Route path="systemadmin/search/profile" element={<SearchUserProfilesPage />} />
                     </Route>
 
                     {/* catch all*/}
-                    <Route path="missing" element={<MissingPage />} />
+                    <Route path="*" element={<MissingPage />} />
                 </Route>
             </Routes>
         );

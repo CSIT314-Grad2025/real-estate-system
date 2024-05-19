@@ -4,6 +4,7 @@ import Footer from '../material_components/Footer';
 import { withRouter } from '../withRouter';
 import axios from '../api/axios';
 import CardWithButton from '../material_components/CardWithButton';
+import AppHeader from '../components/AppHeader';
 
 class RealEstateAgentHomePage extends Component {
     state;
@@ -14,70 +15,44 @@ class RealEstateAgentHomePage extends Component {
         this.state = {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
-            navigate: props.navigate
+            navigate: props.navigate,
+            userProfile: props.userProfile,
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // Fetch User
-        await this.fetchUserProfile();
+        this.fetchUserProfile();
     }
 
     fetchUserProfile = async () => {
         try {
-            const response = await axios.get(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
+            const response = await axios.get(`/common/view/myprofile`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
             );
             console.log("API Response: ", response?.data);
+            this.setState({
+                userProfile: response?.data?.profile,
+            })
         } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
+            console.log("ERROR: ", err);
         }
     }
 
-    handleCreateAccountClick = () => {
-        this.state.navigate("/systemadmin/create", { replace: true });
+    handleCreateNewListingClick = () => {
+        this.state.navigate("/realestateagent/create/listing",);
     }
-
-    handleLogout = async (_e) => {
-        console.log(this.state.auth)
-        try {
-            const response = await axios.put(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
-            );
-            console.log("API Response: ", response?.data);
-        } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
-        }
-        window.sessionStorage.clear();
-        this.state.navigate("/", { replace: true });
+    handleMyProfileClick = () => {
+        this.state.navigate("/realestateagent/profile",);
+    }
+    handleMarketPlaceClick = () => {
+        this.state.navigate("/realestateagent/search/listing",);
     }
 
     render() {
@@ -92,15 +67,8 @@ class RealEstateAgentHomePage extends Component {
 
                 <CssBaseline />
                 <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                System Admin Home
-                            </Typography>
-                            <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
-                        </Toolbar>
-                    </AppBar>
-                    <Container maxWidth="lg" sx={{ marginY: 10 }}>
+                    <AppHeader title="Real Estate Agent Home" />
+                    {this.state.userProfile && <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
                                 sx={{
@@ -114,8 +82,6 @@ class RealEstateAgentHomePage extends Component {
                                     backgroundImage: `url(https://source.unsplash.com/random/?house)`,
                                 }}
                             >
-                                {/* Increase the priority of the hero background image */}
-                                {<img style={{ display: 'none' }} src={"url(https://source.unsplash.com/random/900×700/?fruit)"} alt={""} />}
                                 <Box
                                     sx={{
                                         position: 'absolute',
@@ -136,10 +102,10 @@ class RealEstateAgentHomePage extends Component {
                                             }}
                                         >
                                             <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
-                                                Welcome Real Estate Agent
+                                                Welcome {this.state?.userProfile?.firstName}
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Get started with setting up and managing Property Listings for your clients.
+                                                Enhance your real estate success with our all-in-one platform for property sales and client management.
                                             </Typography>
                                         </Box>
                                     </Grid>
@@ -147,18 +113,40 @@ class RealEstateAgentHomePage extends Component {
                             </Paper>
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
-                                    onClick={console.log("CLICKED")}
-                                    title="Create Property Listing"
-                                    description="Create a new Property Listing. Listed properties will appear on the markertplace for buyers to view."
-                                    buttonLabel="Create Listing" />
+                                    onClick={this.handleCreateNewListingClick}
+                                    title="List a new Property"
+                                    description="List a property on the market, get in touch with interested buyers"
+                                    buttonLabel="New Listing" />
                                 <CardWithButton
-                                    onClick={() => { console.log("CLICKED") }}
-                                    title="My Listings"
-                                    description="View properties listed by you"
-                                    buttonLabel="View" />
+                                    onClick={this.handleMarketPlaceClick}
+                                    title="Search Properties"
+                                    description="Look at what others are listing and gain insight into the market"
+                                    buttonLabel="Market Place" />
+                                <CardWithButton
+                                    onClick={this.handleMyProfileClick}
+                                    title="My Profile"
+                                    description="View and manage your profile"
+                                    buttonLabel="My Profile" />
                             </Box>
                         </main>
-                    </Container>
+                    </Container>}
+                    {!this.state.userProfile &&
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                p: { xs: 3, md: 6 },
+                                pr: { md: 0 },
+                            }}
+                        >
+                            <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
+                                User Profile not set up!
+                            </Typography>
+                            <Typography align='left' variant="h5" color="inherit" paragraph>
+                                This User Account does not have a Profile set up for it.
+                                A valid User Profile is required to use the system.
+                            </Typography>
+                        </Box>
+                    }
                 </div>
                 <Footer
                     title="Real Estate Management System"

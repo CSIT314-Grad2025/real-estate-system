@@ -7,17 +7,23 @@ const PropertyListing = require("../entities/PropertyListing");
 class RealEstateAgentDeleteListingController {
     // Controller Method
     handleDeleteListing = async (req, res, next) => {
-        const { listingID } = req.body;
         try {
+            if (req.requestingUser.accountType != "realestateagent") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
 
-            if (!listingID) {
-                let err = new Error('Missing field(s): listingID');
+            let id = parseInt(req.params.id);
+            if (!id) {
+                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
                 err.status = 400;
                 throw err;
             }
 
             // Entity Method Call
-            await new PropertyListing().deletePropertyListing(listingID);
+            await new PropertyListing().deletePropertyListing(id);
 
             // Response sent to boundary
             res.status(200).json({
@@ -25,7 +31,7 @@ class RealEstateAgentDeleteListingController {
             })
 
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }

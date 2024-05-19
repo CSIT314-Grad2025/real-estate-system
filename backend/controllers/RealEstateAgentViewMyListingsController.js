@@ -7,28 +7,34 @@ const PropertyListing = require("../entities/PropertyListing");
 class RealEstateAgentViewMyListingsController {
     // Controller Method
     handleViewListings = async (req, res, next) => {
-        const { agentID } = req.body;
         try {
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "realestateagent") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
 
-            if (!agentID) {
-                let err = new Error('Missing field(s): agentID');
+            // Parse seller profile id from request
+            const id = req.profileId;
+            if (!id) {
+                let err = new Error('Missing Field: profileId');
                 err.status = 400;
                 throw err;
             }
 
             // Entity Method Call
-            let listings = await new PropertyListing().getPropertyListingsByAgent(agentID);
+            let listings = await new PropertyListing().getPropertyListingsByAgent(id);
 
             // Array of listings sent to Boundary
             res.status(200).json({
                 listings
             })
-
         } catch (err) {
-            err.status = 400;
+            err.status = err.status || 400;
             next(err);
         }
     }
-}
 
+}
 module.exports = RealEstateAgentViewMyListingsController;

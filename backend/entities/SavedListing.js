@@ -1,3 +1,5 @@
+const DBConnection = require("../../config/dbConfig");
+
 class SavedListing {
     id;
     buyerID;
@@ -17,7 +19,7 @@ class SavedListing {
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT * FROM "SavedListing"
+            `SELECT * FROM "SavedListings"
             WHERE id = '${id}'`
         );
 
@@ -37,9 +39,13 @@ class SavedListing {
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT * FROM "SavedListing"
-            WHERE "buyerID" = '${id}'`
+            `SELECT pl.*, sl.*
+            FROM "SavedListings" sl
+            JOIN "PropertyListings" pl
+            ON sl."propertyListingId" = pl.id
+            WHERE sl."buyerProfileId" = '${id}'`
         );
+
 
         if (dbResponse.rows.length == 0) {
             let err = new Error("No saved listings found");
@@ -57,8 +63,8 @@ class SavedListing {
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT * FROM "SavedListing"
-            WHERE "propertyListingID" = '${id}'`
+            `SELECT * FROM "SavedListings"
+            WHERE "propertyListingId" = '${id}'`
         );
 
         if (dbResponse.rows.length == 0) {
@@ -72,14 +78,14 @@ class SavedListing {
     }
 
 
-    createSavedListing = async (buyerID, propertyListingID) => {
+    createSavedListing = async (buyerProfileId, propertyListingId) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
         // Query
         const dbResponse = await pool.query(
-            `INSERT INTO "Reviews"('buyerID', 'propertyListingID')
-            VALUES (${buyerID}, ${propertyListingID})`
+            `INSERT INTO "SavedListings"("buyerProfileId", "propertyListingId", "createdAt", "updatedAt")
+            VALUES ('${buyerProfileId}', '${propertyListingId}', NOW(), NOW())`
         );
     }
 
@@ -89,7 +95,7 @@ class SavedListing {
 
         // Query
         await pool.query(
-            `DELETE FROM "Reviews"
+            `DELETE FROM "SavedListings"
             WHERE id = '${id}'`
         );
     }

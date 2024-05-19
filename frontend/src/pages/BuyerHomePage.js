@@ -15,42 +15,45 @@ class BuyerHomePage extends Component {
         this.state = {
             auth: props.auth.auth,
             setAuth: props.auth.setAuth,
-            navigate: props.navigate
+            navigate: props.navigate,
+            userProfile: props.userProfile,
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         // Fetch User
-        // await this.fetchUserProfile();
+        this.fetchUserProfile();
     }
 
     fetchUserProfile = async () => {
         try {
-            const response = await axios.get(`/${this.state.auth.accountType}/logout`, {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.state.auth.token}`
-                },
-                withCredentials: true
-            }
+            const response = await axios.get(`/common/view/myprofile`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
             );
             console.log("API Response: ", response?.data);
+            this.setState({
+                userProfile: response?.data?.profile,
+            })
         } catch (err) {
-            console.log("ERROR: ", err?.response);
-            if (err?.response) {
-                this.setState({
-                    errorMessage: err.response.data.message
-                });
-            } else {
-                this.setState({
-                    errorMessage: "No response from server"
-                });
-            }
+            console.log("ERROR: ", err);
         }
     }
 
-    handleCreateAccountClick = () => {
-        this.state.navigate("/systemadmin/create", { replace: true });
+    handleMarketPlaceClick = () => {
+        this.state.navigate("/buyer/search/listing",);
+    }
+    handleSearchRealEstateAgentsClick = () => {
+        this.state.navigate("/buyer/search/realestateagent",);
+    }
+
+    handleViewSavedListings = () => {
+        this.state.navigate("/buyer/view/my/listing",);
     }
 
     render() {
@@ -66,7 +69,7 @@ class BuyerHomePage extends Component {
                 <CssBaseline />
                 <div>
                     <AppHeader title="Buyer Home" />
-                    <Container maxWidth="lg" sx={{ marginY: 10 }}>
+                    {this.state.userProfile && <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
                             <Paper
                                 sx={{
@@ -80,8 +83,6 @@ class BuyerHomePage extends Component {
                                     backgroundImage: `url(https://source.unsplash.com/random/?house)`,
                                 }}
                             >
-                                {/* Increase the priority of the hero background image */}
-                                {<img style={{ display: 'none' }} src={"url(https://source.unsplash.com/random/900×700/?fruit)"} alt={""} />}
                                 <Box
                                     sx={{
                                         position: 'absolute',
@@ -102,10 +103,10 @@ class BuyerHomePage extends Component {
                                             }}
                                         >
                                             <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
-                                                Welcome Buyer
+                                                Welcome {this.state?.userProfile?.firstName}
                                             </Typography>
                                             <Typography align='left' variant="h5" color="inherit" paragraph>
-                                                Discover the best properties in your area with our user-friendly platform. Start your journey towards owning your perfect home now!
+                                                Find your dream property effortlessly with our comprehensive listings and trusted real estate agents.
                                             </Typography>
                                         </Box>
                                     </Grid>
@@ -113,18 +114,40 @@ class BuyerHomePage extends Component {
                             </Paper>
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
-                                    onClick={() => { console.log("CLICKED") }}
-                                    title="MarketPlace"
-                                    description="Explore the MarketPlace and find properties that suit your needs."
-                                    buttonLabel="MarketPlace" />
+                                    onClick={this.handleMarketPlaceClick}
+                                    title="Search Properties"
+                                    description="Access the marketplace and start searching for properties to your liking."
+                                    buttonLabel="Market Place" />
                                 <CardWithButton
-                                    onClick={this.handleCreateAccountClick}
-                                    title="View Favorites"
-                                    description="Browse through properties you have liked."
-                                    buttonLabel="View" />
+                                    onClick={this.handleSearchRealEstateAgentsClick}
+                                    title="Search Real Estate Agents"
+                                    description="Look for Real Estate Agents to assist you on your acquisition journey"
+                                    buttonLabel="Real Estate Agents" />
+                                <CardWithButton
+                                    onClick={this.handleViewSavedListings}
+                                    title="View Your Saved Listings"
+                                    description="View and manage your Saved Properties"
+                                    buttonLabel="Saved Listings" />
                             </Box>
                         </main>
-                    </Container>
+                    </Container>}
+                    {!this.state.userProfile &&
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                p: { xs: 3, md: 6 },
+                                pr: { md: 0 },
+                            }}
+                        >
+                            <Typography align='left' component="h1" variant="h3" color="inherit" gutterBottom>
+                                User Profile not set up!
+                            </Typography>
+                            <Typography align='left' variant="h5" color="inherit" paragraph>
+                                This User Account does not have a Profile set up for it.
+                                A valid User Profile is required to use the system.
+                            </Typography>
+                        </Box>
+                    }
                 </div>
                 <Footer
                     title="Real Estate Management System"
