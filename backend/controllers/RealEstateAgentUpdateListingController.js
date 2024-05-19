@@ -7,29 +7,58 @@ const PropertyListing = require("../entities/PropertyListing");
 class RealEstateAgentUpdateListingController {
     // Controller Method
     handleUpdateListing = async (req, res, next) => {
-        const { listingID } = req.body;
         try {
-
-            if (!listingID) {
-                let err = new Error('Missing field(s): listingID');
+            if (req.requestingUser.accountType != "realestateagent") {
+                let err = new Error('Unauthorized');
                 err.status = 400;
                 throw err;
             }
 
+            // Parsing id from query params
+            let id = parseInt(req.params.id);
+            if (!id) {
+                let err = isNaN(id) ? new Error('Invalid ID: ID must be an integer')
+                    : new Error('Missing field(s): id');
+                err.status = 400;
+                throw err;
+            }
 
-            // CREATE UPDATED LISTING OBJECT
-            let updatedListing = new PropertyListing();
+            const agentProfileId = req.profileId
 
-            // updatedListing.title = title
-            // updatedListing.description = title
+            // Destrucutre field data from request body
+            const {
+                title,
+                sellerProfileId,
+                description,
+                propertyType,
+                livingArea,
+                bedrooms,
+                bathrooms,
+                listPrice,
+                location,
+                isAvailable,
+                views,
+            } = req.body;
 
-            // Entity Method Call
-            await new PropertyListing().updatePropertyListing(listingID);
+            let propertyListing = new PropertyListing();
+            propertyListing.id = id;
+            propertyListing.title = title;
+            propertyListing.agentProfileId = agentProfileId;
+            propertyListing.sellerProfileId = sellerProfileId;
+            propertyListing.description = description;
+            propertyListing.propertyType = propertyType;
+            propertyListing.livingArea = livingArea;
+            propertyListing.bedrooms = bedrooms;
+            propertyListing.bathrooms = bathrooms;
+            propertyListing.listPrice = listPrice;
+            propertyListing.location = location;
+            propertyListing.isAvailable = isAvailable;
+            propertyListing.views = views;
 
-            // Response sent to boundary
+            await propertyListing.updatePropertyListing();
             res.status(200).json({
-                message: "Property listing updated successfully"
-            })
+                message: "Property Listing updated successfully"
+            });
 
         } catch (err) {
             err.status = err.status || 400;

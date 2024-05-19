@@ -42,9 +42,43 @@ class ViewMyListingsPage extends Component {
     };
 
     componentDidMount() {
-        // Fetch User Account from server
+        // Fetch User Profile from server
         this.fetchUserProfile();
         this.fetchMyListings();
+    }
+
+    handleClickEdit = (id) => {
+        this.state.navigate(
+            `/realestateagent/update/listing/${id}`, {
+            state: {
+                from: this.state.location
+            }
+        },);
+    }
+
+    handleClickDelete = async (id) => {
+        try {
+            const response = await axios.delete(`/realestateagent/delete/listing/${id}`,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
+            );
+            console.log("API Response: ", response);
+            this.state.navigate(
+                "/confirmation", {
+                state: {
+                    title: "Success!",
+                    description: "Property Listing deleted successfully.",
+                    from: this.state.location,
+                }
+            }, { replace: true });
+        } catch (err) {
+            console.log("ERROR: ", err);
+        }
     }
 
     fetchUserProfile = async () => {
@@ -112,7 +146,11 @@ class ViewMyListingsPage extends Component {
                         <main>
                             {this.state.filteredListings.map((listing, idx) => {
                                 return (
-                                    <PropertyCard key={listing.id} listing={listing} />
+                                    <PropertyCard key={listing.id}
+                                        listing={listing}
+                                        onClickEdit={() => this.handleClickEdit(listing.id)}
+                                        onClickDelete={() => this.handleClickDelete(listing.id)}
+                                    />
                                 )
                             })}
                         </main>
@@ -188,11 +226,11 @@ const PropertyCard = (props) => {
                     </Paper>
                 </Box>
                 <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
-                    <Button variant='contained' onClick={() => { }} size="medium">Edit</Button>
+                    <Button variant='contained' onClick={props.onClickEdit} size="medium">Edit</Button>
                     <ConfirmationDialog
                         title="Confirmation"
                         description="Are you sure you want to proceed?"
-                        response={() => { }}
+                        response={props.onClickDelete}
                     >
                         {(showDialog) => (
                             <Button variant='outlined' onClick={showDialog} color='error' size="medium">Delete</Button>

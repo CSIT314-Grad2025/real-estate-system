@@ -155,8 +155,15 @@ class PropertyListing {
         // Database Connection worker
         const pool = DBConnection.pool;
 
-        let setClause = "";
+        // Verify the requesting real estate agent is also the creator of the listing
+        const propertyListingOriginal = await new PropertyListing().getPropertyListingByID(this.id)
+        if (propertyListingOriginal.agentProfileId != this.agentProfileId) {
+            let err = new Error('Unauthorized: Requesting owner is not the owner of this listing');
+            err.status = 400;
+            throw err;
+        }
 
+        let setClause = "";
         let comma = "";
 
         this.title && (setClause += `${comma}"title" = '${this.title}'`) && (comma = ",");

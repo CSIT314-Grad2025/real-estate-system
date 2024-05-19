@@ -24,6 +24,7 @@ import SearchUserProfilesPage from './pages/SearchUserProfilesPage';
 import CreatePropertyListingPage from './pages/CreatePropertyListingPage';
 import RealEstateAgentProfilePage from './pages/RealEstateAgentProfilePage';
 import ViewMyListingsPage from './pages/ViewMyListingsPage';
+import UpdatePropertyListingPage from './pages/UpdatePropertyListingPage';
 
 class AppComponent extends Component {
     state;
@@ -63,6 +64,7 @@ class AppComponent extends Component {
                         <Route path="realestateagent/create/listing" element={<CreatePropertyListingPage />} />
                         <Route path="realestateagent/profile" element={<RealEstateAgentProfilePage />} />
                         <Route path="realestateagent/view/my/listing" element={<ViewMyListingsPage />} />
+                        <Route path="realestateagent/update/listing/:id" element={<UpdatePropertyListingPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SYSTEMADMIN]} />} >
