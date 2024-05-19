@@ -45,16 +45,15 @@ class SellerHomePage extends Component {
         }
     }
 
-    handleCreateAccountClick = () => {
-        // this.state.navigate("/systemadmin/create", { replace: true });
-    }
     handleMyPropertiesClick = () => {
         this.state.navigate("/seller/view/my/listing",);
     }
     handleRealEstateAgentsClick = () => {
         this.state.navigate("/seller/search/realestateagent", );
     }
-
+    handleMyProfileClick = () => {
+        this.state.navigate("/seller/profile",);
+    }
     render() {
         return (
             <Box
@@ -123,7 +122,7 @@ class SellerHomePage extends Component {
                                     description="Look for Real Estate Agents to assist you with your property sales."
                                     buttonLabel="Real Estate Agents" />
                                 <CardWithButton
-                                    onClick={this.handleSearchClick}
+                                    onClick={this.handleMyProfileClick}
                                     title="My Profile"
                                     description="View and manage your profile"
                                     buttonLabel="My Profile" />

@@ -45,11 +45,11 @@ class BuyerHomePage extends Component {
         }
     }
 
-    handleCreateAccountClick = () => {
-        // this.state.navigate("/systemadmin/create", { replace: true });
+    handleMarketPlaceClick = () => {
+        this.state.navigate("/buyer/search/listing",);
     }
-    handleSearchClick = () => {
-        // this.state.navigate("/systemadmin/search", { replace: true });
+    handleSearchRealEstateAgentsClick = () => {
+        this.state.navigate("/buyer/search/realestateagent",);
     }
 
     render() {
@@ -110,17 +110,17 @@ class BuyerHomePage extends Component {
                             </Paper>
                             <Box container spacing={0} sx={{ display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
                                 <CardWithButton
-                                    onClick={this.handleCreateAccountClick}
+                                    onClick={this.handleMarketPlaceClick}
                                     title="Search Properties"
                                     description="Access the marketplace and start searching for properties to your liking."
                                     buttonLabel="Market Place" />
                                 <CardWithButton
-                                    onClick={this.handleSearchClick}
+                                    onClick={this.handleSearchRealEstateAgentsClick}
                                     title="Search Real Estate Agents"
                                     description="Look for Real Estate Agents to assist you on your acquisition journey"
                                     buttonLabel="Real Estate Agents" />
                                 <CardWithButton
-                                    onClick={this.handleSearchClick}
+                                    onClick={this.handleMyProfileClick}
                                     title="My Profile"
                                     description="View and manage your profile"
                                     buttonLabel="My Profile" />

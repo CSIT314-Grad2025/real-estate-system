@@ -8,11 +8,18 @@ class BuyerSearchNewListingsController {
     // Controller Method
     handleSearchNewListings = async (req, res, next) => {
         try {
+
+            if (req.requestingUser.accountType != "buyer") {
+                let err = new Error('Unauthorized');
+                err.status = 400;
+                throw err;
+            }
+
             // Entity Method Call
             let listings = await new PropertyListing().getAllPropertyListings();
 
             // Reduce to available listings
-            let newListings = listings.filter(listing => listing.available);
+            let newListings = listings.filter(listing => listing.isAvailable);
 
             // Array of listings sent to boundary
             res.status(200).json({

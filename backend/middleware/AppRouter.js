@@ -1,5 +1,7 @@
 const BuyerLoginController = require('../controllers/BuyerLoginController');
 const BuyerLogoutController = require('../controllers/BuyerLogoutController');
+const BuyerSearchNewListingsController = require('../controllers/BuyerSearchNewListingsController');
+const BuyerSearchSoldListingsController = require('../controllers/BuyerSearchSoldListingsController');
 const RealEstateAgentCreateListingController = require('../controllers/RealEstateAgentCreateListingController');
 const RealEstateAgentDeleteListingController = require('../controllers/RealEstateAgentDeleteListingController');
 const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
@@ -87,6 +89,10 @@ class AppRouter {
         // Buyer Routes
         this.router.post('/buyer/login', new BuyerLoginController().handleLogin);
         this.router.put('/buyer/logout', new AuthMiddleware().protect, new BuyerLogoutController().logout)
+        // Search New Property Listings
+        this.router.get('/buyer/search/listing/new', new AuthMiddleware().protect, new BuyerSearchNewListingsController().handleSearchNewListings);
+        // Search Sold Property Listing
+        this.router.get('/buyer/search/listing/sold', new AuthMiddleware().protect, new BuyerSearchSoldListingsController().handleSearchSoldListings);
 
         // Seller Routes
         this.router.post('/seller/login', new SellerLoginController().handleLogin);

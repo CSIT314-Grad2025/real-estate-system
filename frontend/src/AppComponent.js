@@ -27,6 +27,8 @@ import UpdatePropertyListingPage from './pages/UpdatePropertyListingPage';
 import SearchPropertyListingsPage from './pages/SearchPropertyListingsPage';
 import SearchRealEstateAgentsPage from './pages/SearchRealEstateAgentsPage';
 import ViewRealEstateAgentProfilePage from './pages/ViewRealEstateAgentProfilePage';
+import SellerProfilePage from './pages/SellerProfilePage';
+import BuyerSearchPropertyListingsPage from './pages/BuyerSearchPropertyListingsPage';
 
 class AppComponent extends Component {
     state;
@@ -54,6 +56,8 @@ class AppComponent extends Component {
                     {/* protected routes*/}
                     <Route element={<RequireAuth allowedRoles={[this.roles.BUYER]} />} >
                         <Route path="buyer/home" element={<BuyerHomePage />} />
+                        <Route path="buyer/search/listing" element={<BuyerSearchPropertyListingsPage />} />
+                        <Route path="buyer/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
@@ -61,6 +65,7 @@ class AppComponent extends Component {
                         <Route path="seller/view/my/listing" element={<ViewMyListingsPage />} />
                         <Route path="seller/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
                         <Route path="seller/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
+                        <Route path="seller/profile" element={<SellerProfilePage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.REALESTATEAGENT]} />} >
