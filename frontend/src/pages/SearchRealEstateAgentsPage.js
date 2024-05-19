@@ -42,6 +42,15 @@ class SearchRealEstateAgentsPage extends Component {
         })
     };
 
+    handleClickView = (id) => {
+        this.state.navigate(
+            `/seller/view/realestateagent/${id}`, {
+            state: {
+                from: this.state.location
+            }
+        },);
+    }
+
     componentDidMount() {
         // Fetch User Profile from server
         this.fetchUserProfile();
@@ -115,8 +124,7 @@ class SearchRealEstateAgentsPage extends Component {
                                 return (
                                     <ProfileCard key={profile.id}
                                         profile={profile}
-                                        onClickEdit={() => this.handleClickEdit(profile.id)}
-                                        onClickDelete={() => this.handleClickDelete(profile.id)}
+                                        onClickView={() => this.handleClickView(profile.id)}
                                         accountType={this.state.auth.accountType}
                                     />
                                 )
@@ -150,7 +158,7 @@ const ProfileCard = (props) => {
                 </Typography>
             </Box>
             <Paper sx={{ ml: 'auto', mr: 3, display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
-                <Button variant='contained' onClick={props.onClickEdit} size="medium">View</Button>
+                <Button variant='contained' onClick={props.onClickView} size="medium">View</Button>
             </Paper>
         </Paper >
     )

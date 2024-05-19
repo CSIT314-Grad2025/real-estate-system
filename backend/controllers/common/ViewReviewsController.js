@@ -1,8 +1,7 @@
 const Review = require("../../entities/Review");
-const UserProfile = require("../../entities/UserProfile");
 
-class ViewProfileController {
-    handleViewProfile = async (req, res, next) => {
+class ViewReviewsController {
+    handleViewReviews = async (req, res, next) => {
         try {
 
             // Parsing id from query params
@@ -14,10 +13,10 @@ class ViewProfileController {
                 throw err;
             }
 
-            const profile = await new UserProfile().getUserProfile(id);
+            const reviews = await new Review().getReviewsByAgentProfileId(id);
 
             res.status(200).json({
-                profile,
+                reviews
             })
 
         } catch (err) {
@@ -27,4 +26,4 @@ class ViewProfileController {
     }
 }
 
-module.exports = ViewProfileController;
+module.exports = ViewReviewsController;

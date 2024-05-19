@@ -1,3 +1,4 @@
+const DBConnection = require("../../config/dbConfig");
 const UserAccount = require("./UserAccount");
 const UserProfile = require("./UserProfile");
 
@@ -59,14 +60,13 @@ class Review {
     createReview = async (rating, reviewBody, reviewerProfileId, agentProfileId) => {
         // Database Connection worker
         const pool = DBConnection.pool;
-
         reviewBody = reviewBody || '';
-
         try {
             const reviewerProfile = await new UserProfile().getUserProfile(reviewerProfileId);
             const reviewerAccount = await new UserAccount().getAccountById(reviewerProfile.accountId);
-            if (reviewerAccount.accountType != 'seller' || reviewerAccount.accountType != 'buyer') {
-                let err = new Error("Reivewer is not a Seller or a Buyer");
+            if (reviewerAccount.accountType != 'seller' && reviewerAccount.accountType != 'buyer') {
+                console.log(reviewerAccount)
+                let err = new Error("Reviewer is not a Seller or a Buyer");
                 err.status = 400;
                 throw err;
             }
@@ -88,8 +88,8 @@ class Review {
             VALUES(
                 '${rating}', '${reviewBody}', '${reviewerProfileId}', '${agentProfileId}',
                 NOW(), NOW()
-            )`
-            );
+            )`);
+
         } catch (e) {
             console.log(e.code);
             if (e.code == 23503) {
@@ -101,7 +101,7 @@ class Review {
         }
     }
 
-    updateReview = async (id, review) => {
+    updateReview = async (id, reviewBody) => {
         // Database Connection worker
         const pool = DBConnection.pool;
 
@@ -118,7 +118,6 @@ class Review {
         }
 
         const review = dbResponse.rows[0];
-        console.log(review);
         return review;
     }
 

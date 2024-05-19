@@ -9,6 +9,7 @@ const RealEstateAgentUpdateListingController = require('../controllers/RealEstat
 const RealEstateAgentViewMyListingsController = require('../controllers/RealEstateAgentViewMyListingsController');
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
+const SellerRateAgentController = require('../controllers/SellerRateAgentController');
 const SellerViewMyListingsController = require('../controllers/SellerViewMyListingsController');
 const SellerViewPropertyController = require('../controllers/SellerViewPropertyController');
 const SystemAdminCreateAccountController = require('../controllers/SystemAdminCreateAccountController');
@@ -25,7 +26,9 @@ const SystemAdminViewAccountController = require('../controllers/SystemAdminView
 const SystemAdminViewProfileController = require('../controllers/SystemAdminViewProfileController');
 const SearchRealEstateAgentsController = require('../controllers/common/SearchRealEstateAgentsController');
 const ViewListingController = require('../controllers/common/ViewListingController');
+const ViewMyProfileController = require('../controllers/common/ViewMyProfileController');
 const ViewProfileController = require('../controllers/common/ViewProfileController');
+const ViewReviewsController = require('../controllers/common/ViewReviewsController');
 const AuthMiddleware = require('./AuthMiddleware');
 
 class AppRouter {
@@ -89,17 +92,22 @@ class AppRouter {
         this.router.put('/seller/logout', new AuthMiddleware().protect, new SellerLogoutController().logout,)
         this.router.get('/seller/view/listing/:id', new AuthMiddleware().protect, new SellerViewPropertyController().handleViewPropertyListing);
         this.router.get('/seller/view/my/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
-        this.router.get('/seller/create/review/:id', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
+        this.router.post('/seller/create/review/:agentProfileId', new AuthMiddleware().protect, new SellerRateAgentController().handleRateAgent);
+        this.router.put('/seller/update/review/:agentProfileId', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
 
 
         // Common Routes
         
         // View User Profile
-        this.router.get('/common/view/myprofile', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
+        this.router.get('/common/view/myprofile', new AuthMiddleware().protect, new ViewMyProfileController().handleViewMyProfile);
         // View Property Listing
         this.router.get('/common/view/listing/:id', new AuthMiddleware().protect, new ViewListingController().handleViewListing);
         // View Real Estate Agents
         this.router.get('/common/search/realestateagent', new AuthMiddleware().protect, new SearchRealEstateAgentsController().handleSearchRealEstateAgents);
+        // View Real Estate Agent
+        this.router.get('/common/view/realestateagent/:id', new AuthMiddleware().protect, new ViewProfileController().handleViewProfile);
+        // View Reviews
+        this.router.get('/common/view/reviews/:id', new AuthMiddleware().protect, new ViewReviewsController().handleViewReviews);
     }
 }
 
