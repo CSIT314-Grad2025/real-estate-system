@@ -45,7 +45,7 @@ class ViewUserAccountPage extends Component {
             state: {
                 from: this.state.location
             }
-        }, { replace: true });
+        },);
     }
 
     handleCreateProfileClick = () => {
@@ -55,7 +55,7 @@ class ViewUserAccountPage extends Component {
             state: {
                 from: this.state.location
             }
-        }, { replace: true });
+        },);
     }
 
     handleUpdateProfileClick = () => {
@@ -65,7 +65,7 @@ class ViewUserAccountPage extends Component {
             state: {
                 from: this.state.location
             }
-        }, { replace: true });
+        },);
     }
 
     handleDeleteAccountClick = async () => {

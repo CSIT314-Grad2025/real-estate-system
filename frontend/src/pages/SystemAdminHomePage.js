@@ -46,13 +46,13 @@ class SystemAdminHomePage extends Component {
     }
 
     handleCreateAccountClick = () => {
-        this.state.navigate("/systemadmin/create", { replace: true });
+        this.state.navigate("/systemadmin/create",);
     }
     handleSearchAccountsClick = () => {
-        this.state.navigate("/systemadmin/search", { replace: true });
+        this.state.navigate("/systemadmin/search",);
     }
     handleSearchProfilesClick = () => {
-        this.state.navigate("/systemadmin/search/profile", { replace: true });
+        this.state.navigate("/systemadmin/search/profile",);
     }
 
     render() {

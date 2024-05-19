@@ -33,9 +33,12 @@ class RealEstateAgentProfilePage extends Component {
     };
 
     componentDidMount() {
-        // Fetch User Account from server
-        // this.fetchUserAccount();
+        // Fetch User Profile from server
         this.fetchUserProfile();
+    }
+
+    handleMyListingsClick = () => {
+        this.state.navigate("/realestateagent/view/my/listing");
     }
 
     fetchUserProfile = async () => {
@@ -73,74 +76,70 @@ class RealEstateAgentProfilePage extends Component {
                     <AppHeader title="Your Profile" />
                     <Container maxWidth="lg" sx={{ marginY: 10 }}>
                         <main>
-                            {this.state.userProfile && <Paper elevation={0} sx={{
-                                display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 2,
-                                backgroundColor: 'grey.800',
-                                color: '#fff',
-                                mb: 4,
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'center',
-                                backgroundImage: `url(https://source.unsplash.com/random/?modern)`,
-                            }}>
-                                <Paper variant="outlined" sx={{ p: 3, width: '65%', display: 'flex', flexDirection: 'column', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
-                                    <Typography variant='h3' align="left" gutterBottom>
-                                        Your Profile
-                                        <Typography align="right">Profile ID: {this.state?.userProfile?.id}</Typography>
-                                    </Typography>
-                                    <Avatar
-                                        alt={this.state?.userProfile?.firstName}
-                                        src={this.state?.userProfile?.avatar}
-                                        sx={{ width: 150, height: 150 }}
-                                    />
-                                    <Paper sx={{ pr: 'auto', display: "flex", gap: 3 }} elevation={0}>
-                                        <Paper elevation={0} sx={{ width: '50%' }}>
-                                            <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
-                                                <Typography variant="body1" align="left">
-                                                    First Name
-                                                </Typography>
+                            {this.state.userProfile &&
+                                <Paper elevation={0} sx={{ width: '100%', display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
+                                    <Paper variant="outlined" sx={{ p: 3, width: '65%', display: 'flex', flexDirection: 'column', justifyContent: 'left', pr: 'auto', columnGap: 10 }}>
+                                        <Typography variant='h3' align="left" gutterBottom>
+                                            Your Profile
+                                        </Typography>
+                                        <Avatar
+                                            alt={this.state?.userProfile?.firstName}
+                                            src={this.state?.userProfile?.avatar}
+                                            sx={{ width: 150, height: 150 }}
+                                        />
+                                        <Paper sx={{ pr: 'auto', display: "flex", gap: 3 }} elevation={0}>
+                                            <Paper elevation={0} sx={{ width: '50%' }}>
+                                                <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
+                                                    <Typography variant="body1" align="left">
+                                                        First Name
+                                                    </Typography>
+                                                </Paper>
+                                                <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                                    <Typography variant="body1" align="left">
+                                                        {this.state?.userProfile?.firstName}
+                                                    </Typography>
+                                                </Paper>
                                             </Paper>
-                                            <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
-                                                <Typography variant="body1" align="left">
-                                                    {this.state?.userProfile?.firstName}
-                                                </Typography>
-                                            </Paper>
-                                        </Paper>
-                                        <Paper elevation={0} sx={{ width: '50%' }}>
-                                            <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
-                                                <Typography variant="body1" align="left">
-                                                    Last Name
-                                                </Typography>
-                                            </Paper>
-                                            <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
-                                                <Typography variant="body1" align="left">
-                                                    {this.state?.userProfile?.lastName}
-                                                </Typography>
+                                            <Paper elevation={0} sx={{ width: '50%' }}>
+                                                <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
+                                                    <Typography variant="body1" align="left">
+                                                        Last Name
+                                                    </Typography>
+                                                </Paper>
+                                                <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                                    <Typography variant="body1" align="left">
+                                                        {this.state?.userProfile?.lastName}
+                                                    </Typography>
+                                                </Paper>
                                             </Paper>
                                         </Paper>
+                                        <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
+                                            <Typography variant="body1" align="left">
+                                                Bio
+                                            </Typography>
+                                        </Paper>
+                                        <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                            <Typography variant="body1" align="left">
+                                                {this.state?.userProfile?.bio}
+                                            </Typography>
+                                        </Paper>
+                                        <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
+                                            <Typography variant="body1" align="left">
+                                                Contact Number
+                                            </Typography>
+                                        </Paper>
+                                        <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                            <Typography variant="body1" align="left">
+                                                {this.state?.userProfile?.contactNumber}
+                                            </Typography>
+                                        </Paper>
                                     </Paper>
-                                    <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
-                                        <Typography variant="body1" align="left">
-                                            Bio
-                                        </Typography>
-                                    </Paper>
-                                    <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
-                                        <Typography variant="body1" align="left">
-                                            {this.state?.userProfile?.bio}
-                                        </Typography>
-                                    </Paper>
-                                    <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
-                                        <Typography variant="body1" align="left">
-                                            Contact Number
-                                        </Typography>
-                                    </Paper>
-                                    <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
-                                        <Typography variant="body1" align="left">
-                                            {this.state?.userProfile?.contactNumber}
-                                        </Typography>
-                                    </Paper>
+                                    <CardWithButton
+                                        onClick={this.handleMyListingsClick}
+                                        title="Your Property Listings"
+                                        description="View and manage your property listings"
+                                        buttonLabel="My Listings" />
                                 </Paper>
-                            </Paper>
                             }
                             <Paper elevation={0} sx={{
                                 display: 'flex', justifyContent: 'left', pr: 'auto', columnGap: 2, mb: 4,

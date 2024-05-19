@@ -32,7 +32,7 @@ class SearchPropertyListingsPage extends Component {
             state: {
                 from: this.state.location
             }
-        }, { replace: true });
+        },);
     }
 
     handleChange = (e) => {
