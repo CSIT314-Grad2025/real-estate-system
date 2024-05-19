@@ -40,32 +40,63 @@ class ViewRealEstateAgentPage extends Component {
         });
     };
 
-    handleRateSubmit = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-        this.setState({
-            canRate: false,
-        })
+    handleRateSubmit = async (e) => {
         try {
-            const response = await axios.post(`/seller/create/review/${this.state.params.id}`,
+            const response = await axios.post(`/seller/create/review/${this.state.params.id}`, {
+                rating: e.target.value
+            },
                 {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${this.state.auth.token}`
-                    }, 
+                    },
                     withCredentials: true
                 }
             );
             console.log("API Response: ", response?.data);
             this.setState({
-                agentProfile: response?.data?.profile,
+                [e.target.name]: e.target.value
+            });
+            this.setState({
+                canRate: false,
             })
+            await this.fetchReviews();
         } catch (err) {
             console.log("ERROR: ", err);
+            this.setState({
+                errorMessage: err.response?.data?.message
+            })
         }
     }
-    };
+
+    handleReviewSubmit = async (e) => {
+        try {
+            const response = await axios.put(`/seller/update/review/${this.state.params.id}`, {
+                reviewBody: this.state.reviewBody
+            },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.auth.token}`
+                    },
+                    withCredentials: true
+                }
+            );
+            console.log("API Response: ", response?.data);
+            this.setState({
+                [e.target.name]: e.target.value
+            });
+            this.setState({
+                canRate: false,
+            })
+            await this.fetchReviews();
+        } catch (err) {
+            console.log("ERROR: ", err);
+            this.setState({
+                errorMessage: err.response?.data?.message
+            })
+        }
+    }
 
     componentDidMount() {
         // Fetch User Account from server
@@ -92,6 +123,9 @@ class ViewRealEstateAgentPage extends Component {
             })
         } catch (err) {
             console.log("ERROR: ", err);
+            this.setState({
+                errorMessage: err.response?.data?.message
+            })
         }
     }
 
@@ -112,6 +146,9 @@ class ViewRealEstateAgentPage extends Component {
             })
         } catch (err) {
             console.log("ERROR: ", err);
+            this.setState({
+                errorMessage: err.response?.data?.message
+            })
         }
     }
 
@@ -131,26 +168,40 @@ class ViewRealEstateAgentPage extends Component {
                 reviews: response?.data?.reviews,
                 count: response?.data?.reviews?.length,
             })
+
+            let sum = 0;
+            response?.data?.reviews.map((review, idx) => {
+                sum += review.rating;
+                if (review.reviewerProfileId === this.state?.userProfile?.id && review.agentProfileId === this.state.agentProfile.id) {
+                    this.setState({
+                        canRate: false,
+                        newRating: review.rating,
+                    })
+                    if (review.reviewBody) {
+                        this.setState({ canReview: false })
+                    }
+                }
+            })
+            this.setState({
+                rating: sum
+            })
         } catch (err) {
             console.log("ERROR: ", err);
+            this.setState({
+                errorMessage: err.response?.data?.message
+            })
         }
+
     }
 
     render() {
-        let sum = 0;
-        this.state.reviews.map((review, idx) => {
-            sum += review.rating;
-            if (review.reviewerProfileId === this.state.userProfile.id && review.agentProfileId === this.state.agentProfile.id) {
-                this.setState({
-                    canRate: false,
-                    newRating: review.rating,
-                })
-                if (review.reviewBody) {
-                    this.setState({ canReview: false })
-                }
-            }
-        })
-
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+        };
         return (
             <Box
                 sx={{
@@ -190,7 +241,7 @@ class ViewRealEstateAgentPage extends Component {
                                             readOnly
                                             value={this.state.rating}
                                         />
-                                        <Typography align="right">({this.state?.ratingCount}) Ratings</Typography>
+                                        <Typography align="right">({this.state?.reviews.length}) Ratings</Typography>
 
                                     </Box>
                                     <Paper sx={{ pr: 'auto', display: "flex", gap: 3 }} elevation={0}>
@@ -255,6 +306,7 @@ class ViewRealEstateAgentPage extends Component {
                                             readOnly
                                         />}
                                     </Paper>
+                                    {this.state.errorMessage && <Paper sx={{ ml: 2.75, p: 1.5, borderColor: 'red' }} variant='outlined'><Typography variant='subtitle2' color="red" >{this.state.errorMessage}</Typography></Paper>}
                                     {this.state.canReview &&
                                         <TextField sx={{ maxWidth: '100%' }}
                                             value={this.state.reviewBody}
@@ -264,9 +316,41 @@ class ViewRealEstateAgentPage extends Component {
                                             label="Review"
                                         />
                                     }
+                                    {this.state.canReview && this.state.reviewBody &&
+                                        <Paper sx={{ ml: 'auto', mr: 3, display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
+                                            <Button variant='contained' onClick={this.handleReviewSubmit} size="medium">Submit Review</Button>
+                                        </Paper>
+                                    }
                                 </Paper>
                             </Paper>
                             }
+                            <Paper sx={{ p: 2, pr: 'auto', }} elevation={0}>
+                                <Typography variant="h5" align="left">
+                                    Reviews
+                                </Typography>
+                            </Paper>
+                            {this.state.reviews.map((review, idx) => {
+                                return (
+                                    <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                        <Paper sx={{ pr: 'auto', display: 'flex', gap: 15 }} elevation={0}>
+                                            <Typography variant="h6" align="left">
+                                                {review.firstName} {review.lastName}
+                                            </Typography>
+                                            <Rating
+                                                name="newRating"
+                                                value={review.rating}
+                                                readOnly
+                                            />
+                                        </Paper>
+                                        <Typography variant="body1" align="left" gutterBottom>
+                                            {review.reviewBody}
+                                        </Typography>
+                                        <Typography variant="body1" align="left">
+                                            {new Date(review.updatedAt).toLocaleString('en-US', options)}
+                                        </Typography>
+                                    </Paper>
+                                )
+                            })}
                         </main>
                     </Container>
                 </div>

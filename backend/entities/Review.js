@@ -35,8 +35,10 @@ class Review {
 
         // Query
         const dbResponse = await pool.query(
-            `SELECT * FROM "Reviews"
-            WHERE "agentProfileId" = '${id}'`
+            `SELECT r.*, up.*
+            FROM "Reviews" r
+            JOIN "UserProfiles" up ON r."reviewerProfileId" = up.id
+            WHERE r."agentProfileId" = '${id}'`
         );
 
         const reviews = dbResponse.rows;
@@ -101,24 +103,21 @@ class Review {
         }
     }
 
-    updateReview = async (id, reviewBody) => {
+    updateReview = async (reviewerProfileId, agentProfileId, reviewBody) => {
         // Database Connection worker
         const pool = DBConnection.pool;
+        console.log(
+            { reviewerProfileId, agentProfileId, reviewBody }
+        )
 
         // Query
-        const dbResponse = await pool.query(
-            `SELECT * FROM "Reviews"
-            WHERE id = '${id}'`
+        await pool.query(
+            `UPDATE "Reviews"
+            SET "reviewBody" = '${reviewBody}'
+            WHERE "reviewerProfileId" = '${reviewerProfileId}'
+            AND "agentProfileId" = '${agentProfileId}'
+            `
         );
-
-        if (dbResponse.rows.length == 0) {
-            let err = new Error("Review not found");
-            err.status = 404;
-            throw err;
-        }
-
-        const review = dbResponse.rows[0];
-        return review;
     }
 
     deleteReview = async (id) => {

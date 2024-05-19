@@ -7,6 +7,7 @@ const RealEstateAgentLogoutController = require('../controllers/RealEstateAgentL
 const RealEstateAgentSearchListingsController = require('../controllers/RealEstateAgentSearchListingsController');
 const RealEstateAgentUpdateListingController = require('../controllers/RealEstateAgentUpdateListingController');
 const RealEstateAgentViewMyListingsController = require('../controllers/RealEstateAgentViewMyListingsController');
+const SellerCreateReviewController = require('../controllers/SellerCreateReviewController');
 const SellerLoginController = require('../controllers/SellerLoginController');
 const SellerLogoutController = require('../controllers/SellerLogoutController');
 const SellerRateAgentController = require('../controllers/SellerRateAgentController');
@@ -93,7 +94,7 @@ class AppRouter {
         this.router.get('/seller/view/listing/:id', new AuthMiddleware().protect, new SellerViewPropertyController().handleViewPropertyListing);
         this.router.get('/seller/view/my/listing', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
         this.router.post('/seller/create/review/:agentProfileId', new AuthMiddleware().protect, new SellerRateAgentController().handleRateAgent);
-        this.router.put('/seller/update/review/:agentProfileId', new AuthMiddleware().protect, new SellerViewMyListingsController().handleViewListings);
+        this.router.put('/seller/update/review/:agentProfileId', new AuthMiddleware().protect, new SellerCreateReviewController().handleCreateReview);
 
 
         // Common Routes
