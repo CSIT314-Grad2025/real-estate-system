@@ -10,10 +10,7 @@ class SystemAdminSearchAccountsController {
             }
             const userAccounts = await new UserAccount().getAllAccounts();
 
-            console.log({ message: "From Controller", data: userAccounts })
-
             res.status(200).json(userAccounts);
-
         } catch (err) {
             err.status = err.status || 400;
             next(err);

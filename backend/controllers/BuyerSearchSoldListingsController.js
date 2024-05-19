@@ -8,7 +8,6 @@ class BuyerSearchSoldListingsController {
     // Controller Method
     handleSearchSoldListings = async (req, res, next) => {
         try {
-
             if (req.requestingUser.accountType != "buyer") {
                 let err = new Error('Unauthorized');
                 err.status = 400;

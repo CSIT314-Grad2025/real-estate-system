@@ -44,7 +44,7 @@ class SearchRealEstateAgentsPage extends Component {
 
     handleClickView = (id) => {
         this.state.navigate(
-            `/${this.state?.auth?.accountId}/view/realestateagent/${id}`, {
+            `/${this.state?.auth?.accountType}/view/realestateagent/${id}`, {
             state: {
                 from: this.state.location
             }

@@ -25,6 +25,7 @@ class BuyerSearchMyListingsPage extends Component {
             soldListings: [],
             newListings: [],
             listings: [],
+            savedListings: [],
             filteredListings: [],
             userProfile: null,
             new: "new",
@@ -53,11 +54,46 @@ class BuyerSearchMyListingsPage extends Component {
 
     };
 
+    handleClickSave = async (id) => {
+        try {
+            const payload = {}
+            const response = await axios.post(`/buyer/save/listing/${id}`, payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.state.auth.token}`
+                },
+                withCredentials: true
+            }
+            );
+            console.log("API Response: ", response?.data);
+            this.state.navigate(
+                "/confirmation", {
+                state: {
+                    title: "Success!",
+                    description: "Property Listing Saved successfully.",
+                    from: this.state.location
+                }
+            },);
+        } catch (err) {
+            console.log("ERROR: ", err?.response);
+            if (err?.response) {
+                this.setState({
+                    errorMessage: err.response.data.message
+                });
+            } else {
+                this.setState({
+                    errorMessage: "No response from server"
+                });
+            }
+        }
+    };
+
     componentDidMount() {
         // Fetch User Profile from server
         this.fetchUserProfile();
         this.fetchNewListings();
         this.fetchSoldListings();
+        this.fetchSavedListings();
     }
 
     fetchUserProfile = async () => {
@@ -103,7 +139,26 @@ class BuyerSearchMyListingsPage extends Component {
     }
     fetchSoldListings = async () => {
         try {
-            const response = await axios.get(`/${this.state?.auth?.accountType}/search/listing/sold`,
+            const response = await axios.get(`/${this.state?.auth?.accountType}/search/listing/sold`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.state.auth.token}`
+                },
+                withCredentials: true
+            }
+            );
+            console.log("API Response: ", response?.data);
+            this.setState({
+                soldListings: response?.data?.soldListings,
+            })
+        } catch (err) {
+            console.log("ERROR: ", err);
+        }
+    }
+
+    fetchSavedListings = async () => {
+        try {
+            const response = await axios.get(`/buyer/view/my/listing`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +169,7 @@ class BuyerSearchMyListingsPage extends Component {
             );
             console.log("API Response: ", response?.data);
             this.setState({
-                soldListings: response?.data?.soldListings,
+                savedListings: response?.data?.savedListings,
             })
         } catch (err) {
             console.log("ERROR: ", err);
@@ -145,7 +200,7 @@ class BuyerSearchMyListingsPage extends Component {
             >
                 <CssBaseline />
                 <div>
-                    <AppHeader title="My Listings" />
+                    <AppHeader title="Marketplace" />
                     <TextField sx={{ marginY: 3, maxWidth: '50%', mx: 'auto', }}
                         value={this.state.searchTerm}
                         autoFocus
@@ -173,7 +228,7 @@ class BuyerSearchMyListingsPage extends Component {
                                 return (
                                     <PropertyCard key={listing.id}
                                         listing={listing}
-                                        onClickEdit={() => this.handleClickEdit(listing.id)}
+                                        onClickSave={() => this.handleClickSave(listing.id)}
                                         onClickDelete={() => this.handleClickDelete(listing.id)}
                                         accountType={this.state.auth.accountType}
                                     />
@@ -252,16 +307,7 @@ const PropertyCard = (props) => {
                     </Paper>
                 </Box>
                 {props.accountType === "buyer" && <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
-                    <Button variant='contained' onClick={props.onClickEdit} size="medium">Edit</Button>
-                    <ConfirmationDialog
-                        title="Confirmation"
-                        description="Are you sure you want to proceed?"
-                        response={props.onClickDelete}
-                    >
-                        {(showDialog) => (
-                            <Button variant='outlined' onClick={showDialog} color='error' size="medium">Delete</Button>
-                        )}
-                    </ConfirmationDialog>
+                    <Button variant='contained' onClick={props.onClickSave} size="medium">Save</Button>
                 </Paper>}
             </Paper>
         </Paper >

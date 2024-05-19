@@ -10,26 +10,24 @@ const SavedListing = require("../entities/SavedListing.js");
 // @UserStore
 // As a buyer, I want to save sold properties to favourite list,
 // so that I can reference them later for comparison. 
-    
+
 class BuyerSaveListingController {
     // Controller Method
     handleSaveListing = async (req, res, next) => {
         try {
-            const { propertyListingID, buyerID } = req.body;
-
-            const requiredFields = ['propertyListingID', 'buyerID'];
-            const missingFields = requiredFields.filter(field => !req.body[field]);
-
-            if (missingFields.length > 0) {
-                const missingFieldNames = missingFields.join(', ');
-                const errorMessage = `Missing Field(s): ${missingFieldNames}`;
-                let err = new Error(errorMessage);
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "buyer") {
+                let err = new Error('Unauthorized');
                 err.status = 400;
                 throw err;
             }
 
+            const propertyListingId = req.params.propertyListingId;
+            const buyerProfileId = req.profileId;
+            console.log({ propertyListingId, buyerProfileId })
+
             // Entity Method Call
-            new SavedListing().createSavedListing(buyerID, propertyListingID);
+            await new SavedListing().createSavedListing(buyerProfileId, propertyListingId);
 
             // Response sent to Boundary
             res.status(201).json({

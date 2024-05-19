@@ -1,7 +1,11 @@
+const BuyerCreateReviewController = require('../controllers/BuyerCreateReviewController');
 const BuyerLoginController = require('../controllers/BuyerLoginController');
 const BuyerLogoutController = require('../controllers/BuyerLogoutController');
+const BuyerRateAgentController = require('../controllers/BuyerRateAgentController');
+const BuyerSaveListingController = require('../controllers/BuyerSaveListingController');
 const BuyerSearchNewListingsController = require('../controllers/BuyerSearchNewListingsController');
 const BuyerSearchSoldListingsController = require('../controllers/BuyerSearchSoldListingsController');
+const BuyerViewSavedListingController = require('../controllers/BuyerViewSavedListingsController');
 const RealEstateAgentCreateListingController = require('../controllers/RealEstateAgentCreateListingController');
 const RealEstateAgentDeleteListingController = require('../controllers/RealEstateAgentDeleteListingController');
 const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
@@ -93,6 +97,10 @@ class AppRouter {
         this.router.get('/buyer/search/listing/new', new AuthMiddleware().protect, new BuyerSearchNewListingsController().handleSearchNewListings);
         // Search Sold Property Listing
         this.router.get('/buyer/search/listing/sold', new AuthMiddleware().protect, new BuyerSearchSoldListingsController().handleSearchSoldListings);
+        this.router.post('/buyer/create/review/:agentProfileId', new AuthMiddleware().protect, new BuyerRateAgentController().handleRateAgent);
+        this.router.put('/buyer/update/review/:agentProfileId', new AuthMiddleware().protect, new BuyerCreateReviewController().handleCreateReview);
+        this.router.post('/buyer/save/listing/:propertyListingId', new AuthMiddleware().protect, new BuyerSaveListingController().handleSaveListing);
+        this.router.get('/buyer/view/my/listing', new AuthMiddleware().protect, new BuyerViewSavedListingController().handleViewSavedListings);
 
         // Seller Routes
         this.router.post('/seller/login', new SellerLoginController().handleLogin);

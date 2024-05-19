@@ -42,7 +42,7 @@ class ViewRealEstateAgentPage extends Component {
 
     handleRateSubmit = async (e) => {
         try {
-            const response = await axios.post(`/seller/create/review/${this.state.params.id}`, {
+            const response = await axios.post(`/${this.state?.auth?.accountType}/create/review/${this.state.params.id}`, {
                 rating: e.target.value
             },
                 {
@@ -239,7 +239,7 @@ class ViewRealEstateAgentPage extends Component {
                                         />
                                         <Rating
                                             readOnly
-                                            value={this.state.rating}
+                                            value={this.state.rating / this.state.reviews.length || 0}
                                         />
                                         <Typography align="right">({this.state?.reviews.length}) Ratings</Typography>
 

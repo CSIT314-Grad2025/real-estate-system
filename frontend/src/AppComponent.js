@@ -58,6 +58,8 @@ class AppComponent extends Component {
                         <Route path="buyer/home" element={<BuyerHomePage />} />
                         <Route path="buyer/search/listing" element={<BuyerSearchPropertyListingsPage />} />
                         <Route path="buyer/search/realestateagent" element={<SearchRealEstateAgentsPage />} />
+                        <Route path="buyer/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
+                        <Route path="buyer/view/realestateagent/:id" element={<ViewRealEstateAgentProfilePage />} />
                     </Route>
 
                     <Route element={<RequireAuth allowedRoles={[this.roles.SELLER]} />} >
