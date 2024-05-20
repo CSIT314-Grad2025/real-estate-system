@@ -1,4 +1,4 @@
-const RealEstateAgentLoginController = require('./RealEstateAgentLoginController');
+const RealEstateAgentLoginController = require('../controllers/RealEstateAgentLoginController');
 const LoginToken = require('../entities/LoginToken');
 const UserAccount = require('../entities/UserAccount');
 

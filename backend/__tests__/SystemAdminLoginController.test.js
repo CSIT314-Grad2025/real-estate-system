@@ -1,11 +1,11 @@
-const SystemAdminController = require('./SystemAdminController');
+const SystemAdminLoginController = require('../controllers/SystemAdminLoginController');
 const LoginToken = require('../entities/LoginToken');
 const UserAccount = require('../entities/UserAccount');
 
 jest.mock('../entities/LoginToken');
 jest.mock('../entities/UserAccount');
 
-describe('SystemAdminController', () => {
+describe('SystemAdminLoginController', () => {
     let req, res, next;
 
     beforeEach(() => {
@@ -45,7 +45,7 @@ describe('SystemAdminController', () => {
                 generateToken: jest.fn().mockReturnValueOnce(token),
             });
 
-            const controller = new SystemAdminController();
+            const controller = new SystemAdminLoginController();
             await controller.handleLogin(req, res, next);
 
             expect(res.status).toHaveBeenCalledWith(200);
@@ -60,7 +60,7 @@ describe('SystemAdminController', () => {
         it('should return 400 for missing fields', async () => {
             delete req.body.accountType;
 
-            const controller = new SystemAdminController();
+            const controller = new SystemAdminLoginController();
             await controller.handleLogin(req, res, next);
 
             expect(next).toHaveBeenCalledTimes(1);
@@ -74,7 +74,7 @@ describe('SystemAdminController', () => {
                 login: jest.fn().mockRejectedValueOnce(new Error(errorMessage)),
             });
 
-            const controller = new SystemAdminController();
+            const controller = new SystemAdminLoginController();
             await controller.handleLogin(req, res, next);
 
             expect(next).toHaveBeenCalledTimes(1);

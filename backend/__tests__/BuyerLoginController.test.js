@@ -1,4 +1,4 @@
-const BuyerLoginController = require('./BuyerLoginController');
+const BuyerLoginController = require('../controllers/BuyerLoginController');
 const LoginToken = require('../entities/LoginToken');
 const UserAccount = require('../entities/UserAccount');
 
