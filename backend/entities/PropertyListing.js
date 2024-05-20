@@ -215,6 +215,19 @@ class PropertyListing {
         }
     }
 
+    calculateMortgage = async (id, interestRate, loanTermYears) => {
+        // Calculate mortgage
+        let propertyListing = await this.getPropertyListingByID(id);
+        
+        let propertyPrice = propertyListing.listPrice;
+        const monthlyInterestRate = interestRate / 100 / 12;
+        const totalPayments = loanTermYears * 12;
+        const mortgage = propertyPrice * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments)) /
+            (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
+
+        return(mortgage);
+    }
+
     deletePropertyListing = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;

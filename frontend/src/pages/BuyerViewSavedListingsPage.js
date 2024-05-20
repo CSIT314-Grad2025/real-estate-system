@@ -81,7 +81,7 @@ class BuyerViewSavedListingsPage extends Component {
             );
             console.log("API Response: ", response?.data);
             this.setState({
-                listings: response?.data?.listings,
+                listings: response?.data?.savedListings,
                 filteredListings: response?.data?.savedListings,
             })
         } catch (err) {
@@ -195,6 +195,11 @@ const PropertyCard = (props) => {
                         </Typography>
                         <Typography variant="h6" align="center" gutterBottom>
                             {props?.listing?.bathrooms}
+                        </Typography>
+                    </Paper>
+                    <Paper elevation={0} sx={{ my: 2, mr: 10 }}>
+                        <Typography variant="h5" align="center" sx={{ fontWeight: 900 }} gutterBottom>
+                            ${props?.listing?.listPrice}
                         </Typography>
                     </Paper>
                 </Box>

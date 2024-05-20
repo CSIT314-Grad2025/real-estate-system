@@ -7,24 +7,22 @@ const PropertyListing = require("../entities/PropertyListing");
 
 class BuyerCalculateMortgageController {
     // Controller Method
-    handleViewPropertyListing = async (req, res, next) => {
-        const { id, interestRate, loanTermYears } = req.body;
+    handleCalcluateMortgage = async (req, res, next) => {
         try {
-            if (!id) {
-                let err = new Error('Missing field(s): id');
+            // Checking if user is authorized
+            if (req.requestingUser.accountType != "buyer") {
+                console.log(1)
+                let err = new Error('Unauthorized');
                 err.status = 400;
                 throw err;
             }
 
-            // Entity Method Call
-            let propertyListing = await new PropertyListing().getPropertyListingByID(id);
+            const id = req.params.id;
 
-            // Calculate mortgage
-            let propertyPrice = propertyListing.listPrice;
-            const monthlyInterestRate = interestRate / 100 / 12;
-            const totalPayments = loanTermYears * 12;
-            const mortgage = propertyPrice * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments)) /
-                (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
+            const { interestRate, loanTermYears } = req.body;
+
+            // Entity Method Call
+            let mortgage = await new PropertyListing().calculateMortgage(id, interestRate, loanTermYears);
 
             // Mortgage value sent to the boundary
             res.status(200).json({

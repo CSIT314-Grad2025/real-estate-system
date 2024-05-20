@@ -230,6 +230,11 @@ const PropertyCard = (props) => {
                             {props?.listing?.bathrooms}
                         </Typography>
                     </Paper>
+                    <Paper elevation={0} sx={{ my: 2, mr: 10 }}>
+                        <Typography variant="h5" align="center" sx={{ fontWeight: 900 }} gutterBottom>
+                            ${props?.listing?.listPrice}
+                        </Typography>
+                    </Paper>
                 </Box>
                 {props?.accountType === "realestateagent" && <Paper sx={{ display: "flex", justifyContent: "left", gap: 5, py: 1, pr: 1, }} elevation={0}>
                     <Button variant='contained' onClick={props.onClickEdit} size="medium">Edit</Button>

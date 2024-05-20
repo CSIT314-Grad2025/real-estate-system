@@ -70,8 +70,9 @@ class ViewRealEstateAgentPage extends Component {
     }
 
     handleReviewSubmit = async (e) => {
+        console.log({state: this.state})
         try {
-            const response = await axios.put(`/seller/update/review/${this.state.params.id}`, {
+            const response = await axios.put(`/${this.state?.auth?.accountType}/update/review/${this.state.params.id}`, {
                 reviewBody: this.state.reviewBody
             },
                 {
@@ -171,6 +172,7 @@ class ViewRealEstateAgentPage extends Component {
 
             let sum = 0;
             response?.data?.reviews.map((review, idx) => {
+                console.log({review})
                 sum += review.rating;
                 if (review.reviewerProfileId === this.state?.userProfile?.id && review.agentProfileId === this.state.agentProfile.id) {
                     this.setState({
@@ -331,7 +333,7 @@ class ViewRealEstateAgentPage extends Component {
                             </Paper>
                             {this.state.reviews.map((review, idx) => {
                                 return (
-                                    <Paper sx={{ p: 3, pr: 'auto', }} variant="outlined">
+                                    <Paper key={review.id} sx={{ p: 3, pr: 'auto', }} variant="outlined">
                                         <Paper sx={{ pr: 'auto', display: 'flex', gap: 15 }} elevation={0}>
                                             <Typography variant="h6" align="left">
                                                 {review.firstName} {review.lastName}

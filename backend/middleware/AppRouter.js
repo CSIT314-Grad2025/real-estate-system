@@ -1,6 +1,7 @@
 const BuyerCreateReviewController = require('../controllers/BuyerCreateReviewController');
 const BuyerLoginController = require('../controllers/BuyerLoginController');
 const BuyerLogoutController = require('../controllers/BuyerLogoutController');
+const BuyerCalculateMortgageController = require('../controllers/BuyerCalculateMortgageController');
 const BuyerRateAgentController = require('../controllers/BuyerRateAgentController');
 const BuyerSaveListingController = require('../controllers/BuyerSaveListingController');
 const BuyerSearchNewListingsController = require('../controllers/BuyerSearchNewListingsController');
@@ -101,6 +102,7 @@ class AppRouter {
         this.router.put('/buyer/update/review/:agentProfileId', new AuthMiddleware().protect, new BuyerCreateReviewController().handleCreateReview);
         this.router.post('/buyer/save/listing/:propertyListingId', new AuthMiddleware().protect, new BuyerSaveListingController().handleSaveListing);
         this.router.get('/buyer/view/my/listing', new AuthMiddleware().protect, new BuyerViewSavedListingController().handleViewSavedListings);
+        this.router.post('/buyer/mortgage/calculate/:id', new AuthMiddleware().protect, new BuyerCalculateMortgageController().handleCalcluateMortgage);
 
         // Seller Routes
         this.router.post('/seller/login', new SellerLoginController().handleLogin);
@@ -112,7 +114,7 @@ class AppRouter {
 
 
         // Common Routes
-        
+
         // View User Profile
         this.router.get('/common/view/myprofile', new AuthMiddleware().protect, new ViewMyProfileController().handleViewMyProfile);
         // View Property Listing
