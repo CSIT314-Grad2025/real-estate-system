@@ -16,7 +16,7 @@ module.exports = {
         // Insert a user into the Users table
         const users = await queryInterface.bulkInsert('Users', [
             {
-                email: 'jd@gmail.com',
+                email: 'admin@gmail.com',
                 password: '1234',
                 isLoggedIn: false,
                 accountType: 'systemadmin',

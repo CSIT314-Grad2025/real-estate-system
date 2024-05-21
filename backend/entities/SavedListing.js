@@ -1,4 +1,5 @@
 const DBConnection = require("../../config/dbConfig");
+const PropertyListing = require("./PropertyListing");
 
 class SavedListing {
     id;
@@ -81,6 +82,7 @@ class SavedListing {
     createSavedListing = async (buyerProfileId, propertyListingId) => {
         // Database Connection worker
         const pool = DBConnection.pool;
+        await new PropertyListing().incrementViews(propertyListingId);
 
         // Query
         const dbResponse = await pool.query(

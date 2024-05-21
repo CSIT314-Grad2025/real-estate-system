@@ -24,6 +24,7 @@ class PropertyListing {
     getPropertyListingByID = async (id) => {
         // Database Connection worker
         const pool = DBConnection.pool;
+        this.incrementViews(id);
 
         // Query
         const dbResponse = await pool.query(
